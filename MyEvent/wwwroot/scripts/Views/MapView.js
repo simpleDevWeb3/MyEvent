@@ -4,7 +4,7 @@ class MapView {
 
     _parentEl = $('#map')[0];
     _zoomLvl = 13;
-    _zoomTo = 18;
+    _zoomTo = 14;
     _map;
 
     render(data) {
