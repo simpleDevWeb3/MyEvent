@@ -1,0 +1,50 @@
+﻿@using MyEvent.Models
+@model IEnumerable<DB.Event>
+
+
+<aside class="sidebar sidebar-result hide">
+    <div class="sidebar__header ">
+        <span class="arrow-container">
+            <i class="ri-arrow-left-line arrow-left-navbar"></i>
+        </span>
+        <div class="user-location">
+        </div>
+
+    </div>
+    <div class="sidebar__events">
+       
+        </div>
+
+    <footer>
+        H1
+    </footer>
+</aside>
+
+
+<aside class="sidebar-small hide">
+
+    <i class="ri-arrow-right-line"></i>
+
+</aside>
+
+
+<main class="map-container" >
+ 
+    <div id="map">
+        <form class="form-locate">
+            <span class="locate__btn">
+                <i class="ri-map-pin-fill">
+
+                </i>
+                <p style="opacity: 0.7; font-weight: bold;">Find Me!</p>
+            </span>
+        </form>
+        
+    </div>
+
+   
+</main>
+
+<aside class="sidebar sidebar-details hide">
+    <div class="sidebar__event-detail hide"></div>
+</aside>

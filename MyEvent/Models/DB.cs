@@ -1,0 +1,109 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+namespace MyEvent.Models;
+#nullable disable warnings
+public class DB : DbContext
+{
+    public DB(DbContextOptions options) : base(options)
+    {
+    }
+
+
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Address> Addresses { get; set; }
+    public DbSet<Event> Events { get; set; }
+    public DbSet<Detail> Details { get; set; }
+
+
+    public class Address
+    {
+        [Key, MaxLength(8)]
+        public string Id { get; set; }
+
+        [MaxLength(100)]
+        public string Street { get; set; }
+
+        [MaxLength(100)]
+        public string City { get; set; }
+
+        [MaxLength(100)]
+        public string State { get; set; }
+
+        [MaxLength(5)]
+        public string Postcode { get; set; }  // Use string, not int, to preserve leading 0s
+
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
+        public List<Event> Events { get; set; } = [];
+    }
+
+    
+    public class Category
+    {
+        [Key, MaxLength(8)]
+        public string Id { get; set; }
+
+        [MaxLength(100)]
+        public string Name { get; set; }
+
+        public List<Event> Events { get; set; } = [];
+    }
+
+ 
+ 
+
+    public class Event
+    {
+        [Key, MaxLength(8)]
+        public string Id { get; set; }
+
+        [MaxLength(100)]
+        public string Title { get; set; }
+
+        public string ImageUrl { get; set; }
+
+     
+        public string AddressId { get; set; }
+        public Address Address { get; set; }
+
+     
+        public string CategoryId { get; set; }
+        public Category Category { get; set; }
+
+        public Detail Detail { get; set; }
+    }
+
+
+
+
+    public class Detail
+    {
+        [Key]
+        [MaxLength(8)]
+        public string Id { get; set; }
+
+        [MaxLength(100)]
+        public string Description { get; set; }
+
+        [MaxLength(100)]
+        public string Organizer { get; set; }
+
+        [MaxLength(100)]
+        public string ContactEmail { get; set; }
+
+        public DateOnly Date { get; set; }
+        public TimeOnly StartTime { get; set; }
+        public TimeOnly EndTime { get; set; }
+        public string EventId { get; set; }
+        public Event Event { get; set; }
+    }
+
+
+
+}
+
+
+
+
