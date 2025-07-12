@@ -32,7 +32,11 @@ class SidebarView {
 
         $(this._ParentEl)
             .css('transform', 'translateX(-500px)')
-            .addClass('hide');
+            .children(".sidebar-small")
+            .html(` <i class="ri-arrow-right-line"></i>`)
+
+           
+          
 
         $('.sidebar-small')
             .removeClass('hide')
@@ -44,15 +48,15 @@ class SidebarView {
  
 
         $(this._ParentEl)
-            .css('transform', 'translateX(0px)')
-            .removeClass('hide');
+            .css("transform" , "translateX(0px)")
+            .children(".sidebar-small")
+            .html(
+                `<span class="arrow-container">
+                     <i class= "ri-arrow-left-line arrow-left-navbar" style="color:black" ></i >
+                 </span >`
+            )
+       
 
-        $('.sidebar-small')
-            .addClass('hide')
-            .css('display', 'none');
-
-
-  
     }
 
     highlightEvent(eventId) {

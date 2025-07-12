@@ -20,7 +20,9 @@ const MapController = async function () {
             .empty()
             .append(`Search Event in ${Model.state.address.city}`)
 
-        $('.sidebar-small').toggleClass('hide');
+        $('.sidebar-small')
+            .toggleClass('hide')
+            .css('display', 'flex');
         $('.locate__btn').addClass('hide');
         $('.form-locate').empty()
 
