@@ -5,7 +5,7 @@
     background-color: #181818;
     top: 60px;
     bottom: 0;
-    z-index: 3;
+    z-index: 1;
     transform:translateX(-500px);
     transition: ease-in-out 0.15s transform;
 }
@@ -33,7 +33,7 @@ footer {
     flex: 1;
     transition: transform 0.15s;
    
-    overflow-y:scroll;
+ 
 }
 
 .event {
@@ -46,8 +46,9 @@ footer {
     height: 100px;
     cursor: pointer;
     transition: background-color 0.15s;
-    border-bottom:solid 1px white;
-    position:relative;
+    border-bottom: solid 1px white;
+    position: relative;
+    border-right: solid 1px white;
 }
 .event-detail {
   
@@ -164,11 +165,14 @@ footer {
     top: 50%;
     right: -30px; /* pull it outside sidebar's right edge */
     transform: translateY(-50%);
-    width: 30px;
+    width: 24px;
     height: 60px;
-    background-color: white;
-    z-index: 100;
-  
+    background-color: black;
+    padding-left:10px;
+    padding-right:5px;
+    border-radius:10px;
+    border:solid 1px white;
+    
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -177,7 +181,7 @@ footer {
 
    
     .ri-arrow-right-line {
-        color: black;
+        color: white;
         font-size: 25px;
     }
 

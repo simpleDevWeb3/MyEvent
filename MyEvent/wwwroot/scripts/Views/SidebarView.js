@@ -51,9 +51,9 @@ class SidebarView {
             .css("transform" , "translateX(0px)")
             .children(".sidebar-small")
             .html(
-                `<span class="arrow-container">
-                     <i class= "ri-arrow-left-line arrow-left-navbar" style="color:black" ></i >
-                 </span >`
+                `
+                     <i class= "ri-arrow-left-line arrow-left-navbar"></i >
+                 `
             )
        
 
@@ -70,7 +70,7 @@ class SidebarView {
 
     AddToggleSidebar(handler) {
 
-        $(this._ParentEl).on('click',(e)=> {
+        $('.sidebar-small').on('click',(e)=> {
             if (!e.target.classList.contains('arrow-left-navbar')) return;
          
             this.toggle();
