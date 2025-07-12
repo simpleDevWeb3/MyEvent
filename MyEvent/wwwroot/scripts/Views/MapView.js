@@ -5,9 +5,9 @@ class MapView {
 
     _parentEl = $('#map')[0];
     _zoomLvl = 13;
-    _zoomTo = 14;
-    _map;
-    
+    _zoomTo = 15;
+   
+
 
     render(data) {
         this._data = data;
@@ -38,13 +38,13 @@ class MapView {
     _RenderMarker(event) {
         console.log('🧭 _RenderMarker was called:', event);
         console.trace('Trace for marker source');
-        const marker = L.marker([event.Latitude, event.Longitude]
+       L.marker([event.Latitude, event.Longitude]
         ).addTo(this._map)
             .bindPopup(
                 L.popup({
                     maxWidth: 250,
                     minWidth: 100,
-                    autoClose: false,
+                    autoClose: true,
                     closeOnClick: false,
 
                 }))
