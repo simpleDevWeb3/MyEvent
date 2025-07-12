@@ -19,3 +19,9 @@
     top: 50%;
     left: 50%;
 }
+.circular-icon {
+    border-radius: 50%; /* Makes the image round */
+    overflow: hidden;
+    border: 2px solid #fff; /* Optional: white border */
+    box-shadow: 0 0 5px rgba(0,0,0,0.3); /* Optional shadow */
+}

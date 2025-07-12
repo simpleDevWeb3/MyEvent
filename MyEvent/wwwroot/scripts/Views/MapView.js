@@ -1,11 +1,13 @@
 ﻿
-
+import EventDetailView from "./EventDetailView.js";
+import SidebarView from "./SidebarView.js";
 class MapView {
 
     _parentEl = $('#map')[0];
     _zoomLvl = 13;
     _zoomTo = 14;
     _map;
+    
 
     render(data) {
         this._data = data;
@@ -36,19 +38,37 @@ class MapView {
     _RenderMarker(event) {
         console.log('🧭 _RenderMarker was called:', event);
         console.trace('Trace for marker source');
-        L.marker([event.Latitude,event.Longitude]).addTo(this._map)
+        const marker = L.marker([event.Latitude, event.Longitude]
+        ).addTo(this._map)
             .bindPopup(
-          L.popup({
-          maxWidth: 250,
-          minWidth: 100,
-          autoClose: false,
-          closeOnClick: false,
-       
-        }))
-         .setPopupContent(`${event.Title}`)
-      
-          
+                L.popup({
+                    maxWidth: 250,
+                    minWidth: 100,
+                    autoClose: false,
+                    closeOnClick: false,
+
+                }))
+            .setIcon(
+                L.icon({
+                    iconUrl: event.ImageUrl,
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40],
+                    popupAnchor: [0, -40],
+                    className: 'circular-icon'
+                })
+            )
+            .setPopupContent(`${event.Title}`)
+            .on('click', () => {
+                EventDetailView.renderEventDetail(event);
+                this.MoveToCoords(event.Latitude, event.Longitude);
+                SidebarView.highlightEvent(event.EventId);
+            })
+
+        
     }
+
+ 
+
     _ResizeObserver() {
 
         const resizeObserver = new ResizeObserver(() => {
@@ -60,7 +80,7 @@ class MapView {
 
     }
 
-
+    
     addHandlerLocate(handler) {
 
         $(this._parentEl).on('click', function (e) {
