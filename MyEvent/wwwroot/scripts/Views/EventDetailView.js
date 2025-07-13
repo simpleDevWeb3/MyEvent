@@ -24,7 +24,10 @@ class EventDetailView  {
                  <img class="event-detail-image" src="${event.ImageUrl}">
                 </div>
                 <div class="event-detail" >
-                        <p class="title">${event.Title}</p>
+                        <div class="row-1">
+                            <p class="title">${event.Title}</p>
+                            <span> <i class="ri-bookmark-line bookmark"></i></span>
+                        </div>
                         <p class="organization">${event.Organizer}</p>
                         <p class="date">${event.Date}</p>
                         <p class="description">${event.Description}</p>

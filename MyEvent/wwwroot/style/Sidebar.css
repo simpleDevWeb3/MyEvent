@@ -57,12 +57,24 @@ footer {
 }
 .event-detail>p{
     color:white;
-} 
-        .title{
-            font-weight:bold;
-            font-size:18px;
-            margin-top:5px;
-            margin-bottom:10px;
+}
+        .row-1 {
+           color:white;
+           display:flex;
+           align-items:center;
+           gap:10px;
+        }
+        .row-1 .bookmark{
+            background:none;
+            font-size:25px;
+            color:white;
+        }
+       
+            .title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 5px;
+            margin-bottom: 10px;
         }
         .organization {
             opacity: 0.8;
@@ -185,7 +197,3 @@ footer {
         font-size: 25px;
     }
 
-.ri-map-pin-fill {
-    font-size: 50px;
-    cursor: pointer;
-}

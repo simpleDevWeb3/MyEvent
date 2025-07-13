@@ -2,7 +2,7 @@
 import EventDetailView from "./EventDetailView.js";
 import SidebarView from "./SidebarView.js";
 class MapView {
-
+    _map;
     _parentEl = $('#map')[0];
     _zoomLvl = 13;
     _zoomTo = 15;
@@ -20,6 +20,9 @@ class MapView {
     }
 
     _LoadMap() {
+        if (this._map !== undefined) {
+            this._map.remove();
+        }
         console.log(this._data);
         const {lat,lng} = this._data.coords;
 
@@ -83,11 +86,8 @@ class MapView {
     
     addHandlerLocate(handler) {
 
-        $(this._parentEl).on('click', function (e) {
-            e.preventDefault();
-          
-            if (!e.target.closest('.locate__btn')) return;
-
+        $('.locate__btn').on('click', function (e) {
+           
             handler();
         })
     }

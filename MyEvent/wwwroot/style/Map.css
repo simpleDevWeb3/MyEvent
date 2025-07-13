@@ -15,10 +15,23 @@
     height: 100%; /* Must have height */
 }
 .form-locate {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+  color:white;
+  font-size:10px;
+  display:flex;
+  align-items:center;
+
 }
+    .form-locate p {
+        margin: 0;
+        opacity: 1;
+      
+        font-weight: bold;
+    }
+    .ri-map-pin-fill {
+        font-size: 20px;
+        cursor: pointer;
+    }
+
 .circular-icon {
     border-radius: 50%; /* Makes the image round */
     overflow: hidden;
