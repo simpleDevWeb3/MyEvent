@@ -3,8 +3,10 @@
 export const state = {
     coords: {},
     address: {},
-    Events: [],
-    Search: [],
+    Events: [], //user location result
+    Search: [], //User search result
+    Page: 1,
+    ResultPerPage:5,
 }
 
 const getCoords = async function () {

@@ -44,14 +44,14 @@ const SearchController =  async function (data) {
     $('.user-location')
         .empty()
         .append(`Search Event in ${data}`)
-  
+    SidebarView.expand();
     try {
        // Get search result from api
         await Model.getSearch(data);
         console.log(Model.state.Search);
         SidebarView.render(Model.state.Search)
         //Display search result
-        SidebarView.expand();
+       
         
     } catch (error) {
         console.log(error);
