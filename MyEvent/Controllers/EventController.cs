@@ -48,8 +48,7 @@ namespace MyEvent.Controllers
 
 
             var data = db.Events
-                        .Include(e => e.Address)
-                        .Where(e=> e.Address.City == location || e.Address.State == location)
+                        .Include(e => e.Address)     
                         .Include(e=>e.Detail)
                         .Select(e => new EventDTO
                         {
