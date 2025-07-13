@@ -23,10 +23,11 @@
   
 
 
-        $(this._ParentEl).on('submit', function (e) {
+        $(this._ParentEl).on('input','#search', function (e) {
             e.preventDefault();
 
-            const query = $('#search').val()
+            const query = $('#search').val().trim();
+            if (query.length <= 3) return;
             console.log(query);
 
 
@@ -37,6 +38,8 @@
 
 
     }
+
+    
 
   
 

@@ -33,7 +33,7 @@ const MapController = async function () {
     }
 }
 
-const SearchController = async function (data) {
+const SearchController =  async function (data) {
 
     $('.sidebar__header')
         .css('transform', 'translateX(0px)');
@@ -44,14 +44,24 @@ const SearchController = async function (data) {
     $('.user-location')
         .empty()
         .append(`Search Event in ${data}`)
-
-
-     
-    SidebarView.expand();
+  
+    try {
+       // Get search result from api
+        await Model.getSearch(data);
+        console.log(Model.state.Search);
+        SidebarView.render(Model.state.Search)
+        //Display search result
+        SidebarView.expand();
+        
+    } catch (error) {
+        console.log(error);
+    }
+    
+    
 }
 
 const EventDetailController = function (dataId) {
-    const event = Model.state.Events.find(e => e.EventId === dataId)
+    const event = Model.state.Events.find(e => e.EventId === dataId) || Model.state.Search.find(e => e.EventId === dataId)
     SidebarView.highlightEvent(dataId);
     EventDetailView.renderEventDetail(event);
     MapView.MoveToCoords(event.Latitude,event.Longitude);    

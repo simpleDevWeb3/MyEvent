@@ -1,8 +1,10 @@
 ﻿
+
 export const state = {
     coords: {},
     address: {},
-    Events:[],
+    Events: [],
+    Search: [],
 }
 
 const getCoords = async function () {
@@ -40,6 +42,28 @@ export const setAddress = async function () {
     }
 }
 
+const eventObj = function (data) {
+    return data.map(e => ({
+        EventId: e.eventId,
+        Title: e.title,
+        ImageUrl: e.imageUrl,
+        Street: e.address.street,
+        City: e.address.city,
+        State: e.address.state,
+        Longitude: e.address.longitude,
+        Latitude: e.address.latitude,
+        Date: e.detail.date,
+        Organizer: e.detail.organizer,
+        StartTime: e.detail.startTime,
+        EndTime: e.detail.endTime,
+        Description: e.detail.description,
+        Category: {
+            id: e.category.id,
+            name: e.category.name
+        }
+    }));
+
+}
 export const getEvents = async function () {
     try {
         const res = await fetch(`api/Event/Location/${state.address.city?.trim() || state.address.state}`);
@@ -50,21 +74,7 @@ export const getEvents = async function () {
 
        
 
-        const Events = data.map(e => ({
-            EventId: e.eventId,
-            Title: e.title,
-            ImageUrl: e.imageUrl,
-            Street: e.street,
-            City: e.city,
-            State: e.state,
-            Longitude: e.longitude,
-            Latitude: e.latitude,
-            Date: e.date,          
-            Organizer: e.organizer, 
-            StartTime: e.startTime,
-            EndTime: e.endTime,
-            Description:e.description
-        }));
+        const Events = eventObj(data);
 
         state.Events = Events;
 
@@ -72,4 +82,20 @@ export const getEvents = async function () {
         throw (error);
     }
 
+}
+
+export const getSearch = async function (query) {
+    try {
+
+        const res = await fetch(`api/Event/Search/${query}`);
+        if (!res.ok) throw new error(`Something went wrong{}:${res.statusText}`);
+        const data = await res.json();
+
+        const Result = eventObj(data);
+
+        state.Search = Result;
+
+    } catch (error) {
+        throw (error);
+    }
 }
