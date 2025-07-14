@@ -70,7 +70,7 @@ export const getEvents = async function () {
     try {
         const res = await fetch(`api/Event/Location/${state.address.city?.trim() || state.address.state}`);
 
-        if (!res.ok) throw new error(`Someting wrong{}: ${res.statusText}`)
+        if (!res.ok) throw new Error(`Someting wrong{}: ${res.statusText}`)
 
         const data = await res.json();
 
@@ -90,7 +90,7 @@ export const getSearch = async function (query) {
     try {
 
         const res = await fetch(`api/Event/Search/${query}`);
-        if (!res.ok) throw new error(`Something went wrong{}:${res.statusText}`);
+        if (!res.ok) throw new Error(`Something went wrong{}:${res.statusText}`);
         const data = await res.json();
 
         const Result = eventObj(data);

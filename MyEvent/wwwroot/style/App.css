@@ -32,6 +32,21 @@
         align-items:center;
         gap:10px;
     }
+    .form-locate {
+        color: white;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .ri-map-pin-fill {
+        background-color: white;
+        border-radius: 50%;
+        padding: 10px;
+        color: black;
+        font-size: 20px;
+        cursor: pointer
+    }
         .home {
             background-color: white;
             border-radius: 50%;

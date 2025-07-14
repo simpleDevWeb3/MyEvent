@@ -17,4 +17,8 @@ public class HomeController : Controller
        
         return View(e);
     }
+
+    public IActionResult Map() { 
+        return View();
+    }
 }

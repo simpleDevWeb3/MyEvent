@@ -36,7 +36,7 @@ const MapController = async function () {
     //$('.form-locate').empty().append(' <div class="lds-heart"><div></div></div>')
     $('#map').toggleClass('hide');
 
-    try {
+
      
         
         MapView.render(Model.state);
@@ -55,30 +55,30 @@ const MapController = async function () {
         
         
 
-    } catch (error) {
-        console.log(error)
-    }
+   
 }
 
 const SearchController =  async function (data) {
 
-    $('.sidebar__header')
-        .css('transform', 'translateX(0px)');
-
-    $('.sidebar__events')
-        .css('transform', 'translateX(0px)');
-
-    $('.user-location')
-        .empty()
-        .append(`Search Event in ${data}`)
-    SidebarView.expand();
+   
     try {
+
        // Get search result from api
         await Model.getSearch(data);
         console.log(Model.state.Search);
         SidebarView.render(Model.state.Search)
         //Display search result
-       
+        $('.sidebar__header')
+            .css('transform', 'translateX(0px)');
+
+        $('.sidebar__events')
+            .css('transform', 'translateX(0px)');
+
+        $('.user-location')
+            .empty()
+            .append(`Search Event in ${data}`)
+
+        SidebarView.expand();
         
     } catch (error) {
         console.log(error);

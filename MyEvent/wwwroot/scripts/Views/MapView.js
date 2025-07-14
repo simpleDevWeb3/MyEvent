@@ -83,14 +83,7 @@ class MapView {
 
     }
 
-    
-    addHandlerLocate(handler) {
-
-        $('.locate__btn').on('click', function (e) {
-           
-            handler();
-        })
-    }
+   
 }
 
 export default new MapView();
