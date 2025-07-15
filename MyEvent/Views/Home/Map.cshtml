@@ -1,1 +1,48 @@
-﻿<h1>Other Page</h1>
+﻿@{
+    ViewBag.Title = "MyEvent-Map";
+
+}
+
+<aside class="sidebar sidebar-result">
+    <div class="user-location">
+    </div>
+    <aside class="sidebar-small hide">
+
+        <i class="ri-arrow-right-line"></i>
+
+    </aside>
+    <div class="sidebar__events">
+    </div>
+
+    <footer class="pagination">
+        <div>Page 1</div>
+        <div>Page 2</div>
+    </footer>
+
+
+</aside>
+
+
+
+
+
+<main class="map-container">
+
+    <div id="map" class="map">
+    </div>
+
+
+</main>
+
+<aside class="sidebar sidebar-details hide">
+    <div class="sidebar__event-detail hide"></div>
+</aside>
+
+@section Scripts{
+    <script type="module">
+        import { init as MapInit } from '/scripts/MapScripts/Controller.js';
+        MapInit();
+   
+    </script>
+}
+

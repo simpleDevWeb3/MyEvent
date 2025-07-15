@@ -12,6 +12,7 @@ class NavBarView {
             $('.locate__btn').toggleClass('hide');
             $(target).toggleClass('hide');
 
+
             handler();
         })
     }
@@ -20,10 +21,13 @@ class NavBarView {
         $(this._parentEl).on('click', function (e) {
             const target = e.target.parentElement
             if (!target.classList.contains('locate__btn')) return;
+
+           
             console.log(target);
             handler();
         })
     }
+
 
 }
 

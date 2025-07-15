@@ -89,7 +89,7 @@ export const getEvents = async function () {
 export const getSearch = async function (query) {
     try {
 
-        const res = await fetch(`api/Event/Search/${query}`);
+        const res = await fetch(`/api/Event/Search/${query}`);
         if (!res.ok) throw new Error(`Something went wrong{}:${res.statusText}`);
         const data = await res.json();
 
