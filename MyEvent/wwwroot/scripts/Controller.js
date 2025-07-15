@@ -6,7 +6,10 @@ import SidebarView from './Views/SidebarView.js';
 import EventDetailView from './Views/EventDetailView.js';
 import searchView from './Views/searchView.js';
 
-const HomeController= function () {
+const HomeController = function () {
+    if (window.location.pathname !== '/') {
+        window.location.href = '/';
+    }
     $('#map').toggleClass('hide');
     $('.Main-view').toggleClass('hide');
     SidebarView.toggle();
@@ -33,14 +36,17 @@ const MainViewController = async function () {
     }
 }
 const MapController = async function () {
+    if (window.location.pathname !== '/') {
+        window.location.href = '/';
+    }
     //$('.form-locate').empty().append(' <div class="lds-heart"><div></div></div>')
-    $('#map').toggleClass('hide');
+    $('#map').removeClass('hide');
 
 
      
         
         MapView.render(Model.state);
-        SidebarView.render(Model.state.Events); // render navabar result
+ 
         $('.locate__btn').addClass('hide');
     
         $('.user-location')
@@ -48,10 +54,10 @@ const MapController = async function () {
             .append(`Search Event in ${Model.state.address.city}`)
 
         $('.sidebar-small')
-            .toggleClass('hide')
+            .removeClass('hide')
             .css('display', 'flex');
         $('.locate__btn').addClass('hide');
-        $(".home").toggleClass('hide')
+        $(".home").removeClass('hide');
         
         
 
@@ -59,7 +65,9 @@ const MapController = async function () {
 }
 
 const SearchController =  async function (data) {
-
+     if (window.location.pathname !== '/') {
+        window.location.href = '/';
+    }
    
     try {
 
@@ -78,6 +86,10 @@ const SearchController =  async function (data) {
             .empty()
             .append(`Search Event in ${data}`)
 
+        MapController();
+
+        const {Latitude:lat,Longitude:lng} = Model.state.Search[0];
+        MapView.MoveToCoords(lat, lng);
         SidebarView.expand();
         
     } catch (error) {
@@ -100,7 +112,7 @@ const EventDetailController = function (dataId) {
 
 
 const SidebarController = function () {
-    console.log('hi')
+           SidebarView.render(Model.state.Events); // render navabar result
 }
 
 

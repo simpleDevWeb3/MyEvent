@@ -23,7 +23,7 @@ class MapView {
         if (this._map !== undefined) {
             this._map.remove();
         }
-        console.log(this._data);
+                                                                             
         const {lat,lng} = this._data.coords;
 
         this._map = L.map(this._parentEl).setView([lat,lng], this._zoomLvl);
@@ -39,8 +39,7 @@ class MapView {
     }
 
     _RenderMarker(event) {
-        console.log('🧭 _RenderMarker was called:', event);
-        console.trace('Trace for marker source');
+     
        L.marker([event.Latitude, event.Longitude]
         ).addTo(this._map)
             .bindPopup(

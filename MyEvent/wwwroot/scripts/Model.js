@@ -68,7 +68,7 @@ const eventObj = function (data) {
 }
 export const getEvents = async function () {
     try {
-        const res = await fetch(`api/Event/Location/${state.address.city?.trim() || state.address.state}`);
+        const res = await fetch(`/api/Event/Location/${state.address.city?.trim() || state.address.state}`);
 
         if (!res.ok) throw new Error(`Someting wrong{}: ${res.statusText}`)
 

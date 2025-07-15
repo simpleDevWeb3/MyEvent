@@ -11,11 +11,17 @@ public class HomeController : Controller
         this.db = db;
     }
 
+   
     public IActionResult Index()
     {
         var e = db.Events;
-       
-        return View(e);
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+        {
+            // Return only the view body (without _Layout)
+            return PartialView("_IndexPartial",e); // You must create this partial
+        }
+
+        return View(e); ; // Full view with layout for normal browser request
     }
 
     public IActionResult Map() { 
