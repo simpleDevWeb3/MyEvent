@@ -1,8 +1,8 @@
 ﻿import * as Model from './Model.js';
-import MapView from '../Views/MapView.js';
-import SidebarView from '../Views/SidebarView.js';
-import EventDetailView from '../Views/EventDetailView.js';
-import searchView from '../Views/searchView.js';
+import MapView from './Views/MapView.js';
+import SidebarView from './Views/SidebarView.js';
+import EventDetailView from './Views/EventDetailView.js';
+import searchView from './Views/searchView.js';
 
 
 
