@@ -15,6 +15,9 @@ builder.Services.AddControllersWithViews()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
+builder.Services.AddAuthentication().AddCookie();
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();

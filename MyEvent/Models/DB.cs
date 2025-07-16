@@ -100,7 +100,34 @@ public class DB : DbContext
         public Event Event { get; set; }
     }
 
+    public class User
+    {
+        [Key, MaxLength(8)]
+        public int Id { get; set; }
+        [MaxLength(100)]
+        public string Email { get; set; }
+        [MaxLength(100)]
+        public string Hash { get; set; }
+        [MaxLength(100)]
+        public string Name { get; set; }
 
+        [MaxLength(100)]
+        public string PhotoURL { get; set; }
+        // TODO
+        public string Role => GetType().Name;
+    }
+
+    // TODO
+    public class Admin : User
+    {
+
+    }
+
+    // TODO
+    public class Member : User
+    {
+
+    }
 
 }
 
