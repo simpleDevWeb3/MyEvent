@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
+        <title>@ViewBag.Title</title>
         <!--Style-->
         <link rel="stylesheet" href="~/style/App.css">
         <link rel="stylesheet" href="~/style/Loader.css">
@@ -35,12 +35,12 @@
                 <div class="left-section">
                  <form class="form-locate">
                     <span class="locate__btn">
-                        <i class="ri-map-pin-fill">
+                        <i class="ri-map-pin-fill" data-ajax-page="/home/map" >
 
                         </i>
                        
                     </span>
-                    <i class="ri-home-2-fill home hide"></i>
+                    <i class="ri-home-2-fill home hide" data-ajax-page="/" ></i>
                 </form>
               
                     <form class="search-form">
@@ -68,6 +68,7 @@
         <!-------------------Content render section-------------------------->
 
         </div>
+    @RenderSection("Scripts", required: false)
     </body>
 
 </html>

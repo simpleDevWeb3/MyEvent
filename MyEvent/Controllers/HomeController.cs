@@ -11,14 +11,17 @@ public class HomeController : Controller
         this.db = db;
     }
 
+   
     public IActionResult Index()
     {
         var e = db.Events;
-       
-        return View(e);
+     
+
+        return View(e); ; // Full view with layout for normal browser request
     }
 
-    public IActionResult Map() { 
-        return View();
+    public IActionResult Map() {
+ 
+        return View(); 
     }
 }

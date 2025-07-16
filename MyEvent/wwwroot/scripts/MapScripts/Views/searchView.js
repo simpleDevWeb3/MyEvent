@@ -27,7 +27,7 @@
 
             e.preventDefault();
             const query = $('#search').val().trim();
-            if (query.length <= 3) return;
+          
             console.log(query);
 
 
