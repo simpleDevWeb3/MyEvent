@@ -5,17 +5,118 @@
 
 
 
- @{
-     ViewBag.Title = "MyEvent";
+@{
+    ViewBag.Title = "MyEvent";
+    var allEvent = Model;
+}
 
- }
-<main class="map-container" >
+ <style>
+    
+    .home-container {
+
+        flex: 1;
+        background-color: gainsboro;
+        z-index: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        overflow-y: scroll;
+        height: 100vh;
+    }
+
+    .carousel-container {
+        width: 100%;
+        max-width: 1400px;
+        overflow-x: hidden;
+        white-space: nowrap;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .carousel-track {
+        display: flex;
+        gap: 20px;
+    }
+
+        .carousel-track img {
+            height: 400px;
+            width: 100%;
+            max-width: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+    .Main-view {
+        width: 100%;
+        max-width: 1400px;
+        padding: 20px;
+        padding-top:0px;
+        padding-bottom:120px;
+    }
+
+    .home-event-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .card-image {
+        width: 100%;
+        height: 180px;
+    }
+
+    .home-event-img {
+        width: 100%;
+        height: 100%;
+        object-fit:cover;
+    }
+
+    .home-event {
+      
+        padding: 10px;
+    
+    }
+ </style>
+
+
+<main class="home-container" >
+
     <div class="Main-view">
+        <div class="carousel-container">
+            <div class="carousel-track">
+                <img src="/images/Events/hawker-fiesta.jpg" alt="Banner 1" />
+                <img src="/images/Events/jazz.jpg" alt="Banner 2" />
+                <img src="/images/Events/parade.jpg" alt="Banner 3" />
+            </div>
+        </div>
 
+        <h1>More Event</h1>
+        <div class="home-event-container event--all">
+         
+            @foreach(var e in allEvent ){
+                <div class="home-event">
+                    <div class="card-image">
+                        <img class="home-event-img" src="@e.ImageUrl">
+                    </div>
+                
+                    <div>@e.Title</div>
+                </div>
+
+                <div class="home-event">
+                    <div class="card-image">
+                        <img class="home-event-img" src="@e.ImageUrl">
+                    </div>
+
+                    <div>@e.Title</div>
+                </div>
+
+
+            }
+        </div>
     </div>
 
-
-
-   
+ 
 </main>
 
