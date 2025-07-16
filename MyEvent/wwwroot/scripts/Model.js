@@ -1,12 +1,12 @@
-﻿
+
 
 export const state = {
     coords: {},
     address: {},
-    Events: [], //user location result
-    Search: [], //User search result
+    Events: [], //Events data
+    Search: [], //User search result Events
     Page: 1,
-    ResultPerPage:5,
+    ResultPerPage: 5,
 }
 
 const getCoords = async function () {
@@ -68,13 +68,13 @@ const eventObj = function (data) {
 }
 export const getEvents = async function () {
     try {
-        const res = await fetch(`/api/Event/Location/${state.address.city?.trim() || state.address.state}`);
+        const res = await fetch(`/api/Event/All/`);
 
         if (!res.ok) throw new Error(`Someting wrong{}: ${res.statusText}`)
 
         const data = await res.json();
 
-       
+
 
         const Events = eventObj(data);
 

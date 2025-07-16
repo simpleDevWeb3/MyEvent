@@ -15,7 +15,7 @@
     .home-container {
 
         flex: 1;
-        background-color: gainsboro;
+        background-color: #212021;
         z-index: 0;
         display: flex;
         flex-direction: column;
@@ -23,7 +23,36 @@
         justify-content: flex-start;
         overflow-y: scroll;
         height: 100vh;
+        color: white;
     }
+
+
+    .your-scroll-container {
+        overflow-y: scroll;
+    }
+
+        /* Width of the scrollbar */
+        .home-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        /* Track (background) */
+    .home-container::-webkit-scrollbar-track {
+            background: #1a1a1a; /* dark track background */
+            border-radius: 10px;
+        }
+
+        /* Scrollbar thumb (the draggable part) */
+    .home-container::-webkit-scrollbar-thumb {
+            background-color: white; /* grey thumb */
+            border-radius: 10px;
+            border: 2px solid #1a1a1a; /* adds space around thumb */
+        }
+
+            /* On hover */
+    ..home-container::-webkit-scrollbar-thumb:hover {
+                background-color: #aaa;
+            }
 
     .carousel-container {
         width: 100%;
@@ -63,19 +92,23 @@
     }
 
     .card-image {
+  
         width: 100%;
         height: 180px;
     }
 
     .home-event-img {
+        border-radius: 8px;
         width: 100%;
         height: 100%;
         object-fit:cover;
     }
 
+   
     .home-event {
       
         padding: 10px;
+      
     
     }
  </style>
@@ -86,8 +119,10 @@
     <div class="Main-view">
         <div class="carousel-container">
             <div class="carousel-track">
-                <img src="/images/Events/hawker-fiesta.jpg" alt="Banner 1" />
                 <img src="/images/Events/jazz.jpg" alt="Banner 2" />
+
+                <img src="/images/Events/hawker-fiesta.jpg" alt="Banner 1" />
+                
                 <img src="/images/Events/parade.jpg" alt="Banner 3" />
             </div>
         </div>
@@ -95,28 +130,17 @@
         <h1>More Event</h1>
         <div class="home-event-container event--all">
          
-            @foreach(var e in allEvent ){
-                <div class="home-event">
-                    <div class="card-image">
-                        <img class="home-event-img" src="@e.ImageUrl">
-                    </div>
-                
-                    <div>@e.Title</div>
-                </div>
-
-                <div class="home-event">
-                    <div class="card-image">
-                        <img class="home-event-img" src="@e.ImageUrl">
-                    </div>
-
-                    <div>@e.Title</div>
-                </div>
-
-
-            }
+          
         </div>
     </div>
 
  
 </main>
 
+@section Scripts {
+    <script type="module">
+        import { init as HomeInit } from '/scripts/HomeScripts/Controller.js';
+        HomeInit();
+
+    </script>
+}

@@ -1,4 +1,4 @@
-﻿import * as Model from './Model.js';
+﻿import * as Model from '../../scripts/Model.js'
 import MapView from './Views/MapView.js';
 import SidebarView from './Views/SidebarView.js';
 import EventDetailView from './Views/EventDetailView.js';
