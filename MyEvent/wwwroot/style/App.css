@@ -17,7 +17,7 @@
 
 .navbar {
     height: 50px;
-    background-color:#141414;
+    background-color: #141414;
     z-index: 300;
     display: flex;
     align-items: center;
@@ -25,7 +25,7 @@
     justify-content: space-between;
     padding: 5px;
     padding-left: 20px;
-    border-bottom:1px solid white;
+    border-bottom: 1px solid #332f2f;
 }
     .left-section{
         display:flex;
@@ -48,6 +48,7 @@
         font-size: 20px;
         cursor: pointer
     }
+
         .home {
             background-color: white;
             border-radius: 50%;
@@ -56,6 +57,7 @@
             font-size: 20px;
             cursor: pointer
         }
+     
         
     .right-section {
         padding-right:10px;

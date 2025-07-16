@@ -85,6 +85,25 @@ export const getEvents = async function () {
     }
 
 }
+export const getByCategory = async function () {
+    try {
+        const res = await fetch(`/api/Event/All/`);
+
+        if (!res.ok) throw new Error(`Someting wrong{}: ${res.statusText}`)
+
+        const data = await res.json();
+
+
+
+        const Events = eventObj(data);
+
+        state.Events = Events;
+
+    } catch (error) {
+        throw (error);
+    }
+
+}
 
 export const getSearch = async function (query) {
     try {

@@ -1,7 +1,8 @@
 ﻿import * as Model from "../../scripts/Model.js";
 import MoreView from "./Views/MoreView.js";
-
-const ControllerMoreView = async function () {
+import NavView from "./Views/NavView.js";
+import CarouselView from "./Views/carouselView.js"
+const ControllerEvent = async function () {
     try {
         await Model.setAddress();
         await Model.getEvents();
@@ -12,7 +13,20 @@ const ControllerMoreView = async function () {
     
 };
 
-export const init = function () {
+const ControllerCategory = async function (label) {
+    try {
+        await Model.getByCategory();
+        $('.title-category').empty().append(label)
+        MoreView.render(Model.state.Events);
+    } catch (error) {
+        console.log(error);
+    }
 
-    MoreView.addHandlerDisplay(ControllerMoreView);
+};
+export const init = function () {
+    
+    MoreView.addHandlerDisplay(ControllerEvent);
+    CarouselView.addHandleScroll();
+    NavView.addHandlerHover();
+    NavView.addHandlerClick(ControllerCategory);
 };

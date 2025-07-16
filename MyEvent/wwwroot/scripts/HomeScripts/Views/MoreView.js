@@ -10,6 +10,7 @@
 
     _RenderCardEvents() {
         $(this._parentEl).empty();
+    
         this._data.map(e =>
             $(this._parentEl).append(this._htmlMarkup(e))
         );
@@ -19,13 +20,7 @@
 
 
         return `
-            <div class="home-event">
-                <div class="card-image">
-                    <img class="home-event-img" src="${e.ImageUrl}">
-                </div>
-                
-                <div class="home-event-title">${e.Title}</div>
-            </div>
+           
 
             <div class="home-event">
                 <div class="card-image">
@@ -33,6 +28,13 @@
                 </div>
                 
                 <div class="home-event-title">${e.Title}</div>
+                <div>
+                     <i class="ri-calendar-line"></i>
+                     ${e.Date}
+                </div>
+                <div>
+                    ${e.City}, ${e.Street}
+                </div>
             </div>
 
       `
