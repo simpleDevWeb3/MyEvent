@@ -15,7 +15,7 @@
     .home-container {
 
         flex: 1;
-        background-color: #101010;
+        background: linear-gradient(to bottom, #212020, #000000);
         z-index: 0;
         display: flex;
         flex-direction: column;
@@ -55,6 +55,8 @@
             }
 
     .carousel-container {
+        margin-top:20px;
+        margin-bottom:10px;
         position: relative;
         width: 100%;
         max-width: 1400px;
@@ -192,9 +194,28 @@
             transition: all ease-in 0.15s;
         }
 
-       
-      
+       .tracker{
+            z-index: 1;
+           width:10px;
+           height:10px;
+           border-radius:50%;
+           background-color: gray;
+           
+       }
 
+       .activeTracker{
+            background-color: white;
+       }
+
+    .curosoulle-tracker{
+        position:absolute;
+        bottom:20px;
+        right:50%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:10px;
+    }
  
  </style>
 
@@ -215,9 +236,14 @@
             <div class="card" style="transform:translateX(2800px)">
                 <img class="banner-img" src="/images/Events/parade.jpg" data-banner="Banner-3" />
             </div>
-            
+            <div class="curosoulle-tracker">
+
+
+             
+                
+            </div>
         </div>
-     
+      
         <div class="nav-type">
             <h4 class="nav-lable selected" data-label="All">All</h4>
             <h4 class="nav-lable" data-label="Today">Today</h4>
