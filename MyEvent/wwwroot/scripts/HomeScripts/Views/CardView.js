@@ -1,4 +1,4 @@
-﻿class MoreView {
+﻿class CardView {
 
     _parentEl = $('.event--all')[0];
    
@@ -55,4 +55,4 @@
     }
 }
 
-export default new MoreView();
+export default new CardView();
