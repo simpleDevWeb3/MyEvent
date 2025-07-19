@@ -22,7 +22,7 @@
         return `
            
 
-            <div class="home-event">
+            <div class="home-event" data-event-id=${e.EventId}>
                 <div class="card-image">
                     <img class="home-event-img" src="${e.ImageUrl}">
                 </div>
@@ -52,6 +52,12 @@
             console.log("load")
             handler();
         })
+    }
+    addHandleClick() {
+        $(document).on('click', '[data-event-id]', (e) => {
+            const eventId = e.currentTarget.dataset.eventId;
+            location.href = `/Home/EventDetail?id=${eventId}`;
+        });
     }
 }
 

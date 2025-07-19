@@ -9,11 +9,8 @@ builder.Services.AddSqlServer<DB>($@"
     Integrated Security=True;");
 
 // Enable MVC and JSON fix for circular references
-builder.Services.AddControllersWithViews()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-    });
+builder.Services.AddControllersWithViews();
+  
 
 builder.Services.AddAuthentication().AddCookie();
 builder.Services.AddHttpContextAccessor();

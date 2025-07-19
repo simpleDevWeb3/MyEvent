@@ -36,6 +36,7 @@ const ControllerCategory = async function (label) {
 export const init = function () {
     
     CardView.addHandlerDisplay(ControllerEvent);
+    CardView.addHandleClick();
     CarouselView.addHandleScroll();
     NavView.addHandlerHover();
     NavView.addHandlerClick(ControllerCategory);
