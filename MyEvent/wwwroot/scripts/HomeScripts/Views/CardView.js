@@ -56,7 +56,9 @@
     addHandleClick() {
         $(document).on('click', '[data-event-id]', (e) => {
             const eventId = e.currentTarget.dataset.eventId;
-            location.href = `/Home/EventDetail?id=${eventId}`;
+            const eventName = $(e.currentTarget).find('.home-event-title').text();
+          
+            location.href = `/Home/${eventName}?id=${eventId}`;
         });
     }
 }

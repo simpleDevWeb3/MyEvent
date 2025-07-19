@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\scripts\DetailScripts\View\" />
   </ItemGroup>
 
 </Project>

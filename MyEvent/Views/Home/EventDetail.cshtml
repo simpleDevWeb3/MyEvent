@@ -5,7 +5,7 @@
 <main class="home-container">
 
     <div class="Main-view">
-        <h1>EventDetails</h1>
+        <div class="breadCrump"></div>
         <div class="event-detail event-detail__img-container">
              <img src="@Model.ImageUrl" />
         </div>
@@ -19,3 +19,11 @@
 
 
 </main>
+@section Scripts {
+    <script type="module">
+        import { init as DetailInit } from '/scripts/DetailScripts/Controller.js';
+
+        DetailInit();
+
+    </script>
+}

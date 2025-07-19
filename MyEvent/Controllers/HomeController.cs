@@ -11,7 +11,8 @@ public class HomeController : Controller
         this.db = db;
     }
 
-   
+    [Route("/")]
+    [Route("/Home")]
     public IActionResult Index()
     {
         var e = db.Events;
@@ -22,14 +23,14 @@ public class HomeController : Controller
         }
         return View(e); ; // Full view with layout for normal browser request
     }
-
+    [Route("/Home/Map")]
     public IActionResult Map() {
  
         return View(); 
     }
 
-    [HttpGet]
-    public IActionResult EventDetail(string id)
+    [HttpGet("/Home/{eventName}")]
+    public IActionResult EventDetail(string id,string eventName)
     {
         if (string.IsNullOrEmpty(id))
             return NotFound(); // or RedirectToAction("Index");
