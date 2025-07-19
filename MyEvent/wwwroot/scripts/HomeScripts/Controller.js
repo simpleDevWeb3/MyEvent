@@ -2,20 +2,28 @@
 import CardView from "./Views/CardView.js";
 import NavView from "./Views/NavView.js";
 import CarouselView from "./Views/carouselView.js"
+import LoadingSkleton from './Views/LoadingSkleton.js';
+import TransitionLoading from './Views/TransitionLoading.js'
+
 
 const ControllerEvent = async function () {
+
+    LoadingSkleton.render();
+ 
     try {
         await Model.setAddress();
         await Model.getEvents();
         CardView.render(Model.state.Events);
     } catch (error) {
         console.log(error);
-    }
+    } 
     
 };
 
 const ControllerCategory = async function (label) {
+    //TransitionLoading.render();
     try {
+        //$('.nav-lable').toggle();
         await Model.getByCategory();
         $('.title-category').empty().append(label)
         CardView.render(Model.state.Events);

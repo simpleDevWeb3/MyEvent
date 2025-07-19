@@ -1,0 +1,262 @@
+﻿.home-container {
+    flex: 1;
+    background: linear-gradient(to bottom, #212020, #000000);
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: scroll;
+    height: 100vh;
+    color: white;
+}
+
+
+.your-scroll-container {
+    overflow-y: scroll;
+}
+
+/* Width of the scrollbar */
+.home-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track (background) */
+.home-container::-webkit-scrollbar-track {
+    background: #1a1a1a; /* dark track background */
+    border-radius: 10px;
+}
+
+/* Scrollbar thumb (the draggable part) */
+.home-container::-webkit-scrollbar-thumb {
+    background-color: white; /* grey thumb */
+    border-radius: 10px;
+    border: 2px solid #1a1a1a; /* adds space around thumb */
+}
+
+/* On hover */
+..home-container::-webkit-scrollbar-thumb:hover {
+    background-color: #aaa;
+}
+
+.carousel-container {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    position: relative;
+    width: 100%;
+    max-width: 1400px;
+    height: 400px; /* same as card height */
+    overflow: hidden;
+}
+
+.card {
+    position: absolute;
+    width: 100%;
+    max-width: 1400px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: transform 0.5s ease;
+}
+
+    .card img {
+        height: 400px;
+        width: 100%;
+        max-width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+
+.nav-lable {
+    cursor: pointer;
+    transition: all ease-in 0.15s;
+}
+
+.next-btn {
+    right: 30px;
+}
+
+.prev-btn {
+    left: 30px;
+}
+
+.scroll-icon {
+    color: white;
+    font-size: 30px;
+}
+
+.nav-btn {
+    z-index: 1;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: black;
+    border: none;
+    position: absolute;
+    bottom: 45%;
+    cursor: pointer;
+    transition: opacity ease-out 0.15s
+}
+
+    .nav-btn:hover {
+        opacity: 0.8;
+    }
+
+.Main-view {
+    width: 100%;
+    max-width: 1400px;
+    padding: 20px;
+    padding-top: 0px;
+    padding-bottom: 120px;
+}
+
+.home-event-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    position:relative;
+}
+
+.card-image {
+    margin-bottom: 10px;
+    width: 100%;
+    height: 180px;
+}
+
+.home-event-img {
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.home-event-title {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+.home-event {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color ease-in 0.15s;
+    border-radius: 10px;
+}
+
+    .home-event:hover {
+        background-color: #333436;
+    }
+
+    .home-event div {
+    }
+
+.nav-type {
+    display: flex;
+    gap: 20px;
+}
+
+.selected,
+.custom-underline {
+    position: relative;
+    color: forestgreen
+}
+
+    .selected::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -10px; /* Controls how far the underline goes down */
+        width: 100%;
+        height: 2px;
+        background-color: forestgreen;
+    }
+
+    .custom-underline::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -10px; /* Controls how far the underline goes down */
+        width: 100%;
+        height: 2px;
+        background-color: forestgreen;
+        transition: all ease-in 0.15s;
+    }
+
+.tracker {
+    z-index: 1;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: gray;
+}
+
+.activeTracker {
+    background-color: white;
+}
+
+.curosoulle-tracker {
+    position: absolute;
+    bottom: 20px;
+    right: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.skleton--img {
+    width: 100%;
+    height: 100%;
+    background: gray;
+}
+
+.skleton--title {
+    width: 250px;
+    height: 20px;
+    background: gray;
+}
+
+.skleton--date {
+    width: 150px;
+    height: 20px;
+    background: gray;
+    margin-bottom: 10px;
+}
+.skleton--img,
+.skleton--title,
+.skleton--date {
+    position: relative;     
+    overflow: hidden;
+}
+
+.loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: loading 1.2s ease-in-out infinite;
+}
+
+
+@keyframes loading {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+.modals--loading{
+    position:absolute;
+    top:0;
+    bottom:0;
+    right:0;
+    left:0;
+    background:gray;
+    opacity:0.8;
+}

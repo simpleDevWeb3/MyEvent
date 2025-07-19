@@ -27,11 +27,10 @@ class MapView {
         const {lat,lng} = this._data.coords;
 
         this._map = L.map(this._parentEl).setView([lat,lng], this._zoomLvl);
+        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(this._map);
-
         this._data.Events.map(event=> {
             this._RenderMarker(event);
         })

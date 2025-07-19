@@ -48,7 +48,7 @@
     addHandlerDisplay(handler) {
 
         $(window).on('load', (e) => {
-            e.preventDefault();
+   
             console.log("load")
             handler();
         })
