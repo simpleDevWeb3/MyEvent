@@ -15,7 +15,7 @@ public class HomeController : Controller
     [Route("/Home")]
     public IActionResult Index()
     {
-        var e = db.Events;
+        var e = db.Categories;
 
         if (e == null)
         {

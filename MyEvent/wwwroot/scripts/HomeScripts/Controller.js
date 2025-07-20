@@ -24,11 +24,12 @@ const ControllerCategory = async function (label) {
     //TransitionLoading.render();
     try {
         //$('.nav-lable').toggle();
-        await Model.getByCategory();
+        await Model.getByTags(label);
         $('.title-category').empty().append(label)
         CardView.render(Model.state.Events);
     } catch (error) {
         console.log(error);
+        CardView._RenderError(error);
     }
 
 };
@@ -36,7 +37,7 @@ const ControllerCategory = async function (label) {
 export const init = function () {
     
     CardView.addHandlerDisplay(ControllerEvent);
-    CardView.addHandleClick();
+
     CarouselView.addHandleScroll();
     NavView.addHandlerHover();
     NavView.addHandlerClick(ControllerCategory);

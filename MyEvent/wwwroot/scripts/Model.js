@@ -85,11 +85,11 @@ export const getEvents = async function () {
     }
 
 }
-export const getByCategory = async function () {
+export const getByTags = async function (tags) {
     try {
-        const res = await fetch(`/api/Event/All/`);
+     const res = await fetch(`/api/Event/${encodeURIComponent(tags)}`);
 
-        if (!res.ok) throw new Error(`Someting wrong{}: ${res.statusText}`)
+        if (!res.ok) throw new Error(`${await res.text()}`)
 
         const data = await res.json();
 

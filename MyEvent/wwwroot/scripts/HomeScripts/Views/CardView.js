@@ -16,13 +16,22 @@
         );
     }
 
+    _RenderError(err) {
+        err = err.message.split(':');
+        $('.title-category').empty();
+        $(this._parentEl).empty().append(`
+
+             <h1>${err}</h1>
+        `)
+    }
+
     _htmlMarkup(e) {
 
 
         return `
            
 
-            <div class="home-event" data-event-id=${e.EventId}>
+            <div class="home-event"  data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
                 <div class="card-image">
                     <img class="home-event-img" src="${e.ImageUrl}">
                 </div>
@@ -53,14 +62,7 @@
             handler();
         })
     }
-    addHandleClick() {
-        $(document).on('click', '[data-event-id]', (e) => {
-            const eventId = e.currentTarget.dataset.eventId;
-            const eventName = $(e.currentTarget).find('.home-event-title').text();
-          
-            location.href = `/Home/${eventName}?id=${eventId}`;
-        });
-    }
+ 
 }
 
 export default new CardView();

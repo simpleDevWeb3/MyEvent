@@ -1,5 +1,5 @@
 ﻿@using MyEvent.Models
-@model IEnumerable<DB.Event>
+@model IEnumerable<DB.Category>
 
 
 
@@ -7,7 +7,7 @@
 
 @{
     ViewBag.Title = "MyEvent";
-    var allEvent = Model;
+
 }
 
  <style>
@@ -41,12 +41,19 @@
         </div>
       
         <div class="nav-type">
+           
             <h4 class="nav-lable selected" data-label="All">All</h4>
             <h4 class="nav-lable" data-label="Today">Today</h4>
             <h4 class="nav-lable" data-label="This Weekend">This Weekend</h4>
             <h4 class="nav-lable" data-label="Free">Free</h4>
-            <h4 class="nav-lable" data-label="Music">Music</h4>
-            <h4 class="nav-lable" data-label="Food & Drinks">Food & Drinks</h4>
+            @foreach (var e in Model)
+            {
+               
+                 <h4 class="nav-lable" data-label="@e.Name">@e.Name</h4>
+                
+            }
+            
+           
         </div>
 
         <hr style="border: none; height: 0.5px; background-color: #ccc;" />
