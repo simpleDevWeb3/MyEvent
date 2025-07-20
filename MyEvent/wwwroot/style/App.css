@@ -25,7 +25,7 @@
     justify-content: space-between;
     padding: 5px;
     padding-left: 20px;
-    border-bottom: 1px solid #332f2f;
+    padding-top:10px;
 }
     .left-section{
         display:flex;
@@ -82,9 +82,11 @@
         cursor: pointer
     }
 .content {
+
+    background:black;
     display: flex;
     flex: 1;
-    border-radius: 10px;
+  
 }
 
 
@@ -92,8 +94,9 @@
 
 
 .map-container {
+    margin: 10px;
+    border-radius:8px;
     width: 600px;
-  
     background-color: gainsboro;
     z-index: 0;
     overflow: hidden;

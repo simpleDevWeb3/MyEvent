@@ -1,5 +1,4 @@
 ﻿
-import EventDetailView from "./EventDetailView.js";
 import SidebarView from "./SidebarView.js";
 class MapView {
     _map;
@@ -37,13 +36,13 @@ class MapView {
         })
 
     }
-    _UpdateMarkers() {
+    _UpdateMarkers(data) {
         // Clear previous markers from map
         this._markers.forEach(marker => this._map.removeLayer(marker));
         this._markers = [];
-
+        console.log(data)
         // Add new markers
-        this._data.Search.forEach(event => {
+        data.forEach(event => {
             this._RenderMarker(event);
         });
 
@@ -87,17 +86,7 @@ class MapView {
 
  
 
-    _ResizeObserver() {
-
-        const resizeObserver = new ResizeObserver(() => {
-            this._map.invalidateSize();
-        });
-
-        const mapDiv = $('.map-container')[0];
-        resizeObserver.observe(mapDiv);
-
-    }
-
+   
    
 }
 

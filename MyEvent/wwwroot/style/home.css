@@ -1,4 +1,7 @@
 ﻿.home-container {
+    border-radius:8px;
+    margin:20px;
+    margin-top:5px;
     flex: 1;
     background: linear-gradient(to bottom, #212020, #000000);
     z-index: 0;
@@ -12,9 +15,6 @@
 }
 
 
-.your-scroll-container {
-    overflow-y: scroll;
-}
 
 /* Width of the scrollbar */
 .home-container::-webkit-scrollbar {

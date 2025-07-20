@@ -3,20 +3,70 @@
 
 }
 
-<aside class="sidebar sidebar-result">
+<aside class="sidebar">
+    <div class="filter-sidebar">
+        <h1>Filter Events</h1>
 
-    <aside class="sidebar-small hide">
+        <!-- Event Category -->
+        <div class="filter-group">
+            <label>Category</label>
+            <select>
+                <option value="">All Categories</option>
+                <option value="music">Music</option>
+                <option value="food">Food & Drinks</option>
+                <option value="tech">Technology</option>
+                <option value="art">Art</option>
+                <!-- Add more categories -->
+            </select>
+        </div>
 
-        <i class="ri-arrow-right-line"></i>
+        <!-- Date Range -->
+        <div class="filter-group">
+            <label>Date Range</label>
+            <input type="date" name="startDate">
+            <input type="date" name="endDate">
+        </div>
 
-    </aside>
-    <div class="sidebar__events">
+        <!-- Location -->
+        <div class="filter-group">
+            <label>Location</label>
+            <input type="text" placeholder="City or Area">
+        </div>
+
+        <!-- Ticket Price -->
+        <div class="filter-group">
+            <label>Price</label>
+            <select>
+                <option value="">All</option>
+                <option value="free">Free</option>
+                <option value="paid">Paid</option>
+            </select>
+        </div>
+
+        <!-- Organizer -->
+        <div class="filter-group">
+            <label>Organizer</label>
+            <input type="text" placeholder="Organizer Name">
+        </div>
+
+     
+
+        <!-- Apply Button -->
+        <div class="filter-group">
+            <button type="button" id="applyFilters">Apply Filters</button>
+        </div>
     </div>
+    <div class="sidebar-result">
+  
+        <div class="sidebar__events">
+        </div>
 
-    <footer class="pagination">
-        <div>Page 1</div>
-        <div>Page 2</div>
-    </footer>
+        <footer class="pagination">
+            <div>Page 1</div>
+            <div>Page 2</div>
+        </footer>
+    </div>
+    
 
 
 </aside>
