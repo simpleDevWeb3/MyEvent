@@ -4,8 +4,7 @@
 }
 
 <aside class="sidebar sidebar-result">
-    <div class="user-location">
-    </div>
+
     <aside class="sidebar-small hide">
 
         <i class="ri-arrow-right-line"></i>
@@ -34,14 +33,12 @@
 
 </main>
 
-<aside class="sidebar sidebar-details hide">
-    <div class="sidebar__event-detail hide"></div>
-</aside>
+
 
 @section Scripts{
     <script type="module">
-        import { init as MapInit } from '/scripts/MapScripts/Controller.js';
-        MapInit();
+        import { init as SearchInit } from '/scripts/SearchScripts/Controller.js';
+        SearchInit();
    
     </script>
 }

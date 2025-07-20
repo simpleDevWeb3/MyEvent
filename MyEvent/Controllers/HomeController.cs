@@ -23,8 +23,8 @@ public class HomeController : Controller
         }
         return View(e); ; // Full view with layout for normal browser request
     }
-    [Route("/Home/Map")]
-    public IActionResult Map() {
+    [HttpGet("/Home/Search")]
+    public IActionResult Search(string q) {
  
         return View(); 
     }

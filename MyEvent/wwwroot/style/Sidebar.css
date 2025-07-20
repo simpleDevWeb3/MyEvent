@@ -1,12 +1,12 @@
 ﻿.sidebar {
- 
-    width: 500px;
-    position: absolute;
+    flex:1;
+    
+
     background-color: #181818;
     top: 60px;
     bottom: 0;
     z-index: 1;
-    transform:translateX(-500px);
+   
     transition: ease-in-out 0.15s transform;
 }
 .sidebar-details {

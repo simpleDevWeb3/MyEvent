@@ -5,7 +5,7 @@ class SidebarView {
     render(data) {
 
         const events = data.map(e =>
-            ` <div class="event" data-event-id = ${e.EventId}>
+            ` <div class="event" data-event-id = ${e.EventId} data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
 
                     <div class="event-img-container">
                         <img src="${e.ImageUrl}">

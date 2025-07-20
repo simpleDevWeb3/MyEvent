@@ -6,7 +6,7 @@ class MapView {
     _parentEl = $('#map')[0];
     _zoomLvl = 13;
     _zoomTo = 15;
-   
+    _markers = [];
 
 
     render(data) {
@@ -20,27 +20,44 @@ class MapView {
     }
 
     _LoadMap() {
-        if (this._map !== undefined) {
-            this._map.remove();
-        }
-                                                                             
-        const {lat,lng} = this._data.coords;
+       
+        const lat = this._data.Search[0].Latitude;
+        const lng = this._data.Search[0].Longitude;
+
 
         this._map = L.map(this._parentEl).setView([lat,lng], this._zoomLvl);
         L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
 
         }).addTo(this._map);
-        this._data.Events.map(event=> {
+
+        this._data.Search.map(event=> {
             this._RenderMarker(event);
+            
         })
 
+    }
+    _UpdateMarkers() {
+        // Clear previous markers from map
+        this._markers.forEach(marker => this._map.removeLayer(marker));
+        this._markers = [];
+
+        // Add new markers
+        this._data.Search.forEach(event => {
+            this._RenderMarker(event);
+        });
+
+        //  center the map to the first result
+        if (this._data.Search.length > 0) {
+            const first = this._data.Search[0];
+            this.MoveToCoords(first.Latitude, first.Longitude);
+        }
     }
 
     _RenderMarker(event) {
      
-       L.marker([event.Latitude, event.Longitude]
-        ).addTo(this._map)
+        const marker = L.marker([event.Latitude, event.Longitude])
+            .addTo(this._map) 
             .bindPopup(
                 L.popup({
                     maxWidth: 250,
@@ -60,11 +77,11 @@ class MapView {
             )
             .setPopupContent(`${event.Title}`)
             .on('click', () => {
-                EventDetailView.renderEventDetail(event);
+                //EventDetailView.renderEventDetail(event);
                 this.MoveToCoords(event.Latitude, event.Longitude);
                 SidebarView.highlightEvent(event.EventId);
-            })
-
+            });
+        this._markers.push(marker);
         
     }
 

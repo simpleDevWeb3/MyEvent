@@ -10,11 +10,13 @@ import searchView from './Views/searchView.js';
 
 const renderMap = async function () {
     try {
+        const data = new URLSearchParams(window.location.search).get('q');
+        await Model.getSearch(data);
         await Model.setAddress();
-        await Model.getEvents();
+       
 
         console.log("load map");
-
+        console.log(Model.state);
 
         MapView.render(Model.state);
 
@@ -22,15 +24,14 @@ const renderMap = async function () {
         $('.user-location').empty().append(`Search Event in ${Model.state.address.city}`);
         $('.sidebar-small').removeClass('hide').css('display', 'flex');
         $('.home').removeClass('hide');
+        SidebarView.render(Model.state.Search);
     } catch (error) {
         console.log(error);
     }
 }
 
 const SearchController =  async function (data) {
-     if (window.location.pathname !== '/home/map') {
-        window.location.href = '/home/map';
-    }
+   
    
     try {
 
@@ -38,21 +39,11 @@ const SearchController =  async function (data) {
         await Model.getSearch(data);
         console.log(Model.state.Search);
         SidebarView.render(Model.state.Search)
-        //Display search result
-        $('.sidebar__header')
-            .css('transform', 'translateX(0px)');
-
-        $('.sidebar__events')
-            .css('transform', 'translateX(0px)');
-
-        $('.user-location')
-            .empty()
-            .append(`Search Event in ${data}`)
 
 
-
-        const {Latitude:lat,Longitude:lng} = Model.state.Search[0];
-        MapView.MoveToCoords(lat, lng);
+       // const { Latitude: lat, Longitude: lng } = Model.state.Search[0];
+        MapView._UpdateMarkers();
+       // MapView.MoveToCoords(lat, lng);
         SidebarView.expand();
         
     } catch (error) {
@@ -62,21 +53,11 @@ const SearchController =  async function (data) {
     
 }
 
-const EventDetailController = function (dataId) {
-    const event = Model.state.Events.find(e => e.EventId === dataId) || Model.state.Search.find(e => e.EventId === dataId)
-    SidebarView.highlightEvent(dataId);
-    EventDetailView.renderEventDetail(event);
-    MapView.MoveToCoords(event.Latitude,event.Longitude);    
-  
-
-}
 
 
 
 
-const SidebarController = function () {
-           SidebarView.render(Model.state.Events); // render navabar result
-}
+
 
 
 
@@ -88,15 +69,15 @@ export const init = function () {
     
 
     //UI Handling
-    SidebarView.AddExpandSidebar(SidebarController);
-    SidebarView.AddToggleSidebar(SidebarController);
+    //SidebarView.AddExpandSidebar(SidebarController);
+   // SidebarView.AddToggleSidebar(SidebarController);
    
 
-    SidebarView.AddShowDetail(EventDetailController);
-    EventDetailView.AddToggleDetail();
+    //SidebarView.AddShowDetail(EventDetailController);
+    //EventDetailView.AddToggleDetail();
 
     searchView.AddSearchHandler(SearchController);
-    searchView.AddfocusSearchInput();
-    searchView.AddToggleSearchBar();
+  
+  
 }
 

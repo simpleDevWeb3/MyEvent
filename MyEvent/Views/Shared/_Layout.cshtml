@@ -36,23 +36,20 @@
         <!-------------------Navbar-------------------------->
             <header class="navbar">
                 <div class="left-section">
-                 <form class="form-locate">
-                    <span class="locate__btn">
-                        <i class="ri-map-pin-fill" data-ajax-page="/home/map" >
+				
+                    
+                    <i class="ri-home-2-fill home" data-ajax-page="/" ></i>
+               
 
-                        </i>
-                       
-                    </span>
-                    <i class="ri-home-2-fill home hide" data-ajax-page="/" ></i>
+                <form class="search-form" action="/Home/Search" method="GET">
+                    <button type="submit" class="search-btn">
+                        <i class="ri-search-line"></i>
+                    </button>
+                    <input class="search-bar" type="search" name="q" id="search" placeholder="What Do You Want To Find? " required>
                 </form>
-              
-                    <form class="search-form">
-                        <span class="search-btn">
-                            <i class="ri-search-line"></i>
+                
 
-                        </span>
-                        <input class="search-bar " type="search" name="search" id="search">
-                  </form>
+
             </div>
             <div class="right-section">
                 <i class="ri-account-circle-fill account"></i>

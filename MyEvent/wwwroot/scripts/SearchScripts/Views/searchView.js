@@ -1,22 +1,7 @@
 ﻿class SearchView {
     _ParentEl = $('.search-form')[0];
 
-
-
-   AddToggleSearchBar() {
-
-        $('.search-btn').on('click', function (e) {
-            $('.search-bar').toggleClass('active');
-            $('.search-bar').css("border", "none")
-        })
-
-    }
-
-    AddfocusSearchInput() {
-        $('.search-bar').on('click', function (e) {
-          $('.search-bar').css("border", "1px solid blue")
-        })
-    }   
+ 
 
     AddSearchHandler(handler) {
 
@@ -27,7 +12,9 @@
 
             e.preventDefault();
             const query = $('#search').val().trim();
-          
+            if (window.location.pathname !== '/Home/Search') {
+                window.location.href = `/Home/Search?q=${encodeURIComponent(query)}`;
+            }
             console.log(query);
 
 
