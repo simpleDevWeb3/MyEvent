@@ -48,16 +48,27 @@
         font-size: 20px;
         cursor: pointer
     }
+    .home-button {
+        background-color: #292929;
+        border-radius: 45px;
+        padding: 10px;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
+        line-height: 1; 
+    }
 
-.home {
-    background-color: #292929;
-    border-radius: 50%;
-    padding: 10px;
-    color: white;
-    font-size: 25px;
-    cursor: pointer
-}
-     
+
+    .home-button:hover {
+        background-color: #3a3a3a; /* Slightly lighter for hover */
+        transform: scale(1.07);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }  
         
     .right-section {
         padding-right:10px;
@@ -66,21 +77,46 @@
         align-items: center;
         gap: 10px;
     }
-    .account{
-
-        padding: 10px;
-        color:white;
-        font-size: 45px;
-        cursor: pointer
-    }
-    .bookmark {
-        background-color: white;
-        padding: 8px;
-        border-radius: 50%;
+    .Log-in-btn {
+        padding: 15px;
+        padding-left:30px;
+        padding-right:30px;
+        border-radius:25px;
         color: black;
-        font-size: 20px;
-        cursor: pointer
+        font-size: 15px;
+        font-weight:bolder;
+        cursor: pointer;
+        background:white;
+        border:none;
+        transition:all ease-out 0.15s;
     }
+        .Log-in-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+    .Sign-up-btn {
+        border: none;
+        background-color: #000000;
+        font-weight: bolder;
+        color: gray;
+        font-size: 14px;
+        transition:all ease-out 0.15s;
+        cursor:pointer;
+    }
+    .Sign-up-btn:hover {
+       
+        transform: scale(1.05);
+        color: #e5e2e2;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+.bookmark {
+    background-color: white;
+    padding: 8px;
+    border-radius: 50%;
+    color: black;
+    font-size: 20px;
+    cursor: pointer
+}
 .content {
 
     background:black;
@@ -143,8 +179,7 @@
     border-radius: 50%;
     cursor: pointer;
     z-index: 1;
-    color:white;
-  
+    color: #636363e8;
 }
 
 .ri-search-line {
@@ -153,6 +188,9 @@
     font-size: 25px;
 }
 
+.search-bar::placeholder {
+    color: rgb(209, 209, 209);
+}
 .search-bar {
     border: none;
     position: absolute;
@@ -165,11 +203,17 @@
     padding-right: 10px;
     color: white;
     font-size: 15px;
+    transition: all ease-in 0.15s;
 }
+    .search-bar:hover {
+        background-color: #363535;
+        color: white;
+        border:solid 1px #e5e2e2;
+    }
 
     .search-bar:focus {
         outline: none;
-        border: 2px solid white; /* or any highlight */
+        border: 3px solid white; /* or any highlight */
     }
 
     

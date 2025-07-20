@@ -31,14 +31,19 @@
         @RenderSection("head",false)
     </head>
 
-    <body>
+<body style=" display:grid; grid-template-columns:100px 1fr;">
+    <div class="sidebar-nav" style="width:100%;  background: linear-gradient(to bottom, #212020, #000000);">
+       
+    </div>
         <div class="container"> 
         <!-------------------Navbar-------------------------->
             <header class="navbar">
                 <div class="left-section">
-				
+
+                <button class="home-button">
+                    <i class="ri-home-2-fill home" data-ajax-page="/"></i>
+                </button>
                     
-                    <i class="ri-home-2-fill home" data-ajax-page="/" ></i>
                
 
                 <form class="search-form" action="/Home/Search" method="GET">
@@ -52,14 +57,15 @@
 
             </div>
             <div class="right-section">
-                <i class="ri-account-circle-fill account"></i>
-                <i class="ri-bookmark-fill bookmark"></i>
+                <button class="Sign-up-btn">Sign Up</button>
+                <button class="Log-in-btn">Log In</button>
+               
                 
             </div>
             </header>
             <!-------------------Navbar-------------------------->
 
-        <!-------------------Content render section-------------------------->
+           <!--------Content render section-------------------------->
             <div class="content">
 
                @RenderBody()

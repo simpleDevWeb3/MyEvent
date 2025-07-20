@@ -260,10 +260,10 @@ footer {
         font-size:30px;
     }
 .event:hover {
-    background-color: rgb(24,24,24);
+    opacity:0.7;
 }
 .event.active {
-    background-color: rgb(24,24,24);
+    opacity: 0.7;
 }
 .user-location {
     color: white;

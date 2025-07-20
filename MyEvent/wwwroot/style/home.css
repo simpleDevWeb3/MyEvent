@@ -45,7 +45,7 @@
     position: relative;
     width: 100%;
     max-width: 1400px;
-    height: 400px; /* same as card height */
+    height: 500px; /* same as card height */
     overflow: hidden;
 }
 
@@ -60,7 +60,7 @@
 }
 
     .card img {
-        height: 400px;
+        height: 100%;
         width: 100%;
         max-width: 100%;
         object-fit: fill;
@@ -104,7 +104,7 @@
 
 .Main-view {
     width: 100%;
-    max-width: 1400px;
+    max-width: 1300px;
     padding: 20px;
     padding-top: 0px;
     padding-bottom: 120px;
