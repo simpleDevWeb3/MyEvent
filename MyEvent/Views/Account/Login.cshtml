@@ -1,51 +1,68 @@
 ﻿@model LoginVM
 @{
     ViewBag.Title = "Account | Login";
+    	Layout = "";
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - My Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/style/Login.css" />
+    <!-- Spotify-Inspired Styles -->
+   
+</head>
+<body>
 
-<main class="login-wrapper">
-    <div class="login-container">
+    <main class="login-wrapper">
+        <div class="login-container">
 
-        <!-- Heading goes OUTSIDE the form -->
-        <h2 class="title">Log in to <br>My Event</h2>l
+            <!-- Heading goes OUTSIDE the form -->
+            <h2 class="title">Log in to <br>My Event</h2>
 
-        <form method="post" class="form">
-            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+            <form method="post" class="form">
+                <div class="validation-summary">
+                    <!-- Validation summary goes here -->
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Id"></label>
-                <input asp-for="Id" />
-                <span asp-validation-for="Id"></span>
-            </div>
+                <div class="form-group">
+                    <label for="Id">User ID</label>
+                    <input type="text" id="Id" name="Id" />
+                    <span data-valmsg-for="Id"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Email"></label>
-                <input asp-for="Email" />
-                <span asp-validation-for="Email"></span>
-            </div>
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <input type="email" id="Email" name="Email" />
+                    <span data-valmsg-for="Email"></span>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" type="password" />
-                <span asp-validation-for="Password"></span>
-            </div>
+                <div class="form-group">
+                    <label for="Password">Password</label>
+                    <input type="password" id="Password" name="Password" />
+                    <span data-valmsg-for="Password"></span>
+                </div>
 
-            <div class="form-group remember-me">
-                <label>
-                    <input asp-for="RememberMe" /> Remember Me
-                </label>
-            </div>
+                <div class="form-group remember-me">
+                    <label>
+                        <input type="checkbox" id="RememberMe" name="RememberMe" />
+                        Remember Me
+                    </label>
+                </div>
 
-            <div class="form-actions">
-                <button type="submit" class="login-btn">Login</button>
-                <button type="reset" class="reset-btn">Reset</button>
-            </div>
-        </form>
+                <div class="form-actions">
+                    <button type="submit" class="login-btn">Login</button>
+                    <button type="reset" class="reset-btn">Reset</button>
+                </div>
+            </form>
 
-        <!-- Place links AFTER the form -->
-        <p class="links">
-            [ <a href="/Account/Register">Register</a> |
-            <a href="/Account/ResetPassword">Reset Password</a> ]
-        </p>
-    </div>
-</main>
+            <p class="links">
+                [ <a href="/Account/Register">Register</a> |
+                <a href="/Account/ResetPassword">Reset Password</a> ]
+            </p>
+        </div>
+    </main>
+
+</body>
+</html>
