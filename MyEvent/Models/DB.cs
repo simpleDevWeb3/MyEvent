@@ -8,6 +8,16 @@ public class DB : DbContext
     {
     }
 
+        // DB Sets
+        public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Member> Members { get; set; }
+
+        internal void SaveChanegs()
+        {
+            throw new NotImplementedException();
+        }
+    
 
     public DbSet<Category> Categories { get; set; }
     public DbSet<Address> Addresses { get; set; }
