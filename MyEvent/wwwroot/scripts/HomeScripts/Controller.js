@@ -25,7 +25,6 @@ const ControllerCategory = async function (label) {
     try {
         //$('.nav-lable').toggle();
         await Model.getByTags(label);
-        $('.title-category').empty().append(label)
         CardView.render(Model.state.Events);
     } catch (error) {
         console.log(error);

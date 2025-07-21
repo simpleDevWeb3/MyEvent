@@ -122,7 +122,7 @@ namespace MyEvent.Controllers
                 return BadRequest("Please enter something.");
             }
 
-            query = query.ToLower(); // normalize input
+            query = query.ToLower().Trim(); // normalize input
 
             var data = db.Events
                         .Include(e => e.Address)
@@ -133,7 +133,8 @@ namespace MyEvent.Controllers
                             e.Address.State.ToLower().Contains(query) ||
                             e.Address.Street.ToLower().Contains(query) ||
                             e.Category.Name.ToLower().Contains(query) ||
-                            e.Title.ToLower().Contains(query)
+                            e.Detail.Organizer.ToLower().Contains(query)||
+                            e.Title.ToLower().Contains(query) 
                         )
                         .Select(e => new EventDTO
                         {

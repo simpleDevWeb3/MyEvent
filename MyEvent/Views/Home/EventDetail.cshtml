@@ -11,7 +11,7 @@
     .home-detail {
        border:solid 1px white;
        border:8px;
-        background-image: linear-gradient(to bottom right,rgb(29 185 84 / 9%), rgba(25,20,20,0.8)), url('@Model.ImageUrl');
+        background-image: linear-gradient(to bottom right,rgb(172 174 173 / 47%), rgba(25,20,20,0.8)), url('@Model.ImageUrl');
         padding:0;
         background-size: cover;
         background-position: center;
@@ -36,10 +36,12 @@
     }
     .section-2{
         display:grid;
-        grid-template-columns:1fr 300px;
+        grid-template-columns:300px 1fr;
+        padding:20px;
         padding-left:40px;
         padding-right:40px;
         background: linear-gradient(4deg, black, #0000007a);
+        column-gap:20px;
     }
 
     .container-ticket{
@@ -77,17 +79,34 @@
 
 </style>
 <main class="home-container">
-
-    <div class="Main-view home-detail">
-        <div class="breadCrump"></div>
-        <div class="section-1">
-            <div class="event-detail event-detail__img-container">
-              
-            </div>
+  
+    <div class="Main-view home-detail" style="max-width:100%; margin:0px;">
+ 
+        <p class="title-detail" style=" margin:20px;">@Model.Title</p>
+        <div style="display:flex; gap:10px; margin:20px;" >
+            <button class="home-button" style="font-size:15px" data-ajax-page="/Home/Search?q=@Model.Category.Name">
+                @Model.Category.Name
+            </button>
+            <button class="home-button" data-ajax-page="/Home/Search?q=@Model.Detail.Organizer" style="font-size:15px">
+                @Model.Detail.Organizer
+            </button>
+            <button class="home-button" data-ajax-page="/Home/Search?q= @Model.Address.City" style="font-size:15px">
+                @Model.Address.City
+            </button>
+            <button class="home-button" data-ajax-page="/Home/Search?q= @Model.Address.City" style="font-size:15px">
+                @Model.Address.State
+            </button>
         </div>
-        <div class="section-2">
+
+        
+
+    
+        <div class="section-2" style="height:100%">
+            <div class="event-detail-image-container">
+                <img class="event-detail-image" src="@Model.ImageUrl" />
+            </div>
             <div>
-                <p class="title-detail">@Model.Title</p>
+         
                 <h2>Date & Time</h2>
                 <p> @Model.Detail.Date.ToString("MMMM dd, yyyy")</p>
                 <h2>Location</h2>
@@ -97,12 +116,7 @@
 
              
             </div>
-            <div class="section-3">
-                <div class="container-ticket">
-                    <p class="price">From RM10</p>
-                    <button class="check-btn">Check Availablity</button>
-                </div>
-            </div>
+           
         </div>
     </div>
 
