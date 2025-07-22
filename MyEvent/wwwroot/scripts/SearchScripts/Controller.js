@@ -48,7 +48,12 @@ const SearchController =  async function (data) {
     
     
 }
+const HoverHandler = function (eventId) {
+    const event = Model.state.Search.find(e => e.EventId === eventId);
 
+    MapView.MoveToCoords(event.Latitude, event.Longitude);
+    SidebarView.highlightEvent(event.EventId);
+}
 
 
 
@@ -65,7 +70,7 @@ export const init = function () {
     
 
     searchView.AddSearchHandler(SearchController);
-  
+    SidebarView.AddHover(HoverHandler);
   
 }
 

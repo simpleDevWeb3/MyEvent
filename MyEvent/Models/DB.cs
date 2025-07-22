@@ -30,6 +30,10 @@ public class DB : DbContext
         [Key, MaxLength(8)]
         public string Id { get; set; }
 
+
+        [MaxLength(100)]
+        public string Premise { get; set; }
+
         [MaxLength(100)]
         public string Street { get; set; }
 

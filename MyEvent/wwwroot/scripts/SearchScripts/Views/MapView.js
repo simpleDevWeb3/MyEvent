@@ -79,7 +79,8 @@ class MapView {
                 //EventDetailView.renderEventDetail(event);
                 this.MoveToCoords(event.Latitude, event.Longitude);
                 SidebarView.highlightEvent(event.EventId);
-            });
+            })
+             
         this._markers.push(marker);
         
     }

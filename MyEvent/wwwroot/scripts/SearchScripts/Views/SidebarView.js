@@ -91,14 +91,14 @@ class SidebarView {
         })
     }
 
-    AddShowDetail(handler) {
-        $(this._ParentEl).on('click', (e) => {
-            if (!e.target.closest('.event')) return;
-            const eventId = e.target.closest('.event').dataset.eventId;
+    AddHover(handler) {
+        $(this._ParentEl).on('mouseenter','[data-event-id]',(e) => {
+            //EventDetailView.renderEventDetail(event);
+            const eventId = e.target.dataset.eventId;
             console.log(eventId);
             handler(eventId);
-
-        })
+           
+        });
     }
   
 
