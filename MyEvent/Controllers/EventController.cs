@@ -57,6 +57,62 @@ namespace MyEvent.Controllers
             return Ok(all);
         }
 
+        //Api base on Id
+        [HttpGet("Id/{Id}")]
+        public IActionResult Id(string? Id)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+            {
+                return BadRequest("Event Id is required.");
+            }
+
+
+            var data = db.Events
+                        .Include(e => e.Address)
+                        .Where(e => e.Id == Id)
+                        .Include(e => e.Detail)
+                        .Include(e => e.Category)
+                        .Select(e => new EventDTO
+                        {
+                            EventId = e.Id,
+                            Title = e.Title,
+                            ImageUrl = e.ImageUrl,
+
+                            Category = new CategoryDTO
+                            {
+                                Id = e.Category.Id,
+                                Name = e.Category.Name
+                            },
+
+                            Address = new AddressDTO
+                            {
+                                Street = e.Address.Street,
+                                City = e.Address.City,
+                                State = e.Address.State,
+                                Longitude = e.Address.Longitude,
+                                Latitude = e.Address.Latitude
+                            },
+
+                            Detail = new EventDetailDTO
+                            {
+                                Date = e.Detail.Date,
+                                Organizer = e.Detail.Organizer,
+                                ContactEmail = e.Detail.ContactEmail,
+                                StartTime = e.Detail.StartTime,
+                                EndTime = e.Detail.EndTime,
+                                Description = e.Detail.Description
+                            }
+                        });
+
+            if (!data.Any())
+            {
+                return NotFound("No events found in the specified city.");
+            }
+
+
+            return Ok(data);
+        }
+
         //Api base on location 
         [HttpGet("Location/{location}")]
         public IActionResult Location(string? location)

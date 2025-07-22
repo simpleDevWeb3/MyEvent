@@ -1,6 +1,7 @@
 
 
 export const state = {
+    currentEvent: {},
     coords: {},
     address: {},
     Events: [], //Events data
@@ -65,6 +66,21 @@ const eventObj = function (data) {
         }
     }));
 
+}
+export const fetchEvent = async function (id) {
+    try {
+        const res = await fetch(`/api/Event/Id/${encodeURIComponent(id)}`) 
+        if (!res.ok) throw new Error(`Someting wrong{}: ${res.statusText}`)
+
+        const data = await res.json();
+
+        const Events = eventObj(data);
+
+        state.currentEvent = Events;
+
+    } catch (error) {
+        throw (error);
+    }
 }
 export const getEvents = async function () {
     try {
