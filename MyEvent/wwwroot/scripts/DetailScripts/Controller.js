@@ -1,6 +1,8 @@
-﻿import BreadCrumpView from './View/BreadCrumpView.js';
+﻿
 import CountdownView from './View/CountdownView.js';
+import MapView from './View/MapView.js';
 import * as Model from '../Model.js'
+
 
 const CountdownController = async function () {
     try {
@@ -8,9 +10,9 @@ const CountdownController = async function () {
         const Id = ParamId.split('?')[1].split('=')[1]
         console.log();
         await Model.fetchEvent(Id);
-    
+  
         CountdownView.render(Model.state.currentEvent[0]);
-      
+        MapView.render(Model.state.currentEvent[0])
 
 
 
@@ -24,7 +26,10 @@ const CountdownController = async function () {
     }
 }
 
+
+
 export const init = function () {
     //BreadCrumpView.render();
-    CountdownController();
+    MapView.Addhandler(CountdownController);
+    
 }
