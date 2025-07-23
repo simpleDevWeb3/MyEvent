@@ -1,5 +1,5 @@
 ﻿
-import SidebarView from "./SidebarView.js";
+import ResultView from "./ResultView.js";
 class MapView {
     _map;
     _parentEl = $('#map')[0];
@@ -78,7 +78,7 @@ class MapView {
             .on('click', () => {
                 //EventDetailView.renderEventDetail(event);
                 this.MoveToCoords(event.Latitude, event.Longitude);
-                SidebarView.highlightEvent(event.EventId);
+                ResultView.highlightEvent(event.EventId);
             })
              
         this._markers.push(marker);

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using MyEvent.Models
+@model IEnumerable<DB.Category>
+@{
     ViewBag.Title = "MyEvent-Map";
 
 }
@@ -12,10 +14,12 @@
             <label>Category</label>
             <select>
                 <option value="">All Categories</option>
-                <option value="music">Music</option>
-                <option value="food">Food & Drinks</option>
-                <option value="tech">Technology</option>
-                <option value="art">Art</option>
+                @foreach(var c in Model)
+                {
+                    <option value="@c.Name">@c.Name.ToUpper()</option>
+                }
+               
+              
                 <!-- Add more categories -->
             </select>
         </div>

@@ -1,5 +1,5 @@
 ﻿
-class SidebarView {
+class ResultView {
     _ParentEl = $('.sidebar-result')[0];
 
     render(data) {
@@ -106,4 +106,4 @@ class SidebarView {
   
 } 
 
-export default new SidebarView();
+export default new ResultView();

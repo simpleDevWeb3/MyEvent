@@ -25,8 +25,12 @@ public class HomeController : Controller
     }
     [HttpGet("/Home/Search")]
     public IActionResult Search(string q) {
- 
-        return View(); 
+
+        var c = db.Categories;
+                       
+                        
+
+        return View(c); 
     }
 
     [HttpGet("/Home/{eventName}")]
