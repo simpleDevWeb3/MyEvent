@@ -132,6 +132,13 @@ export const getByTags = async function (tags) {
 
 export const getSearch = async function (query) {
     try {
+        const currentParams = new URLSearchParams(window.location.search);
+
+        currentParams.set('q', query);
+
+      
+        const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
+        window.history.pushState({}, '', newUrl);
 
         const res = await fetch(`/api/Event/Search/${query}`);
         if (!res.ok) throw new Error(`Something went wrong{}:${res.statusText}`);
@@ -140,16 +147,27 @@ export const getSearch = async function (query) {
         const Result = eventObj(data);
 
         state.Search = Result;
+       
+
 
     } catch (error) {
         throw (error);
     }
 }
 
-export const getFilterQuery = async function (query) {
+export const getFilterQuery = async function () {
     try {
 
-        const res = await fetch(`/api/Event/Filter/${query}`);
+        const queryParams = new URLSearchParams();
+
+        for (const key in state.Filter) {
+            const value = state.Filter[key];
+            if (value !== null && value !== '') {
+                queryParams.append(key, value);
+            }
+        }
+
+        const res = await fetch(`/api/Event/Filter?${queryParams.toString()}`);
 
         if (!res.ok) throw new Error(`Something went wrong{}:${res.statusText}`);
         const data = await res.json();
@@ -161,6 +179,6 @@ export const getFilterQuery = async function (query) {
 
 
     } catch (error) {
-        console.log(eror);
+        console.log(erorr);
     }
 }

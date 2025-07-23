@@ -57,15 +57,18 @@ const HoverHandler = function (eventId) {
 
 const fillterHandler = async function (query) {
     try {
+        const params = new URLSearchParams(window.location.search);
+        console.log("get params")
 
-        console.log("get params");
-        const param = window.location.href
-        console.log(param.substring(1).split('&'));
-        console.log(param.split('&'));
-         
+        Model.state.Filter.Query = params.get('q');
+        Model.state.Filter.Category = params.get('category');
+        Model.state.Filter.StartDate = params.get('StartDate');
+        Model.state.Filter.EndDate = params.get('EndDate');
+        Model.state.Filter.City = params.get('City');
+        Model.state.Filter.Organizer = params.get('Organizer');
+
         console.log('fetch data');
-        await Model.getSearch(query);
-
+        await Model.getFilterQuery();
         console.log(Model.state.Search);
 
         console.log('display new relevent result');
