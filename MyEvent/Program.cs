@@ -1,4 +1,5 @@
 global using MyEvent.Models;
+using MyEvent;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddSqlServer<DB>($@"
     Integrated Security=True;");
 
 // Enable MVC and JSON fix for circular references
+builder.Services.AddScoped<MyEvent.Helper>();
+
 builder.Services.AddControllersWithViews();
   
 

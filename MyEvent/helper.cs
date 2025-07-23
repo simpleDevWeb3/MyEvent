@@ -5,7 +5,7 @@ using SixLabors.ImageSharp.Processing;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 
-namespace Demo;
+namespace MyEvent;
 
 public class Helper
 {

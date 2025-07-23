@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Sign Up";
+}
+
+<h2>Select Your Role</h2>
+
+<div style="display: flex; gap: 20px;">
+    <a class="btn" asp-action="RegisterMember" asp-controller="Account" style="padding: 15px 30px; background-color: #007bff; color: white; text-decoration: none; border-radius: 8px;">Sign Up as Member</a>
+
+    <a class="btn" asp-action="RegisterAdmin" asp-controller="Account" style="padding: 15px 30px; background-color: #28a745; color: white; text-decoration: none; border-radius: 8px;">Sign Up as Admin</a>
+</div>
