@@ -29,7 +29,12 @@ const SearchController =  async function (data) {
    
    
     try {
+        const newParams = new URLSearchParams();
+        newParams.set('q', data);
 
+        const newUrl = `${window.location.pathname}?${newParams.toString()}`;
+        window.history.pushState({}, '', newUrl);
+        console.log("New URL:", newUrl);
        // Get search result from api
         await Model.getSearch(data);
         console.log(Model.state.Search);

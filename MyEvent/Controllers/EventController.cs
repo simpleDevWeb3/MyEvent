@@ -307,7 +307,7 @@ namespace MyEvent.Controllers
                 .Include(e => e.Detail)
                 .AsQueryable();
 
-            // Lowercase query once to avoid EF issues
+         
             var loweredQuery = query?.ToLower();
 
             if (!string.IsNullOrEmpty(loweredQuery))
@@ -332,14 +332,12 @@ namespace MyEvent.Controllers
                 events = events.Where(e => e.Detail.Date <= endDate.Value);
 
             if (!string.IsNullOrEmpty(city))
-                events = events.Where(e => e.Address.City == city);
+                events = events.Where(e => e.Address.City.ToLower().Contains(city));
 
             if (!string.IsNullOrEmpty(organizer))
-                events = events.Where(e => e.Detail.Organizer == organizer);
+                events = events.Where(e => e.Detail.Organizer.ToLower().Contains(organizer));
 
-            // TODO: Handle price filter if needed
-
-            // Project to DTO
+          
             var result = events.Select(e => new EventDTO
             {
                 EventId = e.Id,

@@ -3,7 +3,7 @@
 
     AddHandleChange(handler) {
         
-        $(this._ParentEl).on("change", ".filter-group", (e) => {
+        $(this._ParentEl).on("click", "#applyFilters", (e) => {
             console.log("changess");
 
             // Loop through direct child input and select elements

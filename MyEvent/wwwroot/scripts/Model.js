@@ -132,13 +132,7 @@ export const getByTags = async function (tags) {
 
 export const getSearch = async function (query) {
     try {
-        const currentParams = new URLSearchParams(window.location.search);
-
-        currentParams.set('q', query);
-
-      
-        const newUrl = `${window.location.pathname}?${currentParams.toString()}`;
-        window.history.pushState({}, '', newUrl);
+       
 
         const res = await fetch(`/api/Event/Search/${query}`);
         if (!res.ok) throw new Error(`Something went wrong{}:${res.statusText}`);
