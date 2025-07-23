@@ -58,7 +58,10 @@ const HoverHandler = function (eventId) {
 const fillterHandler = async function (query) {
     try {
 
-        console.log("Set params");
+        console.log("get params");
+        const param = window.location.href
+        console.log(param.substring(1).split('&'));
+        console.log(param.split('&'));
          
         console.log('fetch data');
         await Model.getSearch(query);
@@ -70,6 +73,7 @@ const fillterHandler = async function (query) {
 
         console.log('display new relevent result on map');
         MapView._UpdateMarkers(Model.state.Search)
+
     } catch (error) {
         console.log(error);
     }
