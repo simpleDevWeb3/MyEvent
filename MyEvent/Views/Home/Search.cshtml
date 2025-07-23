@@ -12,7 +12,7 @@
         <!-- Event Category -->
         <div class="filter-group">
             <label>Category</label>
-            <select>
+            <select name="category">
                 <option value="">All Categories</option>
                 @foreach(var c in Model)
                 {
@@ -27,20 +27,20 @@
         <!-- Date Range -->
         <div class="filter-group">
             <label>Date Range</label>
-            <input type="date" name="startDate">
-            <input type="date" name="endDate">
+            <input type="date" name="StartDate">
+            <input type="date" name="EndDate">
         </div>
 
         <!-- Location -->
         <div class="filter-group">
             <label>Location</label>
-            <input type="text" placeholder="City or Area">
+            <input type="text" placeholder="City or Area" name="City">
         </div>
 
         <!-- Ticket Price -->
         <div class="filter-group">
             <label>Price</label>
-            <select>
+            <select name="Price">
                 <option value="">All</option>
                 <option value="free">Free</option>
                 <option value="paid">Paid</option>
@@ -50,7 +50,7 @@
         <!-- Organizer -->
         <div class="filter-group">
             <label>Organizer</label>
-            <input type="text" placeholder="Organizer Name">
+            <input type="text" placeholder="Organizer Name" name="Organizer">
         </div>
 
      

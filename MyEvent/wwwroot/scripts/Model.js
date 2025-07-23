@@ -1,6 +1,15 @@
 
 
 export const state = {
+    Filter: {
+        Query: null,
+        Category: null,
+        StartDate: null,
+        EndDate: null,
+        Location: null,
+        Price: null,
+        Organizer:null,
+    },
     currentEvent: {},
     coords: {},
     address: {},
@@ -134,5 +143,24 @@ export const getSearch = async function (query) {
 
     } catch (error) {
         throw (error);
+    }
+}
+
+export const getFilterQuery = async function (query) {
+    try {
+
+        const res = await fetch(`/api/Event/Filter/${query}`);
+
+        if (!res.ok) throw new Error(`Something went wrong{}:${res.statusText}`);
+        const data = await res.json();
+
+
+        const Result = eventObj(data);
+
+        state.Search = Result;
+
+
+    } catch (error) {
+        console.log(eror);
     }
 }
