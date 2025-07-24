@@ -4,11 +4,6 @@ namespace MyEvent.Models;
 
 public class LoginVM
 {
-    [Required(ErrorMessage = "ID is required.")]
-    [StringLength(8, MinimumLength = 8, ErrorMessage = "ID must be exactly 8 digits")]
-    [RegularExpression(@"^\d{8}$", ErrorMessage = "ID must contain only digits.")]
-    [Remote("CheckId", "Account", ErrorMessage = "ID already exists.")]
-    public string Id { get; set; }
     [StringLength(100)]
     [EmailAddress]
     public string Email { get; set; }
@@ -22,11 +17,7 @@ public class LoginVM
 
 public class RegisterMemberVM
 {
-    [Required(ErrorMessage = "ID is required.")]
-    [StringLength(8, MinimumLength = 8, ErrorMessage = "ID must be exactly 8 digits")]
-    [RegularExpression(@"^\d{8}$", ErrorMessage = "ID must contain only digits.")]
-    [Remote("CheckId", "Account", ErrorMessage = "ID already exists.")]
-        public string Id { get; set; }
+
     [StringLength(100)]
     [EmailAddress]
     [Remote("CheckEmail", "Account", ErrorMessage = "Duplicated {0}.")]
@@ -49,11 +40,7 @@ public class RegisterMemberVM
 }
 public class RegisterAdminVM
 {
-    [Required(ErrorMessage = "ID is required.")]
-    [StringLength(8, MinimumLength = 8, ErrorMessage = "ID must be exactly 8 digits")]
-    [RegularExpression(@"^\d{8}$", ErrorMessage = "ID must contain only digits.")]
-    [Remote("CheckId", "Account", ErrorMessage = "ID already exists.")]
-    public string Id { get; set; }
+
     [StringLength(100)]
     [EmailAddress]
     [Remote("CheckEmail", "Account", ErrorMessage = "Duplicated {0}.")]
