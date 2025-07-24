@@ -3,16 +3,15 @@ class ResultView {
     _ParentEl = $('.sidebar-result')[0];
 
     render(data,paging) {
+        console.log(data);
+        const startingPage = (paging.Page - 1) * paging.ResultPerPage;
 
-        const events = data.map((e, i) => {
-            const startingPage = (paging.Page - 1) * paging.ResultPerPage;
-            const endPage = paging.Page * paging.ResultPerPage;
-            //render till paging.Page * resultPerPage = 1 * 4
-            if ((i+1) > endPage)  return; 
+        const endPage = paging.Page * paging.ResultPerPage;
+        const result = data.slice(startingPage, endPage)
+     
+        const events = result.map((e, i) => {
 
-            //render at starting page 1 
-            if (!(i+1) > startingPage) return;
-                return` <div class="event" data-event-id = ${e.EventId} data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
+            return ` <div class="event" data-event-id = ${e.EventId} data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
 
                         <div class="event-img-container">
                             <img src="${e.ImageUrl}">
@@ -25,9 +24,9 @@ class ResultView {
   
 
                 </div>`
-                
-            }
-        )
+
+
+        });
 
         $(this._ParentEl)
             .children(".sidebar__events")

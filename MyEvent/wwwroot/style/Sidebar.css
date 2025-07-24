@@ -1,8 +1,7 @@
 ﻿.sidebar {
    margin:10px;
     flex: 1;
-    display: grid;
-    grid-template-columns: 350px 1fr;
+    display: flex;
     background: linear-gradient(1deg, #121212 0%, #1a1a1a 50%, #212121 100%);
     color: white;
   
@@ -85,7 +84,7 @@
 
 .sidebar-result{
     border-radius:8px;
-  
+    flex:1;
 }
 .sidebar-details {
     background: linear-gradient(180deg, #121212 0%, #1a1a1a 50%, #1db954 100%);

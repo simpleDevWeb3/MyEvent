@@ -16,7 +16,7 @@
                 <option value="">All Categories</option>
                 @foreach(var c in Model)
                 {
-                    <option value="@c.Name">@c.Name.ToUpper()</option>
+                    <option value="@c.Name">@c.Name</option>
                 }
                
               
@@ -66,12 +66,7 @@
         </div>
 
         <footer class="pagination">
-            <button class="home-button" style="font-size:15px">
-                <div>Page 1</div>
-                </button>
-            <button class="home-button" style="font-size:15px">
-                <div>Page 2</div>
-            </button>
+           
            
            
         </footer>

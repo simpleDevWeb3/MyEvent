@@ -3,13 +3,15 @@ import MapView from './Views/MapView.js';
 import ResultView from './Views/ResultView.js';
 import searchView from './Views/searchView.js';
 import FilterView from './Views/FilterView.js';
-
+import PagerView from './Views/PagerView.js';
 
 
 
 const renderMap = async function () {
     try {
+        //Get query from search
         const data = new URLSearchParams(window.location.search).get('q');
+        //fetch result
         await Model.getSearch(data);
         await Model.setAddress();
        
@@ -18,8 +20,9 @@ const renderMap = async function () {
         console.log(Model.state);
 
         MapView.render(Model.state);
-
+        //Render result
         ResultView.render(Model.state.Search, Model.state.Paging);
+        PagerView.render(Model.state);
     } catch (error) {
         console.log(error);
     }
@@ -38,7 +41,10 @@ const SearchController =  async function (data) {
        // Get search result from api
         await Model.getSearch(data);
         console.log(Model.state.Search);
-        ResultView.render(Model.state.Search, Model.state.Paging)
+        //Render result
+        Model.state.Paging.Page = 1;
+        ResultView.render(Model.state.Search, Model.state.Paging);
+        PagerView.render(Model.state);
 
 
        // const { Latitude: lat, Longitude: lng } = Model.state.Search[0];
@@ -72,12 +78,17 @@ const fillterHandler = async function (query) {
         Model.state.Filter.City = params.get('City');
         Model.state.Filter.Organizer = params.get('Organizer');
 
+      
+
         console.log('fetch data');
         await Model.getFilterQuery();
         console.log(Model.state.Search);
 
         console.log('display new relevent result');
-        ResultView.render(Model.state.Search, Model.state.Paging)
+        Model.state.Paging.Page = 1;
+        console.log(Model.state.Paging.Page);
+        ResultView.render(Model.state.Search, Model.state.Paging);
+        PagerView.render(Model.state);
 
         console.log('display new relevent result on map');
         MapView._UpdateMarkers(Model.state.Search)
@@ -88,6 +99,13 @@ const fillterHandler = async function (query) {
 
 }
 
+const PagingController = function (page) {
+    console.log('hi');
+    console.log(page);
+    Model.state.Paging.Page = page;
+    ResultView.render(Model.state.Search, Model.state.Paging);
+    PagerView.render(Model.state);
+}
 
 
 
@@ -102,5 +120,6 @@ export const init = function () {
     searchView.AddSearchHandler(SearchController);
     ResultView.AddHover(HoverHandler);
     FilterView.AddHandleChange(fillterHandler);
+    PagerView.addHandlerPager(PagingController);
 }
 
