@@ -120,6 +120,7 @@ export const init = function () {
     searchView.AddSearchHandler(SearchController);
     ResultView.AddHover(HoverHandler);
     FilterView.AddHandleChange(fillterHandler);
+    FilterView.AddHandleToggle();
     PagerView.addHandlerPager(PagingController);
 }
 

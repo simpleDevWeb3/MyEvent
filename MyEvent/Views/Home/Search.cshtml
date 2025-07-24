@@ -6,72 +6,71 @@
 }
 
 <aside class="sidebar">
-    <div class="filter-sidebar">
-        <h1>Filter Events</h1>
+    <div style=" padding-left:20px;padding-top:10px;margin:0;font-size:25px;">
+        <button class="home-button filter-button ri-filter-line">
 
-        <!-- Event Category -->
-        <div class="filter-group">
-            <label>Category</label>
-            <select name="category">
-                <option value="">All Categories</option>
-                @foreach(var c in Model)
-                {
-                    <option value="@c.Name">@c.Name</option>
-                }
+        </button>
+      
+        </div>
+    <div style="display:flex; margin:0;">
+        <div class="filter-sidebar hide-element">
+            <h1>Filter Events</h1>
+
+            <!-- Event Category -->
+            <div class="filter-group">
+                <label>Category</label>
+                <select name="category">
+                    <option value="">All Categories</option>
+                    @foreach(var c in Model)
+                    {
+                        <option value="@c.Name">@c.Name</option>
+                    }
                
               
-                <!-- Add more categories -->
-            </select>
-        </div>
+                    <!-- Add more categories -->
+                </select>
+            </div>
 
-        <!-- Date Range -->
-        <div class="filter-group">
-            <label>Date Range</label>
-            <input type="date" name="StartDate">
-            <input type="date" name="EndDate">
-        </div>
+            <!-- Date Range -->
+            <div class="filter-group">
+                <label>Date Range</label>
+                <input type="date" name="StartDate">
+                <input type="date" name="EndDate">
+            </div>
 
-        <!-- Location -->
-        <div class="filter-group">
-            <label>Location</label>
-            <input type="text" placeholder="City or Area" name="City">
-        </div>
+            <!-- Location -->
+            <div class="filter-group">
+                <label>Location</label>
+                <input type="text" placeholder="City or Area" name="City">
+            </div>
 
-        <!-- Ticket Price -->
-        <div class="filter-group">
-            <label>Price</label>
-            <select name="Price">
-                <option value="">All</option>
-                <option value="free">Free</option>
-                <option value="paid">Paid</option>
-            </select>
-        </div>
+          
 
-        <!-- Organizer -->
-        <div class="filter-group">
-            <label>Organizer</label>
-            <input type="text" placeholder="Organizer Name" name="Organizer">
-        </div>
+            <!-- Organizer -->
+            <div class="filter-group">
+                <label>Organizer</label>
+                <input type="text" placeholder="Organizer Name" name="Organizer">
+            </div>
 
      
 
-        <!-- Apply Button -->
-        <div class="filter-group">
-            <button type="button" id="applyFilters">Apply Filters</button>
+            <!-- Apply Button -->
+            <div class="filter-group">
+                <button type="button" id="applyFilters">Apply Filters</button>
+            </div>
         </div>
-    </div>
-    <div class="sidebar-result">
+        <div class="sidebar-result">
   
-        <div class="sidebar__events">
-        </div>
+            <div class="sidebar__events">
+            </div>
 
-        <footer class="pagination">
+            <footer class="pagination">
            
            
            
-        </footer>
+            </footer>
+        </div>
     </div>
-    
 
 
 </aside>

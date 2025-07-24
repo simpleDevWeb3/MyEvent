@@ -1,5 +1,18 @@
 ﻿class FilterView {
     _ParentEl = $('.filter-sidebar')[0]
+    AddHandleToggle() {
+        $('.filter-button').on('click', (e) => {
+            $(this._ParentEl).toggleClass('hide-element');
+            console.log(e.currentTarget);
+            const $btn = $(e.currentTarget);
+            if ($btn.hasClass('ri-filter-line')) {
+                $btn.removeClass('ri-filter-line').addClass('ri-filter-off-line');
+            } else {
+                $btn.removeClass('ri-filter-off-line').addClass('ri-filter-line');
+            }
+        });
+        
+    }
 
     AddHandleChange(handler) {
         

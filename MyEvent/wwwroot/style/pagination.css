@@ -1,6 +1,7 @@
 ﻿.pagination {
     color: white;
     margin: 20px;
+    margin-top:0px;
    
 }
     .pagination > button {
