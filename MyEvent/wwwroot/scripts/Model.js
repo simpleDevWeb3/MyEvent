@@ -15,8 +15,11 @@ export const state = {
     address: {},
     Events: [], //Events data
     Search: [], //User search result Events
-    Page: 1,
-    ResultPerPage: 5,
+    Paging: {
+        Page: 1,
+        ResultPerPage: 4,
+    }
+   
 }
 
 const getCoords = async function () {

@@ -19,7 +19,7 @@ const renderMap = async function () {
 
         MapView.render(Model.state);
 
-        ResultView.render(Model.state.Search);
+        ResultView.render(Model.state.Search, Model.state.Paging);
     } catch (error) {
         console.log(error);
     }
@@ -38,7 +38,7 @@ const SearchController =  async function (data) {
        // Get search result from api
         await Model.getSearch(data);
         console.log(Model.state.Search);
-        ResultView.render(Model.state.Search)
+        ResultView.render(Model.state.Search, Model.state.Paging)
 
 
        // const { Latitude: lat, Longitude: lng } = Model.state.Search[0];
@@ -77,7 +77,7 @@ const fillterHandler = async function (query) {
         console.log(Model.state.Search);
 
         console.log('display new relevent result');
-        ResultView.render(Model.state.Search)
+        ResultView.render(Model.state.Search, Model.state.Paging)
 
         console.log('display new relevent result on map');
         MapView._UpdateMarkers(Model.state.Search)

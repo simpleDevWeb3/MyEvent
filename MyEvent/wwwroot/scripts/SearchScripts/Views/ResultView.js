@@ -2,22 +2,31 @@
 class ResultView {
     _ParentEl = $('.sidebar-result')[0];
 
-    render(data) {
+    render(data,paging) {
 
-        const events = data.map(e =>
-            ` <div class="event" data-event-id = ${e.EventId} data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
+        const events = data.map((e, i) => {
+            const startingPage = (paging.Page - 1) * paging.ResultPerPage;
+            const endPage = paging.Page * paging.ResultPerPage;
+            //render till paging.Page * resultPerPage = 1 * 4
+            if ((i+1) > endPage)  return; 
 
-                    <div class="event-img-container">
-                        <img src="${e.ImageUrl}">
-                    </div>
-                    <div class="event-detail">
-                        <p class="title">${e.Title}</p>
-                        <p class="organization">${e.Organizer}</p>
-                        <p class="date">${e.Date}</p>
-                    </div>
+            //render at starting page 1 
+            if (!(i+1) > startingPage) return;
+                return` <div class="event" data-event-id = ${e.EventId} data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
+
+                        <div class="event-img-container">
+                            <img src="${e.ImageUrl}">
+                        </div>
+                        <div class="event-detail">
+                            <p class="title">${e.Title}</p>
+                            <p class="organization">${e.Organizer}</p>
+                            <p class="date">${e.Date}</p>
+                        </div>
   
 
-            </div>`
+                </div>`
+                
+            }
         )
 
         $(this._ParentEl)
