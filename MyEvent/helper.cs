@@ -77,13 +77,13 @@ public class Helper
 
     public string HashPassword(string password)
     {
-        return ph.HashPassword(null, password); // ✅ Use null instead of 0
+        return ph.HashPassword(0, password); 
     }
 
     public bool VerifyPassword(string hash, string password)
     {
-        return ph.VerifyHashedPassword(null, hash, password)
-               == PasswordVerificationResult.Success; // ✅ Use null instead of 0
+        return ph.VerifyHashedPassword(0, hash, password)
+               == PasswordVerificationResult.Success; 
     }
 
     public void SignIn(string email, string role, bool rememberMe)

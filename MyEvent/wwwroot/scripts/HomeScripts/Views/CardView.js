@@ -33,15 +33,18 @@ class CardView {
            
 
             <div class="home-event"  data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
-                <div class="card-image">
+                <div class="card-image" style="position:relative">
                     <img class="home-event-img" src="${e.ImageUrl}">
+                    <div class="home-event-date">
+                    
+                        <p  style="margin:0; font-size:14px;">${dayjs(e.Date).format("MMM")}</p>
+                        <h3 style="margin:0"><b>${dayjs(e.Date).format("DD")}</b></h3>
+                         <p style="margin:0; opacity: 0.6;">${dayjs(e.Date).format("ddd")}</p>
+                    </div>
                 </div>
                 
                 <div class="home-event-title">${e.Title}</div>
-                <div>
-                     <i class="ri-calendar-line"></i>
-                     ${dayjs(e.Date).format("MMMM DD")}
-                </div>
+           
                 <div>
                     ${e.City}, ${e.Street}
                 </div>
