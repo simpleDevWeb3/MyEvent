@@ -4,7 +4,7 @@ import NavView from "./Views/NavView.js";
 import CarouselView from "./Views/carouselView.js"
 import LoadingSkleton from './Views/LoadingSkleton.js';
 import TransitionLoading from './Views/TransitionLoading.js'
-
+import FilterView from '../SearchScripts/Views/FilterView.js'
 
 const ControllerEvent = async function () {
 
@@ -13,6 +13,7 @@ const ControllerEvent = async function () {
     try {
         await Model.setAddress();
         await Model.getEvents();
+        Model.sortResult('asc','Events');
         CardView.render(Model.state.Events);
     } catch (error) {
         console.log(error);
@@ -21,6 +22,9 @@ const ControllerEvent = async function () {
 };
 
 const ControllerCategory = async function (label) {
+    const params = new URLSearchParams(window.location.search);
+    console.log("get params")
+    Model.state.Sort = params.get('sort')
     //TransitionLoading.render();
     try {
         //$('.nav-lable').toggle();
@@ -33,11 +37,17 @@ const ControllerCategory = async function (label) {
 
 };
 
+const FilterController = function (sort) {
+   
+    Model.sortResult(sort, 'Events');
+    CardView.render(Model.state.Events)
+}
+
 export const init = function () {
     
     CardView.addHandlerDisplay(ControllerEvent);
-
     CarouselView.addHandleScroll();
     NavView.addHandlerHover();
     NavView.addHandlerClick(ControllerCategory);
+    FilterView.AddHandleSort(FilterController);
 };

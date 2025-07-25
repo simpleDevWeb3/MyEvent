@@ -39,29 +39,31 @@
                 
             </div>
         </div>
-      
-        <div class="nav-type">
-           
-            <h4 class="nav-lable selected" data-label="All">All</h4>
-            <h4 class="nav-lable" data-label="Today">Today</h4>
-            <h4 class="nav-lable" data-label="This Weekend">This Weekend</h4>
-            <h4 class="nav-lable" data-label="Free">Free</h4>
-            @foreach (var e in Model)
-            {
+        <div class="event-section">
+            <div class="nav-type" style="justify-content:space-between;" id="category-nav">
+               <div style="display:flex; gap:20px;">
+                    <h4 class="nav-lable selected" data-label="All">All</h4>
+                    <h4 class="nav-lable" data-label="Today">Today</h4>
+                    <h4 class="nav-lable" data-label="This Weekend">This Weekend</h4>
+                    <h4 class="nav-lable" data-label="Free">Free</h4>
+          
+                    @foreach (var e in Model)
+                    {
                
-                 <h4 class="nav-lable" data-label="@e.Name">@e.Name</h4>
+                         <h4 class="nav-lable" data-label="@e.Name">@e.Name</h4>
                 
-            }
-            
-           
-        </div>
+                    }
+                </div>
+                @Html.Partial("_SortPartial")
+            </div>
 
-    
+       
      
-        <div class="home-event-container event--all">
+            <div class="home-event-container event--all" >
 
            
-        </div>
+            </div>
+          </div>
     </div>
    
  
@@ -72,15 +74,6 @@
         import { init as HomeInit } from '/scripts/HomeScripts/Controller.js';
         
         HomeInit();
-        let timeout;
-
-        window.addEventListener('scroll', () => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                // Do something expensive here:
-                console.log('User stopped scrolling');
-                // Example: lazy load, highlight section, etc.
-            }, 100);
-        });
+       
     </script>
 }

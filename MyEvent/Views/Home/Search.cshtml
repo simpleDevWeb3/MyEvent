@@ -6,12 +6,12 @@
 }
 
 <aside class="sidebar">
-    <div style=" padding-left:20px;padding-top:10px;margin:0;font-size:25px;">
+    <div style="display:flex; padding-left:20px;  padding-right:20px;padding-top:10px;margin:0;font-size:25px; align-items:center; justify-content:space-between">
         <button class="home-button filter-button ri-filter-line">
-
+            <div style="font-size:15px; font-family:Roboto; text-align:center;" >Filter</div>
         </button>
-      
-        </div>
+        @Html.Partial("_SortPartial")
+       </div>
     <div style="display:flex; margin:0;">
         <div class="filter-sidebar hide-element">
             <h1>Filter Events</h1>

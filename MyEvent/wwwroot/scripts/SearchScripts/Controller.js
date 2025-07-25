@@ -64,7 +64,12 @@ const HoverHandler = function (eventId) {
     MapView.MoveToCoords(event.Latitude, event.Longitude);
     ResultView.highlightEvent(event.EventId);
 }
-
+const sortHandler = function (sort = 'asc') {
+    Model.sortResult(sort)
+    
+    console.log(Model.state.Search);
+    ResultView.render(Model.state.Search, Model.state.Paging);
+}
 
 const fillterHandler = async function (query) {
     try {
@@ -77,7 +82,7 @@ const fillterHandler = async function (query) {
         Model.state.Filter.EndDate = params.get('EndDate');
         Model.state.Filter.City = params.get('City');
         Model.state.Filter.Organizer = params.get('Organizer');
-
+        Model.state.Sort = params.get('sort')
       
 
         console.log('fetch data');
@@ -121,6 +126,7 @@ export const init = function () {
     ResultView.AddHover(HoverHandler);
     FilterView.AddHandleChange(fillterHandler);
     FilterView.AddHandleToggle();
+    FilterView.AddHandleSort(sortHandler);
     PagerView.addHandlerPager(PagingController);
 }
 

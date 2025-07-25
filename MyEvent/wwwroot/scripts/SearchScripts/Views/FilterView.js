@@ -13,6 +13,21 @@
         });
         
     }
+    AddHandleSort(handler) {
+        $('.sort-button').on('change', (e) => {
+            const sortBy = $(e.target).val();
+           
+
+            console.log("Setting up params)");
+            //sort params
+            const currentParams = new URLSearchParams(window.location.search);
+            currentParams.set('sort', sortBy); // "sort" is the key
+            history.pushState({}, '', `${location.pathname}?${currentParams}`);
+
+
+            handler(sortBy);
+        })
+    }
 
     AddHandleChange(handler) {
         

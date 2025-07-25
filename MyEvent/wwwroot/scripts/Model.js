@@ -8,7 +8,7 @@ export const state = {
         EndDate: null,
         Location: null,
         Price: null,
-        Organizer:null,
+        Organizer: null,
     },
     currentEvent: {},
     coords: {},
@@ -18,8 +18,10 @@ export const state = {
     Paging: {
         Page: 1,
         ResultPerPage: 4,
-    }
-   
+    },
+    Sort: null
+
+    
 }
 
 const getCoords = async function () {
@@ -107,7 +109,7 @@ export const getEvents = async function () {
         const Events = eventObj(data);
 
         state.Events = Events;
-
+        if (state.Sort) sortResult(state.Sort,'Events')
     } catch (error) {
         throw (error);
     }
@@ -126,6 +128,8 @@ export const getByTags = async function (tags) {
         const Events = eventObj(data);
 
         state.Events = Events;
+        console.log(state.Sort)
+        if (state.Sort) sortResult(state.Sort, 'Events')
 
     } catch (error) {
         throw (error);
@@ -152,11 +156,23 @@ export const getSearch = async function (query) {
     }
 }
 
+export const sortResult = function (sort = 'asc',type = 'Search') {
+    if (sort === 'asc')
+        state[type].sort((a, b) => a.Title.localeCompare(b.Title));
+    else if (sort === 'desc')
+        state[type].sort((a, b) => b.Title.localeCompare(a.Title));
+    else if(sort === 'most recent')
+        state[type].sort((a, b) => new Date(a.Date) - new Date(b.Date));
+    else if (sort === 'oldest')
+        state[type].sort((a, b) => new Date(b.Date) - new Date(a.Date));
+    console.log(state[type])
+}
+
 export const getFilterQuery = async function () {
     try {
 
         const queryParams = new URLSearchParams();
-
+        //Looping append query 
         for (const key in state.Filter) {
             const value = state.Filter[key];
             if (value !== null && value !== '') {
@@ -170,12 +186,17 @@ export const getFilterQuery = async function () {
         const data = await res.json();
 
 
-        const Result = eventObj(data);
+        const Result  = eventObj(data);
+
 
         state.Search = Result;
+        console.log(state.Sort);
+
+        if (state.Sort) sortSearchResult(state.Sort)
 
 
     } catch (error) {
-        console.log(erorr);
+        console.log(error);
     }
 }
+

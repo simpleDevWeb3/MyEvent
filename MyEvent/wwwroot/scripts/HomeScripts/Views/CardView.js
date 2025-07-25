@@ -1,4 +1,5 @@
-﻿class CardView {
+﻿
+class CardView {
 
     _parentEl = $('.event--all')[0];
    
@@ -39,7 +40,7 @@
                 <div class="home-event-title">${e.Title}</div>
                 <div>
                      <i class="ri-calendar-line"></i>
-                     ${e.Date}
+                     ${dayjs(e.Date).format("MMMM DD")}
                 </div>
                 <div>
                     ${e.City}, ${e.Street}
