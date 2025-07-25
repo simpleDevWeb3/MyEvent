@@ -77,15 +77,13 @@ public class Helper
 
     public string HashPassword(string password)
     {
-        // TODO
-        return ph.HashPassword(0, password); ;
+        return ph.HashPassword(null, password); // ✅ Use null instead of 0
     }
 
     public bool VerifyPassword(string hash, string password)
     {
-        // TODO
-        return ph.VerifyHashedPassword(0, hash, password)
-            == PasswordVerificationResult.Success;
+        return ph.VerifyHashedPassword(null, hash, password)
+               == PasswordVerificationResult.Success; // ✅ Use null instead of 0
     }
 
     public void SignIn(string email, string role, bool rememberMe)

@@ -20,13 +20,13 @@ public class AccountController : Controller
     {
         return View();
     }
-
+    [Route("/login")]
     [HttpPost]
     public IActionResult Login(LoginVM vm, string? returnURL)
     {
-        var u = db.Users.Find(vm.Email);
+        var u = db.Users.FirstOrDefault(x => x.Email == vm.Email);
 
-       if (u == null || !hp.VerifyPassword(u.Hash, vm.Password))
+        if (u == null || !hp.VerifyPassword(u.Hash, vm.Password))
         {
             ModelState.AddModelError("", "Login credentials not matched.");
         }

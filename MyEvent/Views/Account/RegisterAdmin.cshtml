@@ -3,7 +3,9 @@
 @{
     ViewBag.Title = "Account | Register";
 }
-
+<head>
+    <link rel="stylesheet" href="~/style/Register.css" asp-append-version="true" />
+</head>
 <h2>Register As Admin</h2>
 
 <form class="form" method="post" enctype="multipart/form-data">
@@ -38,3 +40,9 @@
         <button type="reset">Reset</button>
     </section>
 </form>
+
+@section foot {
+    <script>
+        $.validator.setDefaults({ ignore: '' });
+    </script>
+}
