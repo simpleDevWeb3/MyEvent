@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace MyEvent.Models;
 #nullable disable warnings
 public class DB : DbContext
@@ -19,11 +20,11 @@ public class DB : DbContext
         }
     
 
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Address> Addresses { get; set; }
-    public DbSet<Event> Events { get; set; }
-    public DbSet<Detail> Details { get; set; }
-
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Detail> Details { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
 
     public class Address
     {
@@ -50,7 +51,7 @@ public class DB : DbContext
 
         public double Longitude { get; set; }
 
-        public List<Event> Events { get; set; } = [];
+        public Event Event { get; set; }
     }
 
     
@@ -87,6 +88,10 @@ public class DB : DbContext
         public Category Category { get; set; }
 
         public Detail Detail { get; set; }
+
+        [Column(TypeName = "decimal(8,2)")]
+        public decimal Price { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 
 
@@ -131,10 +136,29 @@ public class DB : DbContext
         public string Role => GetType().Name;
     }
 
+    public class Ticket
+    {
+        public int TicketId { get; set; }
+
+        public string EventId { get; set; }
+        public Event Event { get; set; }
+
+        public int BuyerId { get; set; } // who paid
+        public User Buyer { get; set; }
+
+        [Required]
+        public string HolderName { get; set; } 
+        public string? HolderEmail { get; set; } 
+
+        public DateOnly PurchaseDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
+    }
+
+
+
     // TODO
     public class Admin : User
     {
-
+        public List<Event> OrganizedEvents { get; set; } = [];
     }
 
     // TODO

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyEvent.Models;
 
@@ -11,9 +12,11 @@ using MyEvent.Models;
 namespace MyEvent.Migrations
 {
     [DbContext(typeof(DB))]
-    partial class DBModelSnapshot : ModelSnapshot
+    [Migration("20250726043058_addingTicket")]
+    partial class addingTicket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -132,9 +135,6 @@ namespace MyEvent.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<int?>("AdminId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CategoryId")
                         .IsRequired()
                         .HasColumnType("nvarchar(8)");
@@ -153,10 +153,7 @@ namespace MyEvent.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
-                    b.HasIndex("AdminId");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("CategoryId");
 
@@ -268,14 +265,10 @@ namespace MyEvent.Migrations
             modelBuilder.Entity("MyEvent.Models.DB+Event", b =>
                 {
                     b.HasOne("MyEvent.Models.DB+Address", "Address")
-                        .WithOne("Event")
-                        .HasForeignKey("MyEvent.Models.DB+Event", "AddressId")
+                        .WithMany("Events")
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MyEvent.Models.DB+Admin", null)
-                        .WithMany("OrganizedEvents")
-                        .HasForeignKey("AdminId");
 
                     b.HasOne("MyEvent.Models.DB+Category", "Category")
                         .WithMany("Events")
@@ -309,8 +302,7 @@ namespace MyEvent.Migrations
 
             modelBuilder.Entity("MyEvent.Models.DB+Address", b =>
                 {
-                    b.Navigation("Event")
-                        .IsRequired();
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("MyEvent.Models.DB+Category", b =>
@@ -324,11 +316,6 @@ namespace MyEvent.Migrations
                         .IsRequired();
 
                     b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("MyEvent.Models.DB+Admin", b =>
-                {
-                    b.Navigation("OrganizedEvents");
                 });
 #pragma warning restore 612, 618
         }

@@ -375,5 +375,14 @@ namespace MyEvent.Controllers
 
 
 
+
+        [HttpGet("/Participant")]
+        public IActionResult Participant(String Id)
+        {
+            return Ok();
+        }
+
+
+
     }
 }
