@@ -143,10 +143,94 @@
                   
                 </div>
             </div>
-            <h2>About This Event</h2>
-            <p>
-                 @Model.Detail?.Description
-              </p>
+            <div class="middle-section" style="display:grid;grid-template-columns:1fr 500px; gap:20px;">
+                <div class="about-section">
+                    <div style="background:#343434; margin-top:20px; padding:20px; border-radius:8px;">
+                        <h2 style="margin:0">About This Event</h2>
+                        <p>
+                            @Model.Detail?.Description
+                        </p>
+                    </div>
+                    <div style="background:#343434; margin-top:20px; padding:20px; border-radius:8px;">
+                        <h2 style="margin:0">Attendee</h2>
+                        <div class="Attande-card" style="  margin-top:10px; width:100px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;">
+                            <div class="profile-container" style="height:80px; width:80px">
+                                <img class="event-detail__img" style="border-radius:50%;" src="@Model.ImageUrl" />
+                            </div>
+                            <div style="text-align:center;">
+                                <div>Joe Mama</div>
+                                <div style="opacity:0.8;">Organizer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+                <div class="category-section" style=" display:grid; grid-template-rows: 50px 1fr">
+                    <div class="nav-recommendation" style="display:flex; gap:10px; padding:10px; padding-left:0px;"> 
+                        <button class="home-button" style="font-size:15px;">Participant Also Joined</button>
+                       
+                        <button class="home-button" style="font-size:15px;">Simillar Events</button>
+
+                        <button class="home-button" style="font-size:15px;">From This Organizer </button>
+                    </div>
+                    <div class="Event-List-Container">
+
+                        <div class="card-events" style="display:grid; grid-template-columns:200px 1fr; margin-bottom:20px; gap:20px;">
+                            <div class="image-container" style="height:100px;">
+                                <img class="event-detail__img" style="border-radius:8px;" src="@Model.ImageUrl" />
+                            </div>
+                            <div>
+                               
+
+                                <div class="home-event-title">@Model.Title</div>
+
+                                <div>
+                                    @Model.Address.City,  @Model.Address.Street
+                                </div>
+                            </div>
+                
+
+                            
+                        </div>
+
+                        <div class="card-events" style="display:grid; grid-template-columns:200px 1fr; margin-bottom:20px; gap:20px;">
+                            <div class="image-container" style="height:100px;">
+                                <img class="event-detail__img" style="border-radius:8px;" src="@Model.ImageUrl" />
+                            </div>
+                            <div>
+
+
+                                <div class="home-event-title">@Model.Title</div>
+
+                                <div>
+                                    @Model.Address.City,  @Model.Address.Street
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="card-events" style="display:grid; grid-template-columns:200px 1fr; margin-bottom:20px; gap:20px;">
+                            <div class="image-container" style="height:100px;">
+                                <img class="event-detail__img" style="border-radius:8px;" src="@Model.ImageUrl" />
+                            </div>
+                            <div>
+
+
+                                <div class="home-event-title">@Model.Title</div>
+
+                                <div>
+                                    @Model.Address.City,  @Model.Address.Street
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                  
+                </div>
+            </div>
+          
             <div style=" 
                     position:absolute; left:100px; right:20px; bottom:0; height:50px;    background: linear-gradient(4deg, #ba0e0e, #95959524);
                     display:flex; justify-content:space-between;align-items:center;gap:10px; padding:20px;
