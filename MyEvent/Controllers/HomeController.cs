@@ -64,7 +64,11 @@ public class HomeController : Controller
 
     public bool CheckDate(DateOnly date)
     {
-        return DateOnly.FromDateTime(DateTime.Now) < date;
+        if (DateOnly.FromDateTime(DateTime.Now) > date)
+            return false;
+
+
+        return true;
     }
 
     [Route("/create_event")]
@@ -84,7 +88,7 @@ public class HomeController : Controller
             ModelState.AddModelError("CategoryId", "Invalid Category.");
         }
 
-        if (ModelState.IsValid("Date") == false)
+        if (!CheckDate(vm.Date))
         {
             ModelState.AddModelError("Date", "Suspicious Date");
         }
