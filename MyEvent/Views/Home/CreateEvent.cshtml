@@ -1,0 +1,112 @@
+﻿@model EventVM
+@{
+    ViewBag.Title = "Society Event Submission";
+}
+
+<style>
+    body {
+        overflow-y: scroll;
+    }
+
+    .form-container {
+        margin-top: 10px;
+        background: white;
+        min-width: 600px;
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    input, select, textarea {
+        width: 30%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .time-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .time-row input {
+        width: 90%;
+    }
+
+    button {
+        display: block;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 15px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="form-container">
+    <h2>@ViewBag.Title</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" required />
+        <span asp-validation-for="Title"></span>
+
+        <label asp-for="Date"></label>
+        <input asp-for="Date" type="date" class="form-control" required />
+        <span asp-validation-for="Date"></span>
+
+        <label>Event Time</label>
+        <div class="time-row">
+            <div>
+                <label asp-for="StartTime"></label>
+                <input asp-for="StartTime" type="time" required />
+            </div>
+            <div>
+                <label asp-for="EndTime"></label>
+                <input asp-for="EndTime" type="time" required />
+            </div>
+        </div>
+        
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories">
+            <option value="">- Select One -</option>
+        </select>
+        <span asp-validation-for="CategoryId"></span>
+
+        <label asp-for="AddressId"></label>
+        <input asp-for="AddressId" class="form-control" required />
+
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" rows="4" class="form-control" required></textarea>
+        <span asp-validation-for="Description"></span>
+
+        <label asp-for="ContactEmail"></label>
+        <input asp-for="ContactEmail" type="email" class="form-control" required />
+        <span asp-validation-for="ContactEmail"></span>
+
+        <section>
+            <button>Submit</button>
+            <button type="reset">Reset</button>
+        </section>
+    </form>
+</div>
