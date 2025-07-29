@@ -95,13 +95,12 @@ public class CreateEventController : Controller
                 Longitude = 100.3422,
             };
             db.Addresses.Add(a);
-            db.SaveChanges();
             
             Event e = new()
             {
                 Id = "EVT99999",
                 Title = vm.Title.Trim().ToUpper(),
-                ImageUrl = hp.SavePhoto(vm.ImageUrl, "Events"),
+                ImageUrl = hp.SavePhoto(vm.ImageUrl, "images/Events"),
                 CategoryId = vm.CategoryId,
                 AddressId = a.Id,
                 Price = vm.Price,

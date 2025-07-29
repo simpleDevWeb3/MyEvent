@@ -56,7 +56,7 @@ public class Helper
         img.Mutate(x => x.Resize(options));
         img.Save(path);
 
-        return file;
+        return "/images/events/" + file;
     }
 
     public void DeletePhoto(string file, string folder)

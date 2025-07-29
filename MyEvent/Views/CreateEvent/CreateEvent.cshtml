@@ -68,7 +68,7 @@
 
 <div class="form-container">
     <h2>@ViewBag.Title</h2>
-    <form method="post">
+    <form method="post" nonvalidate enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly"></div>
 
         <label asp-for="Title"></label>
@@ -126,6 +126,8 @@
             <button type="reset">Reset</button>
         </section>
     </form>
+
+
 </div>
 
 @section foot {
