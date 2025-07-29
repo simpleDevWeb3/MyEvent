@@ -1,5 +1,5 @@
 global using MyEvent.Models;
-using MyEvent;
+global using MyEvent;
 
 var builder = WebApplication.CreateBuilder(args);
 

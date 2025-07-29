@@ -47,7 +47,7 @@ public class Helper
 
         var options = new ResizeOptions
         {
-            Size = new(200, 200),
+            Size = new(200, 500),
             Mode = ResizeMode.Crop,
         };
 
