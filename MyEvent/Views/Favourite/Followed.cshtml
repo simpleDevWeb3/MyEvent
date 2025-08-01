@@ -1,9 +1,29 @@
-﻿<main class="home-container">
+﻿@model List<MyEvent.Models.DB.Event>
 
-    <div class="Main-view">
-        <h1>Follow</h1>
-        
-    </div>
+<main class="home-container">
+    <h1>Favourite Events</h1>
 
-
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Organizer</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model)
+            {
+                <tr>
+                    <td>@e.Title</td>
+                    <td>@e.Detail?.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@e.Detail?.StartTime - @e.Detail?.EndTime</td>
+                    <td>@e.Address?.City, @e.Address?.State</td>
+                    <td>@e.Detail?.Organizer</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </main>
