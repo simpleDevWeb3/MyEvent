@@ -245,9 +245,13 @@
                     <button class="home-button" style="font-size:15px; padding: 10px 30px; background:white; color:black;">
                        Join
                     </button>
-                    <a href="/Favourite/FollowedEvents" class="home-button" style="font-size:15px; padding: 10px 30px; background:red; color:white; text-decoration: none;">
-                        Follow
-                    </a>
+                        <form asp-controller="Favourite" asp-action="Follow" method="post">
+                            <input type="hidden" name="eventId" value="@Model.Id" />
+                            <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:red; color:white;">
+                                Follow
+                            </button>
+                        </form>
+
                 </div>
             </div>
             

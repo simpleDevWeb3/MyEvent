@@ -25,6 +25,7 @@ public class DB : DbContext
         public DbSet<Event> Events { get; set; }
         public DbSet<Detail> Details { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<FollowedEvent> FollowedEvents { get; set; }
 
     public class Address
     {
@@ -166,6 +167,15 @@ public class DB : DbContext
     public class Member : User
     {
 
+    }
+
+    public class FollowedEvent
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public string EventId { get; set; }   // FK to Event
+        public Event Event { get; set; }
     }
 
 }
