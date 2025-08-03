@@ -38,11 +38,9 @@ public class CreateEventController : Controller
         return true;
     }
 
-    public bool CheckTime(TimeOnly start_time, TimeOnly end_time)
+    public bool CheckTime(TimeOnly StartTime, TimeOnly EndTime)
     {
-        //Console.Write(time.EndTime - time.StartTime >= TimeSpan.FromMinutes(30));
-        return end_time - start_time >= TimeSpan.FromMinutes(30);
-        //return false;
+        return (EndTime - StartTime).TotalMinutes >= 30;
     }
 
     public bool CheckPrice(decimal price)
@@ -50,8 +48,16 @@ public class CreateEventController : Controller
         return price >= 0 && price <= 200.00m;
     }
 
-    public bool CheckAdress(string address)
+    public async Task<bool> CheckAdress(AddressVM vm)
     {
+        string fullAddress = $"{vm.Premise}, {vm.Street}, {vm.Postcode} {vm.City}, {vm.State}";
+        var cordinates = await _geo.GetCoordinatesAsync(fullAddress);
+        var (lat, lon) = (0.0, 0.0);        //static first
+        if (cordinates != null)
+        {
+            (lat, lon) = cordinates.Value;
+        }
+
         return true;
     }
 
@@ -94,16 +100,20 @@ public class CreateEventController : Controller
             if (e != "") ModelState.AddModelError("ImageUrl", e);
         }
 
+        string fullAddress = $"{vm.Address.Premise}, {vm.Address.Street}, {vm.Address.Postcode} {vm.Address.City}, {vm.Address.State}";
+        var cordinates = await _geo.GetCoordinatesAsync(fullAddress);
+        var (lat, lon) = (0.0, 0.0);        //static first
+        if (cordinates != null)
+        {
+            (lat, lon) = cordinates.Value;
+        }
+        else
+        {
+            ModelState.AddModelError("Address", "Address not found.");
+        }
+
         if (ModelState.IsValid)
         {
-            string fullAddress = $"{vm.Address.Premise}, {vm.Address.Street}, {vm.Address.Postcode} {vm.Address.City}, {vm.Address.State}";
-            var cordinates = await _geo.GetCoordinatesAsync(fullAddress);
-            var (lat, lon) = (0.0, 0.0);        //static first
-            if (cordinates != null)
-            {
-                (lat, lon) = cordinates.Value;
-            }
-
             string id = db.Addresses.Max(a => a.Id) ?? "ADDR0000";
             Address a = new()
             {
@@ -144,7 +154,7 @@ public class CreateEventController : Controller
             e.Detail = d;
             db.Events.Add(e);
             db.SaveChanges();
-            
+
             TempData["Info"] = "Recoed inserted.";
             return RedirectToAction("Index", "Home");
         }

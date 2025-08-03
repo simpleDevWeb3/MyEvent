@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyEvent.Migrations;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyEvent.Models;
@@ -65,6 +66,8 @@ public class AddressVM
     [MaxLength(5)]
     [Display(Name = "Postcode")]
     public string Postcode { get; set; }
+
+    //public string Adress = 
 
 }
 
