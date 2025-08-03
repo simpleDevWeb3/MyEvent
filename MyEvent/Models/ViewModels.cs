@@ -18,6 +18,7 @@ public class EventVM
     public TimeOnly StartTime { get; set; }
 
     [Display(Name = "End Time")]
+    [Remote("CheckTime", "CreateEvent", AdditionalFields = "StartTime", ErrorMessage = "Invalid time range.")]
     public TimeOnly EndTime { get; set; }
 
     [Display(Name = "Category")]

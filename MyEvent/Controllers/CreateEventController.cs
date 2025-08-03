@@ -40,7 +40,9 @@ public class CreateEventController : Controller
 
     public bool CheckTime(TimeOnly start_time, TimeOnly end_time)
     {
+        //Console.Write(time.EndTime - time.StartTime >= TimeSpan.FromMinutes(30));
         return end_time - start_time >= TimeSpan.FromMinutes(30);
+        //return false;
     }
 
     public bool CheckPrice(decimal price)
@@ -69,7 +71,7 @@ public class CreateEventController : Controller
         {
             ModelState.AddModelError("CategoryId", "Invalid Category.");
         }
-
+        
         if (!CheckDate(vm.Date))
         {
             ModelState.AddModelError("Date", "Suspicious Date");
