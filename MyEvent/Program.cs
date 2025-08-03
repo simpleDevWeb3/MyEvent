@@ -25,7 +25,15 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.MapControllers();             // ? Needed for [Route("api/...")] endpoints
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
 
 app.MapDefaultControllerRoute();  // Optional if using MVC Views
 

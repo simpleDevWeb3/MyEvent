@@ -1,9 +1,74 @@
-﻿<main class="home-container">
+﻿<style>
+    .event-table-container {
+        width: 800px; /* or use 70% */
+        margin: 0 auto; /* center the table */
+    }
 
-    <div class="Main-view">
-        <h1>Follow</h1>
-        
-    </div>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        color: white;
+    }
 
+    th, td {
+        padding: 10px;
+        border: 1px solid white;
+        text-align: left;
+    }
 
-</main>
+    th {
+        background-color: #444;
+    }
+
+    tr:nth-child(even) {
+        background-color: #333;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #222;
+    }
+
+    .table-heading {
+        color: white;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 28px;
+    }
+</style>
+
+<div class="event-table-container">
+    <h2 class="table-heading">Favourite Events</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th>Organizer</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Event.Title</td>
+                    <td>@item.Event.Detail?.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Event.Detail?.StartTime - @item.Event.Detail?.EndTime</td>
+                    <td>@item.Event.Address?.City, @item.Event.Address?.State</td>
+                    <td>@item.Event.Detail?.Organizer</td>
+                    <td>
+                        <form asp-controller="Favourite" asp-action="DeleteFollowed" method="post" style="margin: 0;">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
