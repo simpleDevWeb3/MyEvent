@@ -42,3 +42,20 @@ public class CategoryDTO
     public string Id { get; set; }
     public string Name { get; set; }
 }
+
+//cheng added!!!*************************************************
+//cheng's code
+public class GeoapifyGeocodingResponseDto
+{
+    public List<Feature> features { get; set; }
+}
+
+public class Feature
+{
+    public Geometry geometry { get; set; }
+}
+
+public class Geometry
+{
+    public List<double> coordinates { get; set; } // [lon, lat]
+}

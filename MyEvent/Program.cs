@@ -13,7 +13,8 @@ builder.Services.AddSqlServer<DB>($@"
 builder.Services.AddScoped<MyEvent.Helper>();
 
 builder.Services.AddControllersWithViews();
-  
+builder.Services.AddHttpClient<GeoService>(); //cheng added!!!*************************************************
+
 
 builder.Services.AddAuthentication().AddCookie();
 builder.Services.AddHttpContextAccessor();

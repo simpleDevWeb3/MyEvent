@@ -13,7 +13,11 @@ public class EventVM
 
     [Remote("CheckDate", "CreateEvent", ErrorMessage = "Invalid {0}.")]
     public DateOnly Date { get; set; }
+
+    [Display(Name = "Start Time")]
     public TimeOnly StartTime { get; set; }
+
+    [Display(Name = "End Time")]
     public TimeOnly EndTime { get; set; }
 
     [Display(Name = "Category")]
@@ -21,9 +25,6 @@ public class EventVM
     [RegularExpression(@"^CAT\d{5}$", ErrorMessage = "Invalid {0}.")]
     [Remote("CheckCategoryId", "CreateEvent", ErrorMessage = "Invalid {0}.")]
     public string CategoryId { get; set; }
-
-    [Display(Name = "Address")]
-    public string AddressId { get; set; }
 
     [Range(0, 200, ErrorMessage = "Price must be between 0 and 200")]
     [Remote("CheckPrice", "CreateEvent", ErrorMessage = "Invalid {0}.")]
@@ -36,7 +37,36 @@ public class EventVM
     [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Invalid {0}.")]
     public string ContactEmail { get; set; }
 
+    [Display(Name = "Image")]
     public IFormFile ImageUrl { get; set; }
+
+    public AddressVM Address { get; set; }
 }
+
+public class AddressVM
+{
+    [MaxLength(50)]
+    [Display(Name = "Premise")]
+    public string Premise { get; set; }
+
+    [MaxLength(50)]
+    [Display(Name = "Street")]
+    public string Street { get; set; }
+
+    [MaxLength(50)]
+    [Display(Name = "City")]
+    public string City { get; set; }
+
+    [MaxLength(50)]
+    [Display(Name = "State")]
+    public string State { get; set; }
+
+    [MaxLength(5)]
+    [Display(Name = "Postcode")]
+    public string Postcode { get; set; }
+
+}
+
+
 
 

@@ -23,9 +23,16 @@
     }
 
     label {
-        display: block;
         margin-top: 10px;
         font-weight: bold;
+    }
+
+    fieldset {
+        width: 30%;
+    }
+
+    fieldset input {
+        margin: 0;
     }
 
     .field-validation-error {
@@ -35,7 +42,7 @@
     input, select, textarea {
         width: 30%;
         padding: 8px;
-        margin-top: 5px;
+        margin: 10px auto;
         border: 1px solid #ccc;
         border-radius: 5px;
     }
@@ -51,7 +58,7 @@
     }
 
     button {
-        display: block;
+        display: inline-block;
         background-color: #28a745;
         color: white;
         border: none;
@@ -74,10 +81,12 @@
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" required />
         <span asp-validation-for="Title"></span>
+        <br />
 
         <label asp-for="Date"></label>
         <input asp-for="Date" type="date" class="form-control" required />
         <span asp-validation-for="Date"></span>
+        <br />
 
         <label>Event Time</label>
         <div class="time-row">
@@ -90,7 +99,6 @@
                 <input asp-for="EndTime" type="time" required />
             </div>
             <span asp-validation-for="EndTime"></span>
-
         </div>
         
         <label asp-for="CategoryId"></label>
@@ -98,21 +106,53 @@
             <option value="">- Select One -</option>
         </select>
         <span asp-validation-for="CategoryId"></span>
+        <br />
 
-        <label asp-for="AddressId"></label>
-        <input asp-for="AddressId" class="form-control" required />
+        <fieldset>
+            <legend>Address Information</legend>
+
+            <div class="form-group">
+                <label asp-for="Address.Premise"></label>
+                <input asp-for="Address.Premise" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address.Street"></label>
+                <input asp-for="Address.Street" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address.City"></label>
+                <input asp-for="Address.City" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address.State"></label>
+                <input asp-for="Address.State" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address.Postcode"></label>
+                <input asp-for="Address.Postcode" class="form-control" required />
+            </div>
+        </fieldset>
+
 
         <label asp-for="Price"></label>
         <input asp-for="Price" type="number" max=200.00 step=0.05 class="form-control" required />
         <span asp-validation-for="Price"></span>
+        <br />
 
         <label asp-for="Description"></label>
+        <br />
         <textarea asp-for="Description" rows="4" class="form-control" required></textarea>
         <span asp-validation-for="Description"></span>
+        <br />
 
         <label asp-for="ContactEmail"></label>
         <input asp-for="ContactEmail" type="email" class="form-control" required />
         <span asp-validation-for="ContactEmail"></span>
+        <br />
 
         <label asp-for="ImageUrl"></label>
         <label class="upload">
@@ -120,6 +160,7 @@
             <img src="/images/Events/photo.jpg">
         </label>
         <span asp-validation-for="ImageUrl"></span>
+        <br />
 
         <section>
             <button>Submit</button>
