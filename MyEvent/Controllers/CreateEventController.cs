@@ -40,7 +40,7 @@ public class CreateEventController : Controller
 
     public bool CheckTime(TimeOnly StartTime, TimeOnly EndTime)
     {
-        return (EndTime - StartTime).TotalMinutes >= 30;
+        return (EndTime - StartTime).TotalMinutes >= 30 && EndTime > StartTime;
     }
 
     public bool CheckPrice(decimal price)
