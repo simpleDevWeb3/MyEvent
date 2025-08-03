@@ -59,16 +59,29 @@ public class AddressVM
     [Display(Name = "City")]
     public string City { get; set; }
 
-    [MaxLength(50)]
-    [Display(Name = "State")]
-    public string State { get; set; }
-
     [MaxLength(5)]
     [Display(Name = "Postcode")]
     public string Postcode { get; set; }
 
-    //public string Adress = 
+    [MaxLength(50)]
+    [Display(Name = "State")]
+    [Remote("CheckAddress", "CreateEvent", AdditionalFields = "Street,City,Postcode", ErrorMessage = "Invalid Address.")]
+    public string State { get; set; }
 
+    /*
+    // Read-only property to combine the full address
+    [Remote("CheckAddress", "CreateEvent", ErrorMessage = "Invalid Address.")]
+    public string FullAddress
+    {
+        get
+        {
+            return $"{Street}, {Postcode} {City}, {State}";
+
+            
+        }
+
+    }
+    */
 }
 
 

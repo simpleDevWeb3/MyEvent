@@ -48,17 +48,15 @@ public class CreateEventController : Controller
         return price >= 0 && price <= 200.00m;
     }
 
-    public async Task<bool> CheckAdress(AddressVM vm)
+    public async Task<bool> CheckAddress(string Street, string City, string Postcode, string State)
     {
-        string fullAddress = $"{vm.Premise}, {vm.Street}, {vm.Postcode} {vm.City}, {vm.State}";
+        string fullAddress = $"{Street}, {Postcode} {City}, {State}";
         var cordinates = await _geo.GetCoordinatesAsync(fullAddress);
-        var (lat, lon) = (0.0, 0.0);        //static first
         if (cordinates != null)
         {
-            (lat, lon) = cordinates.Value;
+            return true;
         }
-
-        return true;
+        return false;
     }
 
     [Route("/create_event")]
@@ -99,8 +97,8 @@ public class CreateEventController : Controller
             var e = hp.ValidatePhoto(vm.ImageUrl);
             if (e != "") ModelState.AddModelError("ImageUrl", e);
         }
-
-        string fullAddress = $"{vm.Address.Premise}, {vm.Address.Street}, {vm.Address.Postcode} {vm.Address.City}, {vm.Address.State}";
+        
+        string fullAddress = $"{vm.Address.Street}, {vm.Address.Postcode} {vm.Address.City}, {vm.Address.State}";
         var cordinates = await _geo.GetCoordinatesAsync(fullAddress);
         var (lat, lon) = (0.0, 0.0);        //static first
         if (cordinates != null)
@@ -109,55 +107,68 @@ public class CreateEventController : Controller
         }
         else
         {
+            ModelState.AddModelError("Address.State", "(Address not found.)");
+        }
+        
+        /*
+        var location = CheckAdress(vm.Address);
+        if (location == null) 
+        {
             ModelState.AddModelError("Address", "Address not found.");
         }
-
-        if (ModelState.IsValid)
+        else
         {
-            string id = db.Addresses.Max(a => a.Id) ?? "ADDR0000";
-            Address a = new()
+            
+            var (lat, lon) = location.value;
+        */
+            if (ModelState.IsValid && (lat != 0.0 && lon != 0.0))
             {
-                Id = NextId(id, "ADDR", "D4"),
-                Premise = vm.Address.Premise,
-                Street = vm.Address.Street,
-                City = vm.Address.City,
-                State = vm.Address.State,
-                Postcode = vm.Address.Postcode,
-                Latitude = lat,//5.4194,
-                Longitude = lon, //100.3422,
-            };
-            db.Addresses.Add(a);
+                string id = db.Addresses.Max(a => a.Id) ?? "ADDR0000";
+                Address a = new()
+                {
+                    Id = NextId(id, "ADDR", "D4"),
+                    Premise = vm.Address.Premise,
+                    Street = vm.Address.Street,
+                    City = vm.Address.City,
+                    State = vm.Address.State,
+                    Postcode = vm.Address.Postcode,
+                    Latitude = lat,//5.4194,
+                    Longitude = lon, //100.3422,
+                };
+                db.Addresses.Add(a);
 
-            id = db.Events.Max(e => e.Id) ?? "EVT00000";
-            Event e = new()
-            {
-                Id = NextId(id, "EVT", "D5"),
-                Title = vm.Title.Trim().ToUpper(),
-                ImageUrl = hp.SavePhoto(vm.ImageUrl, "images/Events"),
-                CategoryId = vm.CategoryId,
-                AddressId = a.Id,
-                Price = vm.Price,
-            };
+                id = db.Events.Max(e => e.Id) ?? "EVT00000";
+                Event e = new()
+                {
+                    Id = NextId(id, "EVT", "D5"),
+                    Title = vm.Title.Trim().ToUpper(),
+                    ImageUrl = hp.SavePhoto(vm.ImageUrl, "images/Events"),
+                    CategoryId = vm.CategoryId,
+                    AddressId = a.Id,
+                    Price = vm.Price,
+                };
 
-            id = db.Details.Max(d => d.Id) ?? "DET00000";
-            Detail d = new()
-            {
-                Id = NextId(id, "DET", "D5"),
-                Description = vm.Description,
-                Organizer = "Sample Organizer",
-                ContactEmail = vm.ContactEmail,
-                Date = vm.Date,
-                StartTime = vm.StartTime,
-                EndTime = vm.EndTime,
-                EventId = e.Id,
-            };
-            e.Detail = d;
-            db.Events.Add(e);
-            db.SaveChanges();
+                id = db.Details.Max(d => d.Id) ?? "DET00000";
+                Detail d = new()
+                {
+                    Id = NextId(id, "DET", "D5"),
+                    Description = vm.Description,
+                    Organizer = "Sample Organizer",
+                    ContactEmail = vm.ContactEmail,
+                    Date = vm.Date,
+                    StartTime = vm.StartTime,
+                    EndTime = vm.EndTime,
+                    EventId = e.Id,
+                };
+                e.Detail = d;
+                db.Events.Add(e);
+                db.SaveChanges();
 
-            TempData["Info"] = "Recoed inserted.";
-            return RedirectToAction("Index", "Home");
-        }
+                TempData["Info"] = "Recoed inserted.";
+                return RedirectToAction("Index", "Home");
+            }
+        //}
+
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
         return View();
     }
