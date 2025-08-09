@@ -52,7 +52,8 @@ namespace MyEvent.Controllers
                                 EndTime = e.Detail.EndTime,
                                 Description = e.Detail.Description
                             }
-                        }).ToList();
+                        })
+                       .ToList();
 
 
             return Ok(all);

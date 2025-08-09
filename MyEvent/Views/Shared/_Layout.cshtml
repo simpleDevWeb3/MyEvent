@@ -40,6 +40,7 @@
 
 <body style=" display:grid; grid-template-columns:80px 1fr;">
 
+
     <div class="sidebar-nav" style="
             width:100%; 
             background: linear-gradient(to bottom, #212020, #000000);
@@ -50,11 +51,17 @@
             <i class="ri-home-2-fill home" data-ajax-page="/"></i>
         </button>
         <br />
-        <button class="home-button" data-ajax-page="/create_event">
-            <i class="ri-add-line"></i>
-             
-        </button>
-        <br />
+
+      
+        @if (User.IsInRole("Admin"))
+        {
+            <button class="home-button" data-ajax-page="/create_event">
+                <i class="ri-add-line"></i>
+
+            </button>
+            <br />
+        }
+     
          <button class="home-button">
             <i class="ri-notification-line"></i>
         
@@ -96,7 +103,9 @@
                 @if(User.Identity!.IsAuthenticated)
                 {  
                     <div style="color:white">
+                        
                         @User.Identity.Name |
+                     
                         @(User.IsInRole("Admin") ? "Admin" : "Member")
                     </div>
 

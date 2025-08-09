@@ -34,7 +34,7 @@ public class AccountController : Controller
         {
             TempData["Info"] = "Login successfully.";
 
-            hp.SignIn(u!.Email, u.Role, vm.RememberMe);
+            hp.SignIn(u!.Name,u!.Email, u.Role, vm.RememberMe);
 
             if (!string.IsNullOrEmpty(returnURL))
             {
@@ -44,7 +44,7 @@ public class AccountController : Controller
             // Default redirect
             return RedirectToAction("Index", "Home");
         }
-
+        ModelState.AddModelError("", "Login not working.");
         // If ModelState is invalid
         return View(vm);
     }
@@ -59,6 +59,7 @@ public class AccountController : Controller
     }
 
     // GET: Account/AccessDenied
+    [Route("/AccessDenied")]
     public IActionResult AccessDenied(string? returnURL)
     {
         return View();

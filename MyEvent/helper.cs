@@ -85,12 +85,13 @@ public class Helper
         return ph.VerifyHashedPassword(0, hash, password) == PasswordVerificationResult.Success; 
     }
 
-    public void SignIn(string email, string role, bool rememberMe)
+    public void SignIn(string name,string email, string role, bool rememberMe)
     {
         // (1) Claim, identity and principal
         // TODO
         List<Claim> claims = [
-            new(ClaimTypes.Name, email),
+            new(ClaimTypes.Name,name),
+            new(ClaimTypes.Email,email),
             new(ClaimTypes.Role, role)];
 
         // TODO

@@ -10,7 +10,7 @@ builder.Services.AddSqlServer<DB>($@"
     Integrated Security=True;");
 
 // Enable MVC and JSON fix for circular references
-builder.Services.AddScoped<MyEvent.Helper>();
+builder.Services.AddScoped<Helper>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<GeoService>(); //cheng added!!!*************************************************
@@ -23,18 +23,8 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 
 app.UseRouting();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
-
-
-app.MapDefaultControllerRoute();  // Optional if using MVC Views
+app.MapDefaultControllerRoute();  
 
 app.Run();

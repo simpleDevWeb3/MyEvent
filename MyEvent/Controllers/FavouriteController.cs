@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyEvent.Models;
 using static MyEvent.Models.DB;
 
 namespace MyEvent.Controllers
@@ -13,7 +13,7 @@ namespace MyEvent.Controllers
         {
             _db = db;
         }
-
+    
         [HttpPost]
         public IActionResult Follow(string eventId)
         {
@@ -46,6 +46,7 @@ namespace MyEvent.Controllers
             return RedirectToAction("FollowedEvents");
         }
 
+      
         public IActionResult FollowedEvents()
         {
             var followed = _db.FollowedEvents
