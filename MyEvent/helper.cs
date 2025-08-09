@@ -82,8 +82,7 @@ public class Helper
 
     public bool VerifyPassword(string hash, string password)
     {
-        return ph.VerifyHashedPassword(0, hash, password)
-               == PasswordVerificationResult.Success; 
+        return ph.VerifyHashedPassword(0, hash, password) == PasswordVerificationResult.Success; 
     }
 
     public void SignIn(string email, string role, bool rememberMe)
@@ -95,7 +94,7 @@ public class Helper
             new(ClaimTypes.Role, role)];
 
         // TODO
-        ClaimsIdentity identity = new(claims, "Cookies");
+        ClaimsIdentity identity = new(claims, "Cookie");
 
         // TODO
         ClaimsPrincipal principal = new(identity);

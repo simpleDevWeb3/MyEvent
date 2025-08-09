@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 namespace MyEvent.Models;
 
+#nullable disable warnings
 public class LoginVM
 {
     [StringLength(100)]

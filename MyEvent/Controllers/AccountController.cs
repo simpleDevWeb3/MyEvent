@@ -25,7 +25,6 @@ public class AccountController : Controller
     public IActionResult Login(LoginVM vm, string? returnURL)
     {
         var u = db.Users.FirstOrDefault(x => x.Email == vm.Email);
-
         if (u == null || !hp.VerifyPassword(u.Hash, vm.Password))
         {
             ModelState.AddModelError("", "Login credentials not matched.");
