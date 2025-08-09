@@ -50,6 +50,7 @@ public class AccountController : Controller
     }
 
     // GET: Account/Logout
+    [Route("/logout")]
     public IActionResult Logout(string? returnURL)
     {
         TempData["Info"] = "Logout successfully.";
