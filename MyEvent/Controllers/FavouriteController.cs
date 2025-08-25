@@ -1,14 +1,14 @@
-<<<<<<< HEAD
+
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-=======
+
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using MyEvent.Models;
->>>>>>> 775413e31285b562f8feab06273e7c52c07d01d0
+
 using static MyEvent.Models.DB;
 
 namespace MyEvent.Controllers
@@ -21,12 +21,12 @@ namespace MyEvent.Controllers
         {
             _db = db;
         }
-<<<<<<< HEAD
+
     
-=======
+
 
         [Authorize]
->>>>>>> 775413e31285b562f8feab06273e7c52c07d01d0
+
         [HttpPost]
         public IActionResult Follow(string eventId)
         {

@@ -102,7 +102,7 @@ public class AccountController : Controller
                 Email = vm.Email,
                 Hash = hp.HashPassword(vm.Password),
                 Name = vm.Name,
-                PhotoURL = hp.SavePhoto(vm.Photo, "photos")
+                PhotoURL = hp.SavePhoto(vm.Photo, "Profile")
             });
             db.SaveChanges();
 
@@ -142,7 +142,7 @@ public class AccountController : Controller
                 Email = vm.Email,
                 Hash = hp.HashPassword(vm.Password),
                 Name = vm.Name,
-                PhotoURL = hp.SavePhoto(vm.Photo, "photos")
+                PhotoURL = hp.SavePhoto(vm.Photo, "Profile")
             });
             db.SaveChanges();
 

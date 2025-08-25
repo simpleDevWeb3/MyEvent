@@ -2,47 +2,77 @@
 
 @{
     ViewBag.Title = "Account | Register";
+    Layout = "";
 }
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="~/style/Register.css" asp-append-version="true" />
+    <meta charset="UTF-8">
+    <title>Register - My Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/style/Register.css" />
 </head>
-<h2>Register As Admin</h2>
+<body>
 
-<form class="form" method="post" enctype="multipart/form-data">
-    <div asp-validation-summary="ModelOnly"></div>
+    <main class="login-wrapper">
+        <div class="login-container">
 
-    <label asp-for="Email"></label>
-    <input asp-for="Email" autofocus>
-    <span asp-validation-for="Email"></span>
+            <!-- Heading goes OUTSIDE the form -->
+            <img style="border-radius:30%; object-fit:cover; width:30%; height:30%;" src="~/images/Logo/MyEvently.png" />
+            <h2 class="title">Register as Admin</h2>
 
-    <label asp-for="Password"></label>
-    <input asp-for="Password">
-    <span asp-validation-for="Password"></span>
+            <form method="post" class="form" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
 
-    <label asp-for="Confirm"></label>
-    <input asp-for="Confirm">
-    <span asp-validation-for="Confirm"></span>
+                <div class="form-group">
+                    <label asp-for="Email">Email</label>
+                    <input asp-for="Email" type="email" />
+                    <span asp-validation-for="Email"></span>
+                </div>
 
-    <label asp-for="Name"></label>
-    <input asp-for="Name">
-    <span asp-validation-for="Name"></span>
+                <div class="form-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" type="password" />
+                    <span asp-validation-for="Password"></span>
+                </div>
 
-    <label asp-for="Photo"></label>
-    <label class="upload">
-        <small>Select Photo...</small>
-        <input asp-for="Photo" accept="image/jpeg,image/png" hidden>
-        <img src="/images/photo.jpg">
-    </label>
-    <span asp-validation-for="Photo"></span>
+                <div class="form-group">
+                    <label asp-for="Confirm">Confirm Password</label>
+                    <input asp-for="Confirm" type="password" />
+                    <span asp-validation-for="Confirm"></span>
+                </div>
 
-    <section>
-        <button>Register</button>
-        <button type="reset">Reset</button>
-    </section>
-</form>
+                <div class="form-group">
+                    <label asp-for="Name">Name</label>
+                    <input asp-for="Name" type="text" />
+                    <span asp-validation-for="Name"></span>
+                </div>
 
-@section foot {
+                <div class="form-group">
+                    <label asp-for="Photo">Profile Photo</label>
+                    <label class="upload">
+                        <small>Select Photo...</small>
+                        <input asp-for="Photo" accept="image/jpeg,image/png" hidden />
+                        <img src="/images/Profile/photo.jpg" />
+                    </label>
+                    <span asp-validation-for="Photo"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button class="login-btn">Register</button>
+                    <button type="reset" class="reset-btn">Reset</button>
+                </div>
+            </form>
+
+            <p class="links">
+                [ <a href="/Login">Login</a> ]
+            </p>
+        </div>
+    </main>
+
     <script>
         $.validator.setDefaults({ ignore: '' });
     </script>
-}
+</body>
+</html>

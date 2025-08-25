@@ -42,22 +42,31 @@ public class Helper
 
     public string SavePhoto(IFormFile f, string folder)
     {
-        var file = Guid.NewGuid().ToString("n") + ".jpg";
-        var path = Path.Combine(en.WebRootPath, folder, file);
+        // Save inside wwwroot/images/{folder}
+        var saveFolder = Path.Combine(en.WebRootPath, "images", folder);
+        if (!Directory.Exists(saveFolder))
+            Directory.CreateDirectory(saveFolder);
 
+        // Generate unique file name
+        var fileName = Guid.NewGuid().ToString("n") + Path.GetExtension(f.FileName);
+        var filePath = Path.Combine(saveFolder, fileName);
+
+        // Resize options
         var options = new ResizeOptions
         {
-            Size = new(200, 500),
+            Size = new Size(200, 500),
             Mode = ResizeMode.Crop,
         };
 
         using var stream = f.OpenReadStream();
         using var img = Image.Load(stream);
         img.Mutate(x => x.Resize(options));
-        img.Save(path);
+        img.Save(filePath);
 
-        return "/images/events/" + file;
+        // Return relative web path (for <img src>)
+        return $"/images/{folder}/{fileName}";
     }
+    
 
     public void DeletePhoto(string file, string folder)
     {

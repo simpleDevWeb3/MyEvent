@@ -100,24 +100,27 @@
 
             </div>
             <div class="right-section">
-                @if(User.Identity!.IsAuthenticated)
-                {  
-                    <div style="color:white">
-                        
-                        @User.Identity.Name |
-                     
-                        @(User.IsInRole("Admin") ? "Admin" : "Member")
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <div class="user-info" style="display:flex; align-items:center; gap:0.5rem; color:white;">
+
+                        <!-- Profile Photo -->
+                        <img src="@(User.FindFirst("PhotoUrl")?.Value ?? "~/images/Profile/@photoURL")"
+                             alt="Profile Photo"
+                             style="width:40px; height:40px; border-radius:50%; object-fit:cover;" />
+
+                        <!-- Name and Role -->
+                        <span>@User.Identity.Name</span>
+                        <span>| @(User.IsInRole("Admin") ? "Admin" : "Member")</span>
                     </div>
 
                     <button class="Log-in-btn" data-ajax-page="/logout">Log Out</button>
                 }
                 else
                 {
-                    <button class="Sign-up-btn" data-ajax-page=/Account/RegisterSelect>Sign Up</button>
+                    <button class="Sign-up-btn" data-ajax-page="/Account/RegisterSelect">Sign Up</button>
                     <button class="Log-in-btn" data-ajax-page="/login">Log In</button>
                 }
-              
-                   
             </div>
             </header>
             <!-------------------Navbar-------------------------->
