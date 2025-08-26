@@ -49,11 +49,11 @@ public class RegisterAdminVM
     [Remote("CheckEmail", "Account", ErrorMessage = "Duplicated {0}.")]
     public string Email { get; set; }
 
-    [StringLength(100, MinimumLength = 8)]
+    [StringLength(100, MinimumLength = 8 )]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 
-    [StringLength(100, MinimumLength = 5)]
+    [StringLength(100, MinimumLength = 8)]
     [Compare("Password")]
     [DataType(DataType.Password)]
     [Display(Name = "Confirm Password")]
@@ -66,17 +66,17 @@ public class RegisterAdminVM
 }
 public class UpdatePasswordVM
 {
-    [StringLength(100, MinimumLength = 5)]
+    [StringLength(100, MinimumLength = 8)]
     [DataType(DataType.Password)]
     [Display(Name = "Current Password")]
     public string Current { get; set; }
 
-    [StringLength(100, MinimumLength = 5)]
+    [StringLength(100, MinimumLength = 8)]
     [DataType(DataType.Password)]
     [Display(Name = "New Password")]
     public string New { get; set; }
 
-    [StringLength(100, MinimumLength = 5)]
+    [StringLength(100, MinimumLength = 8)]
     [Compare("New")]
     [DataType(DataType.Password)]
     [Display(Name = "Confirm Password")]
