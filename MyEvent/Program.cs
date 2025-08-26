@@ -14,6 +14,8 @@ builder.Services.AddSqlServer<DB>($@"
 builder.Services.AddScoped<Helper>();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient<GeoService>(); //cheng added!!!*************************************************
+
 
 builder.Services.AddAuthentication("MyCookieAuth")
     .AddCookie("MyCookieAuth", options =>
@@ -31,6 +33,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddAuthentication().AddCookie();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -40,6 +43,7 @@ app.UseStaticFiles();
 
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

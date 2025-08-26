@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MyEvent.Models;
 using static MyEvent.Models.DB;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyEvent.Controllers;
 
@@ -32,10 +34,13 @@ public class CreateEventController : Controller
 
     public bool CheckDate(DateOnly date)
     {
-        if (DateOnly.FromDateTime(DateTime.Now) > date)
-            return false;
+        var min = DateOnly.FromDateTime(DateTime.Now);  //today
+        var max = min.AddYears(1);  //1 year after
 
-        return true;
+        if (min < date && date < max)
+            return true;
+
+        return false;
     }
 
     public bool CheckTime(TimeOnly StartTime, TimeOnly EndTime)
@@ -48,21 +53,42 @@ public class CreateEventController : Controller
         return price >= 0 && price <= 200.00m;
     }
 
-    public async Task<bool> CheckAddress(string Street, string City, string Postcode, string State)
+    public async Task<Feature?> CheckAddress(string location)
     {
-        string fullAddress = $"{Street}, {Postcode} {City}, {State}";
-        var cordinates = await _geo.GetCoordinatesAsync(fullAddress);
-        if (cordinates != null)
+        var s = HttpContext.Session.GetString("create_event_location_search");
+        var addressResponse = await _geo.GetCoordinatesAsync(s ?? "");
+
+        if (addressResponse != null)
         {
-            return true;
+            foreach (var features in addressResponse.Features)
+            {
+                if (features.Properties.Formatted == location)
+                {
+                    return features;
+                }
+            }
+            return null;
         }
-        return false;
+        return null;
     }
 
     [Route("/create_event")]
-    public IActionResult CreateEvent()
+    public async Task<IActionResult> CreateEvent(string create_event_location_search)
     {
+        if (Request.IsAjax())
+        {
+            var coordinates = await _geo.GetCoordinatesAsync(create_event_location_search);
+
+            if (coordinates != null && create_event_location_search != null)
+            {
+                HttpContext.Session.SetString("create_event_location_search", create_event_location_search);
+                return PartialView("_SearchResult", coordinates);
+            }
+            return PartialView("_SearchResult");
+        }
+
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
+
         return View();
     }
 
@@ -70,8 +96,7 @@ public class CreateEventController : Controller
     [Route("/create_event")]
     public async Task<IActionResult> CreateEvent(EventVM vm)
     {
-        if (ModelState.IsValid("CategoryId") &&
-            !db.Categories.Any(c => c.Id == vm.CategoryId))
+        if (ModelState.IsValid("CategoryId") && !db.Categories.Any(c => c.Id == vm.CategoryId))
         {
             ModelState.AddModelError("CategoryId", "Invalid Category.");
         }
@@ -93,82 +118,64 @@ public class CreateEventController : Controller
 
         if (ModelState.IsValid("ImageUrl"))
         {
-            // TODO
             var e = hp.ValidatePhoto(vm.ImageUrl);
             if (e != "") ModelState.AddModelError("ImageUrl", e);
         }
-        
-        string fullAddress = $"{vm.Address.Street}, {vm.Address.Postcode} {vm.Address.City}, {vm.Address.State}";
-        var cordinates = await _geo.GetCoordinatesAsync(fullAddress);
-        var (lat, lon) = (0.0, 0.0);        //static first
-        if (cordinates != null)
-        {
-            (lat, lon) = cordinates.Value;
-        }
-        else
-        {
-            ModelState.AddModelError("Address.State", "(Address not found.)");
-        }
-        
-        /*
-        var location = CheckAdress(vm.Address);
-        if (location == null) 
+
+        Feature? address = await CheckAddress(vm.Formatted_address);
+        if (address == null)
         {
             ModelState.AddModelError("Address", "Address not found.");
         }
-        else
+        
+        if (ModelState.IsValid && address != null)
         {
-            
-            var (lat, lon) = location.value;
-        */
-            if (ModelState.IsValid && (lat != 0.0 && lon != 0.0))
+            string id = db.Addresses.Max(a => a.Id) ?? "ADDR0000";
+            Address a = new()
             {
-                string id = db.Addresses.Max(a => a.Id) ?? "ADDR0000";
-                Address a = new()
-                {
-                    Id = NextId(id, "ADDR", "D4"),
-                    Premise = vm.Address.Premise,
-                    Street = vm.Address.Street,
-                    City = vm.Address.City,
-                    State = vm.Address.State,
-                    Postcode = vm.Address.Postcode,
-                    Latitude = lat,//5.4194,
-                    Longitude = lon, //100.3422,
-                };
-                db.Addresses.Add(a);
+                Id = NextId(id, "ADDR", "D4"),
+                Premise = address.Properties.Premise ?? "",
+                Street = address.Properties.Street,
+                City = address.Properties.City,
+                State = address.Properties.State,
+                Postcode = address.Properties.Postcode,
+                Latitude = address.Geometry.Coordinates[1],
+                Longitude = address.Geometry.Coordinates[0],
+            };
+            db.Addresses.Add(a);
 
-                id = db.Events.Max(e => e.Id) ?? "EVT00000";
-                Event e = new()
-                {
-                    Id = NextId(id, "EVT", "D5"),
-                    Title = vm.Title.Trim().ToUpper(),
-                    ImageUrl = hp.SavePhoto(vm.ImageUrl, "images/Events"),
-                    CategoryId = vm.CategoryId,
-                    AddressId = a.Id,
-                    Price = vm.Price,
-                };
+            id = db.Events.Max(e => e.Id) ?? "EVT00000";
+            Event e = new()
+            {
+                Id = NextId(id, "EVT", "D5"),
+                Title = vm.Title.Trim().ToUpper(),
+                ImageUrl = hp.SavePhoto(vm.ImageUrl, "images/Events"),
+                CategoryId = vm.CategoryId,
+                AddressId = a.Id,
+                Price = vm.Price,
+            };
 
-                id = db.Details.Max(d => d.Id) ?? "DET00000";
-                Detail d = new()
-                {
-                    Id = NextId(id, "DET", "D5"),
-                    Description = vm.Description,
-                    Organizer = "Sample Organizer",
-                    ContactEmail = vm.ContactEmail,
-                    Date = vm.Date,
-                    StartTime = vm.StartTime,
-                    EndTime = vm.EndTime,
-                    EventId = e.Id,
-                };
-                e.Detail = d;
-                db.Events.Add(e);
-                db.SaveChanges();
+            id = db.Details.Max(d => d.Id) ?? "DET00000";
+            Detail d = new()
+            {
+                Id = NextId(id, "DET", "D5"),
+                Description = vm.Description,
+                Organizer = "Sample Organizer",
+                ContactEmail = vm.ContactEmail,
+                Date = vm.Date,
+                StartTime = vm.StartTime,
+                EndTime = vm.EndTime,
+                EventId = e.Id,
+            };
+            e.Detail = d;
+            db.Events.Add(e);
+            db.SaveChanges();
 
-                TempData["Info"] = "Recoed inserted.";
-                return RedirectToAction("Index", "Home");
-            }
-        //}
+            TempData["Info"] = "Event created successful.";
+            return RedirectToAction("Index", "Home");
+        }
 
+        
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
         return View();
     }

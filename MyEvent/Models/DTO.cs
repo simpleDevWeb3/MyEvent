@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
+using System.Text.Json.Serialization;
 using static MyEvent.Models.DB;
 
 namespace MyEvent.Models;
@@ -47,15 +50,43 @@ public class CategoryDTO
 //cheng's code
 public class GeoapifyGeocodingResponseDto
 {
-    public List<Feature> features { get; set; }
+    [JsonPropertyName("features")]
+    public List<Feature> Features { get; set; }
 }
 
 public class Feature
 {
-    public Geometry geometry { get; set; }
+    [JsonPropertyName("geometry")]
+    public Geometry Geometry { get; set; }
+
+    [JsonPropertyName("properties")]
+    public Properties Properties { get; set; }
 }
 
 public class Geometry
 {
-    public List<double> coordinates { get; set; } // [lon, lat]
+    [JsonPropertyName("type")]
+    public string Type { get; set; }
+
+    [JsonPropertyName("coordinates")]
+    public List<double> Coordinates { get; set; } //lon, lat
+}
+
+public class Properties
+{
+    [JsonPropertyName("name")] public string Premise { get; set; }
+    [JsonPropertyName("housenumber")] public string HouseNumber { get; set; }
+    [JsonPropertyName("street")] public string Street { get; set; }
+    [JsonPropertyName("suburb")] public string Suburb { get; set; }
+    [JsonPropertyName("state")] public string State { get; set; }
+    [JsonPropertyName("postcode")] public string Postcode { get; set; }
+    [JsonPropertyName("city")] public string City { get; set; }
+
+    [JsonPropertyName("formatted")]
+    public string Formatted { get; set; }
+    public string AddressLine1 => string.Join(" ", new[] { HouseNumber, Premise });
+    public string AddressLine2 => string.Join(" ", new[] { Street, Suburb });
+    public string AddressLine3 => string.Join(" ", new[] { Postcode, City });
+
+    public string FullAddress => $"{AddressLine1}, {AddressLine2}, {AddressLine3}, {State}";
 }

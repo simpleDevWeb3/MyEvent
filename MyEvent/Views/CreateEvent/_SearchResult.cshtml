@@ -1,0 +1,22 @@
+﻿@model GeoapifyGeocodingResponseDto
+
+@{
+	if (Model != null)
+	{
+		foreach (var s in Model.Features)
+		{
+			<div class="create_event_location_result" 
+				 data-lat=@s.Geometry.Coordinates[1]
+				 data-lon=@s.Geometry.Coordinates[0]
+				 data-dto=@s
+				 >@s.Properties.Formatted</div>
+			<hr />
+		}
+
+	}
+	else
+	{
+		<div>No Result Found</div>
+		<hr />
+	}
+}
