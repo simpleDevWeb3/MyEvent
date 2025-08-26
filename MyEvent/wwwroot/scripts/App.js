@@ -137,3 +137,8 @@ $(document).on('click', '.create_event_location_result', function () {
     $('.create_event_location_input').val(formatted);
 });
 
+
+///////////////////////////////////////////////////Ken Code/////
+$('.profile-picture').on('click', () => {
+    console.log("opened");
+})

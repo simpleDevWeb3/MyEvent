@@ -146,10 +146,18 @@
     width: 0;
 }
 
+
 .hide {
     display: none;
 }
 
+.modal-user {
+    position:fixed;
+    top:80px;
+    right:150px; 
+    width:200px;
+    height:200px;
+}
 .modal {
     height: 500px;
     width: 500px;

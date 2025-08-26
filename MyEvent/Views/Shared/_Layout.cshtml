@@ -107,12 +107,14 @@
                         <!-- Profile Photo -->
                         <img src="@(User.FindFirst("PhotoUrl")?.Value ?? "~/images/Profile/@photoURL")"
                              alt="Profile Photo"
+                             class="profile-picture"
                              style="width:40px; height:40px; border-radius:50%; object-fit:cover;" />
 
                         <!-- Name and Role -->
                         <span>@User.Identity.Name</span>
                         <span>| @(User.IsInRole("Admin") ? "Admin" : "Member")</span>
                     </div>
+                    <div class="modal-user hide" ></div>
 
                     <button class="Log-in-btn" data-ajax-page="/logout">Log Out</button>
                 }
