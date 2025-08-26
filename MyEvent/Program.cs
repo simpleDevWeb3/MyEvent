@@ -1,5 +1,6 @@
 global using MyEvent.Models;
 global using MyEvent;
+using MyEvent.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<GeoService>(); //cheng added!!!*************************************************
 
 
+builder.Services.AddAuthentication("MyCookieAuth")
+    .AddCookie("MyCookieAuth", options =>
+    {
+        options.LoginPath = "/login";            
+        options.AccessDeniedPath = "/AccessDenied";
+    });
+
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/login";
+});
+
 builder.Services.AddAuthentication().AddCookie();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSession();
@@ -26,15 +41,17 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+
+
 app.UseRouting();
 app.UseSession();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
-});
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 app.MapDefaultControllerRoute();  // Optional if using MVC Views

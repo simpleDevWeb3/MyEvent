@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using MyEvent.Models;
 using static MyEvent.Models.DB;
 
@@ -14,6 +16,7 @@ namespace MyEvent.Controllers
             _db = db;
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Follow(string eventId)
         {
@@ -58,6 +61,7 @@ namespace MyEvent.Controllers
             return View("Followed", followed); // Ensure your view is Views/Favourite/Followed.cshtml
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult DeleteFollowed(int id)
         {
