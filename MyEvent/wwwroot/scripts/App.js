@@ -101,3 +101,39 @@ Router();
 
 let timeout;
 
+
+
+/////////////////////////////////////////////////Cheng's Code
+let auto_submit = null;
+$('#create_event_location_search').on('input', e => {
+    clearTimeout(auto_submit);
+    auto_submit = setTimeout(() => $(e.target.form).submit(), 200);
+});
+
+
+// Show overlay when readonly input is focused (clicked)
+$(".create_event_location_input").on("focus click", e => {
+    $("#overlay").fadeIn();
+    $("body").css("overflow", "hidden");
+});
+
+// Close overlay
+$(document).on("click", ".create_event_location_result", e => {
+    $("#overlay").fadeOut();
+    $("body").css("overflow", "auto");
+});
+
+// Close overlay when clicking outside form
+$("#overlay").on("click", function (e) {
+    if (e.target.id === "overlay") {
+        $(this).fadeOut();
+        $("body").css("overflow", "auto");
+    }
+});
+
+
+$(document).on('click', '.create_event_location_result', function () {
+    let formatted = $(this).text().trim();
+    $('.create_event_location_input').val(formatted);
+});
+

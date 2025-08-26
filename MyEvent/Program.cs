@@ -18,6 +18,7 @@ builder.Services.AddHttpClient<GeoService>(); //cheng added!!!******************
 
 builder.Services.AddAuthentication().AddCookie();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -26,6 +27,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseEndpoints(endpoints =>
 {

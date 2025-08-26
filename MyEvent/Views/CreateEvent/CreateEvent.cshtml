@@ -1,6 +1,8 @@
 ﻿@model EventVM
 @{
     ViewBag.Title = "Society Event Submission";
+    string min = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
+    string max = DateTime.Today.AddYears(1).ToString("yyyy-MM-dd");
 }
 
 <style>
@@ -71,9 +73,45 @@
     button:hover {
         background-color: #218838;
     }
+
+    .create_event_location_result:hover {
+        background: grey;
+    }
+
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    #search-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        width: 800px;
+        min-height: 300px
+    }
+
+    #create_event_location_search {
+        width: 80%;
+    }
+
+    .create_event_location_result {
+        margin: 3px auto;
+    }
+
 </style>
 
 <div class="form-container">
+
     <h2>@ViewBag.Title</h2>
     <form method="post" nonvalidate enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly"></div>
@@ -84,7 +122,7 @@
         <br />
 
         <label asp-for="Date"></label>
-        <input asp-for="Date" type="date" class="form-control" required />
+        <input asp-for="Date" type="date" class="form-control" min="@min" max="@max" required />
         <span asp-validation-for="Date"></span>
         <br />
 
@@ -92,11 +130,11 @@
         <div class="time-row">
             <div>
                 <label asp-for="StartTime"></label>
-                <input asp-for="StartTime" type="time" required />
+                <input asp-for="StartTime" type="time" step="900" asp-format="{0:HH:mm}" required />
             </div>
             <div>
                 <label asp-for="EndTime"></label>
-                <input asp-for="EndTime" type="time" required />
+                <input asp-for="EndTime" type="time" step="900" asp-format="{0:HH:mm}" required />
             </div>
             <span asp-validation-for="EndTime"></span>
         </div>
@@ -108,36 +146,14 @@
         <span asp-validation-for="CategoryId"></span>
         <br />
 
-        <Label>Address Information</Label>
-        <span asp-validation-for="Address.State"></span>
-        <fieldset>
-            <div class="form-group">
-                <label asp-for="Address.Premise"></label>
-                <input asp-for="Address.Premise" class="form-control" required />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Address.Street"></label>
-                <input asp-for="Address.Street" class="form-control" required />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Address.City"></label>
-                <input asp-for="Address.City" class="form-control" required />
-            </div>
-  
-            <div class="form-group">
-                <label asp-for="Address.Postcode"></label>
-                <input asp-for="Address.Postcode" class="form-control" required />
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="Address.State"></label>
-                <input asp-for="Address.State" class="form-control" required />
-            </div>
-
-        </fieldset>
-
+        <label asp-for="Formatted_address"></label>
+        <input  asp-for="Formatted_address"
+                class="create_event_location_input" 
+                placeholder="Click to search location"
+                readonly
+                required
+                value="" />
+        <br />
 
         <label asp-for="Price"></label>
         <input asp-for="Price" type="number" max=200.00 step=0.05 class="form-control" required />
@@ -168,13 +184,41 @@
             <button type="reset">Reset</button>
         </section>
     </form>
+    <!--
+    <form data-ajax="true"
+          data-ajax-update="#target"
+          data-ajax-loading="#loader">
+        @Html.TextBox("create_event_location_search", "",
+                      new { type = "search", autofocus = "", data_trim = "" })
+        <button>Search</button>
+        <img src="/images/Button/loader.gif" id="loader" style="display: none">
 
+    </form>
+    -->
+    <div id="overlay" style="display: none;">
+        <div id="search-form">
+            <form data-ajax="true"
+                  data-ajax-update="#target"
+                  data-ajax-loading="#loader">
+                @Html.TextBox("create_event_location_search", "",
+                              new { type = "search", autofocus = "", data_trim = "" })
+                <button>Search</button>
+                <img src="/images/Button/loader.gif" id="loader" style="display: none">
+            </form>
+            
+            <div id="target">
+                <partial name="_SearchResult">
+            </div>
+        </div>
+    </div>
 
 </div>
 
-@section foot {
+
+
+@section Scripts {
     <script>
-        // Enable hidden file validation
-        $.validator.setDefaults({ ignore: '' });
+            // Enable hidden file validation
+            $.validator.setDefaults({ ignore: '' });
     </script>
 }

@@ -9,7 +9,6 @@ namespace MyEvent.Models;
 public class EventVM
 {
     [MaxLength(100)]
-    //[RegularExpression(@"P\d{3}", ErrorMessage = "Invalid {0} format.")]
     public string Title { get; set; }
 
     [Remote("CheckDate", "CreateEvent", ErrorMessage = "Invalid {0}.")]
@@ -42,9 +41,14 @@ public class EventVM
     [Display(Name = "Image")]
     public IFormFile ImageUrl { get; set; }
 
-    public AddressVM Address { get; set; }
-}
+    //public AddressVM Address { get; set; }
+    //public CoordinatesVM Coordinates { get; set; }
+    //public Feature Address { get; set; }
+    [Display(Name = "Location")]
 
+    public string Formatted_address { get; set; }
+}
+/*
 public class AddressVM
 {
     [MaxLength(50)]
@@ -59,31 +63,24 @@ public class AddressVM
     [Display(Name = "City")]
     public string City { get; set; }
 
-    [MaxLength(5)]
     [Display(Name = "Postcode")]
+    [MaxLength(5)]
+    [RegularExpression(@"\d{5}", ErrorMessage = "Invalid {0} format.")]
     public string Postcode { get; set; }
 
     [MaxLength(50)]
     [Display(Name = "State")]
-    [Remote("CheckAddress", "CreateEvent", AdditionalFields = "Street,City,Postcode", ErrorMessage = "Invalid Address.")]
+    //[Remote("CheckAddress", "CreateEvent", AdditionalFields = "Street,City,Postcode", ErrorMessage = "Invalid Address.")]
     public string State { get; set; }
-
-    /*
-    // Read-only property to combine the full address
-    [Remote("CheckAddress", "CreateEvent", ErrorMessage = "Invalid Address.")]
-    public string FullAddress
-    {
-        get
-        {
-            return $"{Street}, {Postcode} {City}, {State}";
-
-            
-        }
-
-    }
-    */
 }
 
+public class CoordinatesVM
+{
+    public double Lat { get; set; }//may be delete
+    public double Lon { get; set; }//may be delete
+    public string FullAddress { get; set; }
+}
 
+*/
 
 
