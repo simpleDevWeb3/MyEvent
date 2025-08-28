@@ -1,0 +1,143 @@
+﻿@model IEnumerable<MyEvent.Models.DB.Event>
+@{
+    ViewData["Title"] = "My Events";
+
+    string[] formatted_address = [];
+    foreach (var e in Model)
+    {
+        formatted_address.Append($"{e.Address.Premise}");
+    }
+    int i = 0;
+}
+
+<style>
+    event_created_list,
+    body {
+        overflow-y: scroll;
+        color: white;
+
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    button {
+        display: inline-block;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    /* Table ---------------------------------------------------------------------- */
+
+    .table {
+        border-collapse: collapse;
+        margin-left: 50px;
+    }
+
+    .table th, 
+    .table td {
+        border: 1px solid #333;
+        padding: 5px;
+    }
+
+    .table th {
+        background: #666;
+        color: #fff;
+    }
+
+    .table tr:hover td {
+        background: #212020;
+    }
+
+    .detail th {
+        text-align: left;
+    }
+
+    .table th a {
+        color: inherit;
+        display: block;
+    }
+
+    .table th a.asc::after {
+        content: ' ▴';
+    }
+
+    .table th a.des::after {
+        content: ' ▾';
+    }
+
+    .table tr:has(input:checked) td {
+        background: tomato;
+    }
+
+    .table td:last-child {
+        position: relative;
+    }
+
+    .table .popup {
+        background: #fff;
+        border: inherit;
+        padding: inherit;
+        position: absolute;
+        z-index: 1;
+        white-space: nowrap;
+        top: 50%;
+        left: 100%;
+        transform: translate(5px, -50%);
+        display: none;
+    }
+
+    .table img.popup {
+        padding: 0;
+    }
+
+    .table tr:hover .popup {
+        display: block;
+    }
+
+</style>
+
+<div class="event_created_list" style="display: block; flex:none; width:100%">
+    <h1>My Events</h1>
+    <a href="/create_event">Create</a>
+    <table class="table">
+        <tr>
+            <th>No.</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Price</th>
+        </tr>
+        @foreach (var e in Model)
+        {
+            <tr>
+                <td>@(++i)</td>
+                <td>@e.Id</td>
+                <td>@e.Title</td>
+                <td>@e.Category.Name</td>
+                <td>@e.Detail.Date</td>
+                <td>@(e.Price == 0.00m ? "Free" : e.Price)</td>
+
+                <td>@($"{e.Address.Premise}, {e.Address.Street}, {e.Address.Postcode} {e.Address.City}, {e.Address.State}")</td>
+                <td>@e.Detail.ContactEmail</td>
+                <td>@e.Detail.StartTime</td>
+                <td>@e.Detail.EndTime</td>
+                <td>@e.Detail.Description</td>
+                <td>
+                    <button data-get="/event_detail">Detail</button>
+                    <button data-post="/CreateEvent/Delete/@e.Id">Delete</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

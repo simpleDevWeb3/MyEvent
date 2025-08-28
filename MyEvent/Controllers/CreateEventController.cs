@@ -100,7 +100,7 @@ public class CreateEventController : Controller
         {
             ModelState.AddModelError("CategoryId", "Invalid Category.");
         }
-        
+
         if (!CheckDate(vm.Date))
         {
             ModelState.AddModelError("Date", "Suspicious Date");
@@ -127,7 +127,7 @@ public class CreateEventController : Controller
         {
             ModelState.AddModelError("Address", "Address not found.");
         }
-        
+
         if (ModelState.IsValid && address != null)
         {
             string id = db.Addresses.Max(a => a.Id) ?? "ADDR0000";
@@ -175,8 +175,42 @@ public class CreateEventController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        
+
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
+        return View();
+    }
+
+    //***************************************************************************************************
+    [Route("/event_created")]
+    public IActionResult EventCreated()
+    {
+        var m = db.Events
+                .Include(e => e.Address)
+                .Include(e => e.Category)
+                .Include(e => e.Detail);
+        return View(m);
+    }
+
+    [HttpPost]
+    public IActionResult Delete(string? id)
+    {
+        var e = db.Events.Find(id);
+        Console.WriteLine(e != null);
+        Console.WriteLine(id);
+        if (e != null)
+        {
+            TempData["Info"] = $"Event {e.Title} deleted.";
+            Console.WriteLine(e.Title);
+            //db.Events.Remove(e);
+            //db.SaveChanges();
+        }
+
+        return RedirectToAction("EventCreated");
+    }
+
+    [Route("/event_detail")]
+    public IActionResult EventDetail()
+    {
         return View();
     }
 }
