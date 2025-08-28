@@ -22,18 +22,27 @@
         text-align: center;
     }
 
-    button {
+    .event_created_list button {
         display: inline-block;
-        background-color: #28a745;
+        background-color: #707070;
         color: white;
         border: none;
         padding: 10px 15px;
         border-radius: 5px;
         cursor: pointer;
+        width: 100px;
     }
 
-    button:hover {
-        background-color: #218838;
+    .event_created_list button:hover {
+        background-color: #505050;
+    }
+
+    .event_created_list button.btn-Delete {
+        background-color: red;
+    }
+
+    .event_created_list button.btn-Delete:hover {
+        background-color: #c90000;
     }
 
     /* Table ---------------------------------------------------------------------- */
@@ -104,6 +113,7 @@
         display: block;
     }
 
+
 </style>
 
 <div class="event_created_list" style="display: block; flex:none; width:100%">
@@ -116,7 +126,7 @@
             <th>Name</th>
             <th>Category</th>
             <th>Date</th>
-            <th>Price</th>
+            <th>Price (RM)</th>
         </tr>
         @foreach (var e in Model)
         {
@@ -128,14 +138,9 @@
                 <td>@e.Detail.Date</td>
                 <td>@(e.Price == 0.00m ? "Free" : e.Price)</td>
 
-                <td>@($"{e.Address.Premise}, {e.Address.Street}, {e.Address.Postcode} {e.Address.City}, {e.Address.State}")</td>
-                <td>@e.Detail.ContactEmail</td>
-                <td>@e.Detail.StartTime</td>
-                <td>@e.Detail.EndTime</td>
-                <td>@e.Detail.Description</td>
                 <td>
-                    <button data-get="/event_detail">Detail</button>
-                    <button data-post="/CreateEvent/Delete/@e.Id">Delete</button>
+                    <button data-get="/event_detail/@e.Id">Detail</button>
+                    <button class="btn-Delete" data-post="/CreateEvent/Delete/@e.Id">Delete</button>
                 </td>
             </tr>
         }

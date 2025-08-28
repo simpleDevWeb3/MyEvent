@@ -208,9 +208,21 @@ public class CreateEventController : Controller
         return RedirectToAction("EventCreated");
     }
 
-    [Route("/event_detail")]
-    public IActionResult EventDetail()
+    [Route("/event_detail/{id}")]
+    public IActionResult EventDetail(string? id)
     {
-        return View();
+        //var m = db.Events.Find(id);
+        var m = db.Events
+                .Include(e => e.Address)
+                .Include(e => e.Category)
+                .Include(e => e.Detail)
+                .FirstOrDefault(e => e.Id == id);
+
+        if (m != null)
+        {
+            return View(m);
+
+        }
+        return RedirectToAction("EventCreated");
     }
 }

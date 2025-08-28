@@ -1,35 +1,137 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MyEvent.Models.DB.Event
+
 @{
 }
 
 <style>
-    .create_event_event_detail{
-        height: 20%;
+    .content {
+        background: #272626;
     }
 
-    div {
-        margin: 5px 0;
+    body {
+        overflow-y: scroll;
+        color: white;
     }
+
+    h1 {
+        text-align: center;
+    }
+
+    button {
+        display: inline-block;
+        background-color: #707070;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100px;
+    }
+
+    button:hover {
+        background-color: #505050;
+    }
+
+    .btn-Delete {
+        background-color: red;
+    }
+
+    .btn-Delete:hover {
+        background-color: #c90000;
+    }
+
+    .create_event_picture_container > img{
+        height: 300px;
+        object-fit: cover;
+        margin: 10px auto;
+    }
+
+    .create_event_event_detail {
+        margin-left: 50px;
+    }
+    /* Form ----------------------------------------------------------------------- */
+
+    label > * {
+        vertical-align: text-top;
+    }
+
+    .form {
+        display: grid;
+        grid: auto / auto auto auto;
+        gap: 5px;
+        place-content: start;
+        place-items: center start;
+    }
+
+    .form > label:not(:has(*)) {
+        background: #666;
+        font-weight: bold;
+        padding: 5px;
+        place-self: stretch;
+        border-radius: 1px;
+    }
+
+    .form > section,
+    .validation-summary-valid,
+    .validation-summary-errors {
+        grid-column: 1 / -1;
+    }
+
+    .validation-summary-valid ul,
+    .validation-summary-errors ul {
+        margin: 0;
+    }
+
+    .field-validation-error,
+    .validation-summary-errors {
+        color: red;
+    }
+
 </style>
 
 <div class="create_event_event_detail" style="display: block; flex:none; width:100%">
-    <div class="create_event_picture_container"></div>
-    <div>
-        <div>Name(ID)</div>
-        <div>Date</div>
-        <div>Time</div>
-        <div>Price</div>
-        <div>Address</div>
-        <hr>
+    <h1>@Model.Title</h1>
+    <form class="form">
+        <label>Id</label>
+        <span>@Model.Id</span>
+        <br>
 
-        <div>CAtegory</div>
-        <div>Description</div>
-        <div>Email</div>
+        <label>Date</label>
+        <span>@Model.Detail.Date.ToString("yyyy-MM-dd")</span>
+        <br>
 
+        <label>Time</label>
+        <span>@Model.Detail.StartTime - @Model.Detail.EndTime</span>
+        <br>
+
+        <label>Price</label>
+        <span>@(Model.Price == 0.00m ? "Free" : "RM " + Model.Price)</span>
+        <br>
+
+        <label>Address</label>
+        <span>@($"{Model.Address.Premise}, {Model.Address.Street}, {Model.Address.Postcode} {Model.Address.City}, {Model.Address.State}")</span>
+        <br>
+
+        <label>Category</label>
+        <span>@Model.Category.Name</span>
+        <br>
+
+        <label>Description</label>
+        <span>@Model.Detail.Description</span>
+        <br>
+
+        <label>Email</label>
+        <span>@Model.Detail.ContactEmail</span>
+        <br>
+    </form>
+
+    <div class="create_event_picture_container">
+        <img src=@Model.ImageUrl />
     </div>
 
-    <button>back</button>
-    <button>delete</button>
+    <button data-get="/event_created">Back</button>
+    <button class="btn-Delete">Delete</button>
+
+
 </div>
+
