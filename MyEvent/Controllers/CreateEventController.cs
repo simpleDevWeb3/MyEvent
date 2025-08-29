@@ -43,9 +43,24 @@ public class CreateEventController : Controller
         return false;
     }
 
-    public bool CheckTime(TimeOnly StartTime, TimeOnly EndTime)
+    public bool CheckTime(TimeOnly? StartTime, TimeOnly? EndTime)
     {
-        return (EndTime - StartTime).TotalMinutes >= 30 && EndTime > StartTime;
+        if (StartTime.HasValue && EndTime.HasValue)
+        {
+            Console.WriteLine(StartTime);
+            Console.WriteLine(EndTime);
+            var duration = EndTime.Value - StartTime.Value;
+            Console.WriteLine("debug from line 51");
+
+            Console.WriteLine(duration.TotalMinutes >= 30);
+            Console.WriteLine(EndTime > StartTime);
+            Console.WriteLine(duration.TotalMinutes >= 30 && EndTime > StartTime);
+
+
+            return duration.TotalMinutes >= 30 && EndTime > StartTime;
+        }
+        Console.WriteLine("debug from line 53");
+        return true;
     }
 
     public bool CheckPrice(decimal price)
@@ -60,7 +75,7 @@ public class CreateEventController : Controller
 
         if (addressResponse != null)
         {
-            foreach (var features in addressResponse.Features)
+            foreach (var features in addressResponse)
             {
                 if (features.Properties.Formatted == location)
                 {
@@ -134,7 +149,7 @@ public class CreateEventController : Controller
             Address a = new()
             {
                 Id = NextId(id, "ADDR", "D4"),
-                Premise = address.Properties.Premise ?? "",
+                Premise = address.Properties.Premise,
                 Street = address.Properties.Street,
                 City = address.Properties.City,
                 State = address.Properties.State,
@@ -195,12 +210,10 @@ public class CreateEventController : Controller
     public IActionResult Delete(string? id)
     {
         var e = db.Events.Find(id);
-        Console.WriteLine(e != null);
-        Console.WriteLine(id);
+
         if (e != null)
         {
             TempData["Info"] = $"Event {e.Title} deleted.";
-            Console.WriteLine(e.Title);
             //db.Events.Remove(e);
             //db.SaveChanges();
         }

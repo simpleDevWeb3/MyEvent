@@ -15,12 +15,16 @@ public class EventVM
     public DateOnly Date { get; set; }
 
     [Display(Name = "Start Time")]
+    [Remote("CheckTime", "CreateEvent", AdditionalFields = "EndTime", ErrorMessage = "Invalid time range.")]
     public TimeOnly StartTime { get; set; }
 
     [Display(Name = "End Time")]
     [Remote("CheckTime", "CreateEvent", AdditionalFields = "StartTime", ErrorMessage = "Invalid time range.")]
     public TimeOnly EndTime { get; set; }
-
+    /*
+    [Remote("CheckTime", "CreateEvent", AdditionalFields = "StartTime,EndTime", ErrorMessage = "Invalid time range.")]
+    public string TimeRange { get; set; }
+    */
     [Display(Name = "Category")]
     [StringLength(8)]
     [RegularExpression(@"^CAT\d{5}$", ErrorMessage = "Invalid {0}.")]
