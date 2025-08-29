@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Payment Info";
+}
+
+<style>
+    .payment-container {
+        width: 800px;
+        margin: 20px auto;
+        background-color: #222;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .payment-heading {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .payment-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+        .payment-form label {
+            font-size: 16px;
+        }
+
+        .payment-form input {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+        }
+
+    .pay-button {
+        background-color: green;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+</style>
+
+<div class="payment-container">
+    <h2 class="payment-heading">Payment Information</h2>
+
+    <form asp-controller="Payment" asp-action="ProcessPayment" method="post" class="payment-form">
+        <input type="hidden" name="eventId" value="@Model?.Id" />
+
+        <label for="holderName">Cardholder Name</label>
+        <input type="text" id="holderName" name="HolderName" placeholder="John Doe" required />
+
+        <label for="holderEmail">Email</label>
+        <input type="email" id="holderEmail" name="HolderEmail" placeholder="example@mail.com" required />
+
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" name="CardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" required />
+
+        <label for="expiry">Expiry Date</label>
+        <input type="text" id="expiry" name="Expiry" placeholder="MM/YY" required />
+
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" name="CVV" placeholder="123" required />
+
+        <button type="submit" class="pay-button">Pay Now</button>
+    </form>
+</div>

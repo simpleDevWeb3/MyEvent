@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyEvent.Models;
 
@@ -11,9 +12,11 @@ using MyEvent.Models;
 namespace MyEvent.Migrations
 {
     [DbContext(typeof(DB))]
-    partial class DBModelSnapshot : ModelSnapshot
+    [Migration("20250827150201_Tickets")]
+    partial class Tickets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,9 +114,6 @@ namespace MyEvent.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
 
@@ -178,13 +178,6 @@ namespace MyEvent.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(8)");
 
-                    b.Property<DateTime>("FollowedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
@@ -201,24 +194,24 @@ namespace MyEvent.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CVV")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CardNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EventId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(8)");
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Expiry")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventId");
 
                     b.ToTable("Payments");
                 });
@@ -233,6 +226,10 @@ namespace MyEvent.Migrations
 
                     b.Property<int>("BuyerId")
                         .HasColumnType("int");
+
+                    b.Property<string>("DetailId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("EventId")
                         .IsRequired()
@@ -251,6 +248,8 @@ namespace MyEvent.Migrations
                     b.HasKey("TicketId");
 
                     b.HasIndex("BuyerId");
+
+                    b.HasIndex("DetailId");
 
                     b.HasIndex("EventId");
 
@@ -358,22 +357,17 @@ namespace MyEvent.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("MyEvent.Models.DB+Payment", b =>
-                {
-                    b.HasOne("MyEvent.Models.DB+Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-                });
-
             modelBuilder.Entity("MyEvent.Models.DB+Ticket", b =>
                 {
                     b.HasOne("MyEvent.Models.DB+User", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyEvent.Models.DB+Detail", "Detail")
+                        .WithMany()
+                        .HasForeignKey("DetailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -384,6 +378,8 @@ namespace MyEvent.Migrations
                         .IsRequired();
 
                     b.Navigation("Buyer");
+
+                    b.Navigation("Detail");
 
                     b.Navigation("Event");
                 });

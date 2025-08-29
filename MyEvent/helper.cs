@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using SixLabors.ImageSharp;
@@ -95,32 +96,27 @@ public class Helper
         return ph.VerifyHashedPassword(0, hash, password) == PasswordVerificationResult.Success; 
     }
 
-    public void SignIn(string name,string email, string role, bool rememberMe)
+    public void SignIn(HttpContext httpContext, int userId, string name, string email, string role, bool rememberMe)
     {
-        // (1) Claim, identity and principal
-        // TODO
-        List<Claim> claims = [
-            new(ClaimTypes.Name,name),
-            new(ClaimTypes.Email,email),
-            new(ClaimTypes.Role, role)];
+        var claims = new List<Claim>
+    {
+        new Claim("UserId", userId.ToString()),
+        new Claim(ClaimTypes.Name, name),
+        new Claim(ClaimTypes.Email, email),
+        new Claim(ClaimTypes.Role, role)
+    };
 
-        // TODO
-        ClaimsIdentity identity = new(claims, "Cookie");
+        var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-        // TODO
-        ClaimsPrincipal principal = new(identity);
-
-        // (2) Remember me (authentication properties)
-        // TODO
-        AuthenticationProperties properties = new()
+         httpContext.SignInAsync("Cookies", claimsPrincipal, new AuthenticationProperties
         {
             IsPersistent = rememberMe,
-        };
-
-        // (3) Sign in
-        // TODO
-        ct.HttpContext!.SignInAsync(principal, properties);
+            ExpiresUtc = DateTime.UtcNow.AddMinutes(60)
+        });
     }
+
+
 
     public void SignOut()
     {

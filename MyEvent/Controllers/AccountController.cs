@@ -34,20 +34,22 @@ public class AccountController : Controller
         {
             TempData["Info"] = "Login successfully.";
 
-            hp.SignIn(u!.Name,u!.Email, u.Role, vm.RememberMe);
+            // Pass userId as well
+            hp.SignIn(HttpContext, u.Id, u.Name, u.Email, u.Discriminator, vm.RememberMe);
+
 
             if (!string.IsNullOrEmpty(returnURL))
             {
                 return Redirect(returnURL);
             }
 
-            // Default redirect
             return RedirectToAction("Index", "Home");
         }
+
         ModelState.AddModelError("", "Login not working.");
-        // If ModelState is invalid
         return View(vm);
     }
+
 
     // GET: Account/Logout
     [Route("/logout")]

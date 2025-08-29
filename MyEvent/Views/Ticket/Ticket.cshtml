@@ -1,4 +1,6 @@
-﻿<style>
+﻿@model List<MyEvent.Models.DB.Ticket>
+
+<style>
     .ticket-container {
         width: 800px;
         margin: 20px auto;
@@ -45,37 +47,40 @@
         padding: 5px 10px;
         cursor: pointer;
         border-radius: 4px;
-    }
 </style>
 
 <div class="ticket-container">
-    <h2 class="ticket-heading">Favourite Events</h2>
+    <h2 class="ticket-heading">My Tickets</h2>
 
-    @if(Model != null && Model.Count > 0)
+    @if (Model?.Any() == true)
     {
         <table class="ticket-table">
             <thead>
                 <tr>
+                    <th>Ticket ID</th>
                     <th>Event</th>
                     <th>Date</th>
                     <th>Time</th>
-                    <th>Location</th>
-                    <th>Organizer</th>
+                    <th>Holder Name</th>
+                    <th>Email</th>
+                    <th>Purchase Date</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var ticket in Model)
                 {
                     <tr>
-                        <td>@item.Event.Title</td>
-                        <td>@item.Event.Detail?.Date.ToString("yyyy-MM-dd")</td>
-                        <td>@(item.Event.Detail != null ? $"{item.Event.Detail.StartTime} - {item.Event.Detail.EndTime}" : "")</td>
-                        <td>@item.Event.Address?.City, @item.Event.Address?.State</td>
-                        <td>@item.Event.Detail?.Organizer</td>
+                        <td>@ticket.TicketId</td>
+                        <td>@ticket.Event?.Title</td>
+                        <td>@ticket.Event?.Detail?.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@(ticket.Event?.Detail != null ? $"{ticket.Event.Detail.StartTime} - {ticket.Event.Detail.EndTime}" : "")</td>
+                        <td>@ticket.HolderName</td>
+                        <td>@ticket.HolderEmail</td>
+                        <td>@ticket.PurchaseDate.ToString("yyyy-MM-dd")</td>
                         <td>
-                            <form asp-controller="Favourite" asp-action="DeleteFollowed" method="post" style="margin: 0;">
-                                <input type="hidden" name="id" value="@item.Id" />
+                            <form asp-controller="Ticket" asp-action="DeleteTicket" method="post" style="margin: 0";>
+                                <input type="hidden" name="ticketId" value="@ticket.TicketId" />
                                 <button type="submit" class="action-button">
                                     Delete
                                 </button>
@@ -88,7 +93,6 @@
     }
     else
     {
-        <p style="text-align:center;">You did not follow any event yet.</p>
+        <p style="text-align:center;">You have no tickets yet.</p>
     }
-
 </div>

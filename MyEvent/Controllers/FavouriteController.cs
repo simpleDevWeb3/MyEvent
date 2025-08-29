@@ -1,14 +1,10 @@
 
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyEvent.Models;
-
+using System.Security.Claims;
 using static MyEvent.Models.DB;
 
 namespace MyEvent.Controllers
@@ -22,55 +18,72 @@ namespace MyEvent.Controllers
             _db = db;
         }
 
-    
+
 
 
         [Authorize]
-
         [HttpPost]
         public IActionResult Follow(string eventId)
         {
+            var userId = User.FindFirst("UserId")?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(); // User not logged in
+
             if (string.IsNullOrWhiteSpace(eventId))
-            {
                 return BadRequest("Invalid event ID.");
-            }
 
-            var alreadyFollowed = _db.FollowedEvents.Any(f => f.EventId == eventId);
-            if (!alreadyFollowed)
+            eventId = eventId.Trim();
+
+            // Fetch event with details
+            var ev = _db.Events
+                        .Include(e => e.Detail)
+                        .Include(e => e.Address)
+                        .Include(e => e.Category)
+                        .FirstOrDefault(e => e.Id == eventId);
+
+            if (ev == null)
+                return View("Error", "Event not found."); // Optional error view
+
+            // Check if already followed
+            var existing = _db.FollowedEvents
+                              .FirstOrDefault(f => f.EventId == ev.Id && f.UserId == userId);
+
+            if (existing == null)
             {
-                var ev = _db.Events
-                            .Include(e => e.Detail)
-                            .Include(e => e.Address)
-                            .Include(e => e.Category)
-                            .FirstOrDefault(e => e.Id == eventId);
-
-                if (ev != null)
+                _db.FollowedEvents.Add(new FollowedEvent
                 {
-                    _db.FollowedEvents.Add(new FollowedEvent
-                    {
-                        EventId = ev.Id,
-                        Event = ev
-                    });
+                    EventId = ev.Id,
+                    UserId = userId,
+                    FollowedDate = DateTime.Now
+                });
 
-                    _db.SaveChanges();
-                }
+                _db.SaveChanges();
             }
 
-            return RedirectToAction("FollowedEvents");
+            // Redirect to Followed Events page
+            return RedirectToAction("FollowedEvents", "Favourite");
         }
 
-      
+
+
+        [Authorize]
         public IActionResult FollowedEvents()
         {
+            var userId = User.FindFirst("UserId")?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized();
+
             var followed = _db.FollowedEvents
                               .Include(f => f.Event)
-                                .ThenInclude(e => e.Detail)
-                              .Include(f => f.Event.Address)
+                              .ThenInclude(e => e.Detail)
                               .Include(f => f.Event.Category)
+                              .Where(f => f.UserId == userId)
                               .ToList();
 
-            return View("Followed", followed); // Ensure your view is Views/Favourite/Followed.cshtml
+            return View("Followed",followed);
         }
+
+
 
         [Authorize]
         [HttpPost]

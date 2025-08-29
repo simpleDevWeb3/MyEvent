@@ -236,21 +236,54 @@
                     display:flex; justify-content:space-between;align-items:center;gap:10px; padding:20px;
                     ">
                 <div style="display:flex; flex-direction:column; ">
-                    <p style="margin:0;"> @Model.Detail.Date.ToString("MMMM dd, yyyy")</p>
+                    <p style="margin:0;"> @Model.Detail?.Date.ToString("MMMM dd, yyyy")</p>
                     <p class="title-detail" style="font-size:20px; margin:0;">@Model.Title</p>
                 </div>
                 
                 <div style="display:flex; gap:20px;">
                     <p>Only RM70</p>
-                    <button class="home-button" style="font-size:15px; padding: 10px 30px; background:white; color:black;">
-                       Join
-                    </button>
-                        <form asp-controller="Favourite" asp-action="Follow" method="post">
+                        <form class="ajax-form" data-url="/Ticket/AddTicket" method="post">
+                            <input type="hidden" name="eventId" value="@Model.Id" />
+                            <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:white; color:black;">
+                                Join
+                            </button>
+                        </form>
+
+                        <form class="ajax-form" data-url="/Favourite/Follow" method="post">
+                            @Html.AntiForgeryToken()
                             <input type="hidden" name="eventId" value="@Model.Id" />
                             <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:red; color:white;">
                                 Follow
                             </button>
                         </form>
+
+
+
+                        <script>
+document.addEventListener("submit", function (e) {
+    if (e.target.classList.contains("ajax-form")) {
+        e.preventDefault(); // Stop full page reload
+
+        const form = e.target;
+        const url = form.getAttribute("data-url");
+        const formData = new FormData(form);
+
+        fetch(url, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest" // Marks it as AJAX
+            }
+        })
+        .then(response => response.text())
+        .then(result => {
+            // Show success message or update a section dynamically
+            alert("Action completed successfully!");
+        })
+        .catch(error => console.error("Error:", error));
+    }
+});
+</script>
 
                 </div>
             </div>

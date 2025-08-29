@@ -1,0 +1,142 @@
+﻿<style>
+    .payment-container {
+        width: 800px;
+        margin: 20px auto;
+        background-color: #222;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .payment-heading {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .summary-table th, .summary-table td {
+        border: 1px solid white;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .summary-table th {
+        background-color: #444;
+    }
+
+    .summary-table tr:nth-child(even) {
+        background-color: #333;
+    }
+
+    .summary-table tr:nth-child(odd) {
+        background-color: #222;
+    }
+
+    .payment-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .payment-form label {
+        font-size: 16px;
+    }
+
+    .payment-form input, .payment-form select {
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .pay-button {
+        background-color: green;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    .action-button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="payment-container">
+    <h2 class="payment-heading">Payment Page</h2>
+
+    @if (Model != null)
+    {
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@User.Identity?.Name</td>
+                    <td>@(Model?.Title ?? "")</td>
+                    <td>@(Model?.Detail?.Date?.ToString("yyyy-MM-dd") ?? "")</td>
+                    <td>
+                        @(Model?.Detail != null
+                                            ? $"{Model.Detail.StartTime} - {Model.Detail.EndTime}"
+                                            : "")
+                    </td>
+                    <td>@(Model?.Detail?.Price != null ? $"RM {Model.Detail.Price}" : "")</td>
+                    <td>
+                        <form asp-controller="Payment" asp-action="DeletePayment">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="action-button">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Pay button for AJAX navigation -->
+        <button type="button" class="pay-button" onclick="loadPaymentInfo('@Model.Id')">
+            Pay
+        </button>
+    }
+    else
+    {
+        <p style="text-align:center;">You did not make any payment yet.</p>
+    }
+</div>
+
+<script>
+    function loadPaymentInfo(eventId) {
+        fetch(`/Payment/PaymentInfo?eventId=${eventId}`, {
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        })
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById("ajax-content").innerHTML = html;
+        })
+        .catch(err => console.error("Error loading payment info:", err));
+    }
+</script>
