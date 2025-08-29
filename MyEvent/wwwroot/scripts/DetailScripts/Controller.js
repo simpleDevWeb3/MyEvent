@@ -1,6 +1,7 @@
 ﻿
 import CountdownView from './View/CountdownView.js';
 import MapView from './View/MapView.js';
+import RecommendView from './View/RecommendView.js';
 import * as Model from '../Model.js'
 
 
@@ -26,10 +27,24 @@ const CountdownController = async function () {
     }
 }
 
+const RecommededController = async function (tag) {
+    try {
+        //set data 
+        await Model.getRecommended(tag);
+        console.log(Model.state.Events);
+        RecommendView.render(Model.state.Events);
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
 
 
 export const init = function () {
     //BreadCrumpView.render();
     MapView.Addhandler(CountdownController);
+    RecommendView.addHandlerDefault(RecommededController);
+    RecommendView.addHandlerDisplay(RecommededController);
     
 }

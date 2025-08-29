@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.Xml;
 using static MyEvent.Models.DB;
 
 
@@ -171,6 +172,24 @@ namespace MyEvent.Controllers
             return Ok(data);
         }
 
+        [HttpGet("Recommended/{query}")]
+        public IActionResult Recommended(string? query)
+        {
+            // handle find participant joined also event 
+            if (query == "Other Participant Also Interest")
+            {
+                return Ok(new { events = new List<EventDTO>() }); // return empty array
+            }
+
+            var searchResult = Search(query) as OkObjectResult;
+
+            if (searchResult?.Value == null)
+            {
+                return NotFound("No events found.");
+            }
+
+            return Ok(searchResult.Value);
+        }
 
         [HttpGet("Search/{query}")]
         public IActionResult Search(string? query)
