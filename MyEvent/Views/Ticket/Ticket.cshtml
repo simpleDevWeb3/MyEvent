@@ -1,0 +1,98 @@
+﻿@model List<MyEvent.Models.DB.Ticket>
+
+<style>
+    .ticket-container {
+        width: 800px;
+        margin: 20px auto;
+        background-color: #222;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .ticket-heading {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .ticket-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .ticket-table th, .ticket-table td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .ticket-table th {
+            background-color: #444;
+        }
+
+        .ticket-table tr:nth-child(even) {
+            background-color: #333;
+        }
+
+        .ticket-table tr:nth-child(odd) {
+            background-color: #222;
+        }
+
+    .action-button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+</style>
+
+<div class="ticket-container">
+    <h2 class="ticket-heading">My Tickets</h2>
+
+    @if (Model?.Any() == true)
+    {
+        <table class="ticket-table">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Holder Name</th>
+                    <th>Email</th>
+                    <th>Purchase Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model)
+                {
+                    <tr>
+                        <td>@ticket.TicketId</td>
+                        <td>@ticket.Event?.Title</td>
+                        <td>@ticket.Event?.Detail?.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@(ticket.Event?.Detail != null ? $"{ticket.Event.Detail.StartTime} - {ticket.Event.Detail.EndTime}" : "")</td>
+                        <td>@ticket.HolderName</td>
+                        <td>@ticket.HolderEmail</td>
+                        <td>@ticket.PurchaseDate.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <form asp-controller="Ticket" asp-action="DeleteTicket" method="post" style="margin: 0" ;>
+                                <input type="hidden" name="ticketId" value="@ticket.TicketId" />
+                                <button type="submit" class="action-button">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="text-align:center;">You have no tickets yet.</p>
+    }
+</div>

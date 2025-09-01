@@ -26,6 +26,19 @@ public class DB : DbContext
         public DbSet<Detail> Details { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<FollowedEvent> FollowedEvents { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+
+    public class Payment
+    {
+        [Key]
+        public int Id { get; set; }
+        public string EventId { get; set; }       // string to match Event.Id
+        public Event Event { get; set; }
+        public string? CardNumber { get; set; }
+        public string? Expiry { get; set; }
+        public string? CVV { get; set; }
+        public DateTime CreatedAt { get; set; }
+    }
 
     public class Address
     {
@@ -86,6 +99,8 @@ public class DB : DbContext
 
      
         public string CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]   // NEWWWWWWWWWWWWWWWWWWWWWWWWWW
         public Category Category { get; set; }
 
         public Detail Detail { get; set; }
@@ -113,7 +128,6 @@ public class DB : DbContext
         [MaxLength(100)]
         public string ContactEmail { get; set; }
 
-        
         public DateOnly Date { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
@@ -123,7 +137,7 @@ public class DB : DbContext
 
     public class User
     {
-        [Key, MaxLength(8)]
+        [Key]
         public int Id { get; set; }
         [MaxLength(100)]
         public string Email { get; set; }
@@ -174,9 +188,15 @@ public class DB : DbContext
         [Key]
         public int Id { get; set; }
 
+        public int UserId { get; set; }       // FK to user
+
+        [MaxLength(8)]
         public string EventId { get; set; }   // FK to Event
+
         public Event Event { get; set; }
+        public DateTime FollowedDate { get; set; }
     }
+
 
 }
 

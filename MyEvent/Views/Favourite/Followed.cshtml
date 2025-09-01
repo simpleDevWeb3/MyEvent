@@ -1,74 +1,109 @@
-﻿<style>
-    .event-table-container {
-        width: 800px; /* or use 70% */
-        margin: 0 auto; /* center the table */
+﻿@model List<MyEvent.Models.DB.FollowedEvent>
+
+<style>
+    .event-container {
+        width: 800px;
+        margin: 20px auto;
+        background-color: #222;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
     }
 
-    table {
+    .event-heading {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .event-table {
         width: 100%;
         border-collapse: collapse;
-        color: white;
-    }
-
-    th, td {
-        padding: 10px;
-        border: 1px solid white;
-        text-align: left;
-    }
-
-    th {
-        background-color: #444;
-    }
-
-    tr:nth-child(even) {
-        background-color: #333;
-    }
-
-    tr:nth-child(odd) {
-        background-color: #222;
-    }
-
-    .table-heading {
-        color: white;
-        text-align: center;
         margin-bottom: 20px;
-        font-size: 28px;
+    }
+
+        .event-table th, .event-table td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .event-table th {
+            background-color: #444;
+        }
+
+        .event-table tr:nth-child(even) {
+            background-color: #333;
+        }
+
+        .event-table tr:nth-child(odd) {
+            background-color: #222;
+        }
+
+    .action-button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .pay-button {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
     }
 </style>
 
-<div class="event-table-container">
-    <h2 class="table-heading">Favourite Events</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Event</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Location</th>
-                <th>Organizer</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Event.Title</td>
-                    <td>@item.Event.Detail?.Date.ToString("yyyy-MM-dd")</td>
-                    <td>@item.Event.Detail?.StartTime - @item.Event.Detail?.EndTime</td>
-                    <td>@item.Event.Address?.City, @item.Event.Address?.State</td>
-                    <td>@item.Event.Detail?.Organizer</td>
-                    <td>
-                        <form asp-controller="Favourite" asp-action="DeleteFollowed" method="post" style="margin: 0;">
-                            <input type="hidden" name="id" value="@item.Id" />
-                            <button type="submit" style="background-color: red; color: white; border: none; padding: 5px 10px; cursor: pointer;">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
+<div class="event-container">
+    <h2 class="event-heading">Favourite Events</h2>
 
-    </table>
+    @if (Model?.Any() == true)
+    {
+        <table class="event-table">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>Organizer</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Event.Title</td>
+                        <td>@item.Event.Detail?.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@(item.Event.Detail != null ? $"{item.Event.Detail.StartTime} - {item.Event.Detail.EndTime}" : "")</td>
+                        <td>@item.Event.Address?.City, @item.Event.Address?.State</td>
+                        <td>@item.Event.Detail?.Organizer</td>
+                        <td>
+                            <div style="display:flex; gap:8px;">
+                                <form asp-controller="Favourite" asp-action="DeleteFollowed" method="post" style="margin:0;">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="action-button">Delete</button>
+                                </form>
+                                <form asp-controller="Payment" asp-action="PaymentInfo" method="post" style="margin:0;">
+                                    <input type="hidden" name="eventId" value="@item.Event.Id" />
+                                    <button type="submit" class="pay-button">Pay</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="text-align:center;">You have no favourite events yet.</p>
+    }
 </div>

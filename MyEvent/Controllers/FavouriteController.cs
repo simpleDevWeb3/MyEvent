@@ -1,14 +1,10 @@
 
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyEvent.Models;
-
+using System.Security.Claims;
 using static MyEvent.Models.DB;
 
 namespace MyEvent.Controllers
@@ -22,55 +18,82 @@ namespace MyEvent.Controllers
             _db = db;
         }
 
-    
+
 
 
         [Authorize]
-
         [HttpPost]
         public IActionResult Follow(string eventId)
         {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+                return Unauthorized(); // User not logged in
+
+            // Lookup user in DB
+            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null)
+                return Unauthorized();
+
             if (string.IsNullOrWhiteSpace(eventId))
-            {
                 return BadRequest("Invalid event ID.");
-            }
 
-            var alreadyFollowed = _db.FollowedEvents.Any(f => f.EventId == eventId);
-            if (!alreadyFollowed)
+            eventId = eventId.Trim();
+
+            // Fetch event with details
+            var ev = _db.Events
+                        .Include(e => e.Detail)
+                        .Include(e => e.Address)
+                        .Include(e => e.Category)
+                        .FirstOrDefault(e => e.Id == eventId);
+
+            if (ev == null)
+                return View("Error", "Event not found.");
+
+            // Check if already followed
+            var existing = _db.FollowedEvents
+                              .FirstOrDefault(f => f.EventId == ev.Id && f.UserId == user.Id);
+
+            if (existing == null)
             {
-                var ev = _db.Events
-                            .Include(e => e.Detail)
-                            .Include(e => e.Address)
-                            .Include(e => e.Category)
-                            .FirstOrDefault(e => e.Id == eventId);
-
-                if (ev != null)
+                _db.FollowedEvents.Add(new FollowedEvent
                 {
-                    _db.FollowedEvents.Add(new FollowedEvent
-                    {
-                        EventId = ev.Id,
-                        Event = ev
-                    });
+                    EventId = ev.Id,
+                    UserId = user.Id,
+                    FollowedDate = DateTime.Now
+                });
 
-                    _db.SaveChanges();
-                }
+                _db.SaveChanges();
             }
 
-            return RedirectToAction("FollowedEvents");
+            return RedirectToAction("FollowedEvents", "Favourite");
         }
 
-      
+
+
+        [Authorize]
         public IActionResult FollowedEvents()
         {
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(email))
+                return Unauthorized();
+
+            // Lookup user in DB
+            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+            if (user == null)
+                return Unauthorized();
+
             var followed = _db.FollowedEvents
                               .Include(f => f.Event)
-                                .ThenInclude(e => e.Detail)
-                              .Include(f => f.Event.Address)
+                              .ThenInclude(e => e.Detail)
                               .Include(f => f.Event.Category)
+                              .Where(f => f.UserId == user.Id)
                               .ToList();
 
-            return View("Followed", followed); // Ensure your view is Views/Favourite/Followed.cshtml
+            return View("Followed", followed);
         }
+
+
+
 
         [Authorize]
         [HttpPost]
