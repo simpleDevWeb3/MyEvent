@@ -11,7 +11,7 @@ public class GeoService
         _http = http;
     }
 
-    public async Task<GeoapifyGeocodingResponseDto?> GetCoordinatesAsync(string address)
+    public async Task<List<Feature>?> GetCoordinatesAsync(string address)
     {
         try
         {
@@ -26,7 +26,10 @@ public class GeoService
             // Make sure data is not null
             if (data?.Features != null && data.Features.Any())
             {
-                return data;
+                var filtered = data.Features
+                                .Where(f => !string.IsNullOrEmpty(f.Properties.Premise) && !string.IsNullOrEmpty(f.Properties.Street))
+                                .ToList();
+                return filtered;
             }
             return null;
         }

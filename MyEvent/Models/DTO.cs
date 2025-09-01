@@ -65,9 +65,10 @@ public class Feature
 
 public class Geometry
 {
+    /*
     [JsonPropertyName("type")]
     public string Type { get; set; }
-
+    */
     [JsonPropertyName("coordinates")]
     public List<double> Coordinates { get; set; } //lon, lat
 }
@@ -84,9 +85,9 @@ public class Properties
 
     [JsonPropertyName("formatted")]
     public string Formatted { get; set; }
-    public string AddressLine1 => string.Join(" ", new[] { HouseNumber, Premise });
-    public string AddressLine2 => string.Join(" ", new[] { Street, Suburb });
-    public string AddressLine3 => string.Join(" ", new[] { Postcode, City });
+    //public string AddressLine1 => string.Join(" ", new[] { HouseNumber, Premise });
+    //public string AddressLine2 => string.Join(" ", new[] { Street, Suburb });
+    //public string AddressLine3 => string.Join(" ", new[] { Postcode, City });
 
-    public string FullAddress => $"{AddressLine1}, {AddressLine2}, {AddressLine3}, {State}";
+    //public string FullAddress => $"{AddressLine1}, {AddressLine2}, {AddressLine3}, {State}";
 }

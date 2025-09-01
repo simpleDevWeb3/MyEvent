@@ -15,12 +15,16 @@ public class EventVM
     public DateOnly Date { get; set; }
 
     [Display(Name = "Start Time")]
+    [Remote("CheckTime", "CreateEvent", AdditionalFields = "EndTime", ErrorMessage = "Invalid time range.")]
     public TimeOnly StartTime { get; set; }
 
     [Display(Name = "End Time")]
     [Remote("CheckTime", "CreateEvent", AdditionalFields = "StartTime", ErrorMessage = "Invalid time range.")]
     public TimeOnly EndTime { get; set; }
-
+    /*
+    [Remote("CheckTime", "CreateEvent", AdditionalFields = "StartTime,EndTime", ErrorMessage = "Invalid time range.")]
+    public string TimeRange { get; set; }
+    */
     [Display(Name = "Category")]
     [StringLength(8)]
     [RegularExpression(@"^CAT\d{5}$", ErrorMessage = "Invalid {0}.")]
@@ -41,46 +45,6 @@ public class EventVM
     [Display(Name = "Image")]
     public IFormFile ImageUrl { get; set; }
 
-    //public AddressVM Address { get; set; }
-    //public CoordinatesVM Coordinates { get; set; }
-    //public Feature Address { get; set; }
     [Display(Name = "Location")]
-
     public string Formatted_address { get; set; }
 }
-/*
-public class AddressVM
-{
-    [MaxLength(50)]
-    [Display(Name = "Premise")]
-    public string Premise { get; set; }
-
-    [MaxLength(50)]
-    [Display(Name = "Street")]
-    public string Street { get; set; }
-
-    [MaxLength(50)]
-    [Display(Name = "City")]
-    public string City { get; set; }
-
-    [Display(Name = "Postcode")]
-    [MaxLength(5)]
-    [RegularExpression(@"\d{5}", ErrorMessage = "Invalid {0} format.")]
-    public string Postcode { get; set; }
-
-    [MaxLength(50)]
-    [Display(Name = "State")]
-    //[Remote("CheckAddress", "CreateEvent", AdditionalFields = "Street,City,Postcode", ErrorMessage = "Invalid Address.")]
-    public string State { get; set; }
-}
-
-public class CoordinatesVM
-{
-    public double Lat { get; set; }//may be delete
-    public double Lon { get; set; }//may be delete
-    public string FullAddress { get; set; }
-}
-
-*/
-
-

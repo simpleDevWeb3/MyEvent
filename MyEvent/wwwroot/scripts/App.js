@@ -137,6 +137,16 @@ $(document).on('click', '.create_event_location_result', function () {
     $('.create_event_location_input').val(formatted);
 });
 
+$("input[type='time']").on("blur", e => {
+
+    let a = $(e.target).data("attribute");
+    $(".validation_msg").css("display", "none");
+    $("." + a).css("display", "inline");
+
+});
+
+// Enable hidden file validation
+//$.validator.setDefaults({ ignore: '' });
 
 ///////////////////////////////////////////////////Ken Code/////
 $('.profile-picture').on('click', () => {

@@ -167,66 +167,15 @@
            
                 <div class="category-section" style=" display:grid; grid-template-rows: 50px 1fr">
                     <div class="nav-recommendation" style="display:flex; gap:10px; padding:10px; padding-left:0px;"> 
-                        <button class="home-button" style="font-size:15px;">Participant Also Joined</button>
+                        <button class="home-button" data-tag="Participant Also Joined" style="font-size:15px;">Participant Also Joined</button>
                        
-                        <button class="home-button" style="font-size:15px;">Simillar Events</button>
+                        <button class="home-button category" data-tag="@Model.Category.Name" style="font-size:15px;">Simillar Events</button>
 
-                        <button class="home-button" style="font-size:15px;">From This Organizer </button>
+                        <button class="home-button" data-tag="@Model?.Detail?.Organizer" style="font-size:15px;">From This Organizer </button>
                     </div>
                     <div class="Event-List-Container">
 
-                        <div class="card-events" style="display:grid; grid-template-columns:200px 1fr; margin-bottom:20px; gap:20px;">
-                            <div class="image-container" style="height:100px;">
-                                <img class="event-detail__img" style="border-radius:8px;" src="@Model.ImageUrl" />
-                            </div>
-                            <div>
-                               
-
-                                <div class="home-event-title">@Model.Title</div>
-
-                                <div>
-                                    @Model.Address.City,  @Model.Address.Street
-                                </div>
-                            </div>
-                
-
-                            
-                        </div>
-
-                        <div class="card-events" style="display:grid; grid-template-columns:200px 1fr; margin-bottom:20px; gap:20px;">
-                            <div class="image-container" style="height:100px;">
-                                <img class="event-detail__img" style="border-radius:8px;" src="@Model.ImageUrl" />
-                            </div>
-                            <div>
-
-
-                                <div class="home-event-title">@Model.Title</div>
-
-                                <div>
-                                    @Model.Address.City,  @Model.Address.Street
-                                </div>
-                            </div>
-
-
-
-                        </div>
-                        <div class="card-events" style="display:grid; grid-template-columns:200px 1fr; margin-bottom:20px; gap:20px;">
-                            <div class="image-container" style="height:100px;">
-                                <img class="event-detail__img" style="border-radius:8px;" src="@Model.ImageUrl" />
-                            </div>
-                            <div>
-
-
-                                <div class="home-event-title">@Model.Title</div>
-
-                                <div>
-                                    @Model.Address.City,  @Model.Address.Street
-                                </div>
-                            </div>
-
-
-
-                        </div>
+                      
                   
                 </div>
             </div>

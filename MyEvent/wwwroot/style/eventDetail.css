@@ -6,3 +6,21 @@
 .breadCrump {
     margin:20px;
 }
+.card-events {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    margin-bottom: 10px;
+    gap: 20px;
+    padding:10px 10px;
+    cursor:pointer;
+    transition:all 0.15s;
+    border-radius:8px;
+}
+    .card-events:hover {
+        background-color: rgba(210, 210, 210, 0.20);
+    }
+.tag-active {
+    background-color: #3a3a3a; /* Slightly lighter for hover */
+    transform: scale(1.07);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}

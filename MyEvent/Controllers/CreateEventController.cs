@@ -43,9 +43,24 @@ public class CreateEventController : Controller
         return false;
     }
 
-    public bool CheckTime(TimeOnly StartTime, TimeOnly EndTime)
+    public bool CheckTime(TimeOnly? StartTime, TimeOnly? EndTime)
     {
-        return (EndTime - StartTime).TotalMinutes >= 30 && EndTime > StartTime;
+        if (StartTime.HasValue && EndTime.HasValue)
+        {
+            Console.WriteLine(StartTime);
+            Console.WriteLine(EndTime);
+            var duration = EndTime.Value - StartTime.Value;
+            Console.WriteLine("debug from line 51");
+
+            Console.WriteLine(duration.TotalMinutes >= 30);
+            Console.WriteLine(EndTime > StartTime);
+            Console.WriteLine(duration.TotalMinutes >= 30 && EndTime > StartTime);
+
+
+            return duration.TotalMinutes >= 30 && EndTime > StartTime;
+        }
+        Console.WriteLine("debug from line 53");
+        return true;
     }
 
     public bool CheckPrice(decimal price)
@@ -60,7 +75,7 @@ public class CreateEventController : Controller
 
         if (addressResponse != null)
         {
-            foreach (var features in addressResponse.Features)
+            foreach (var features in addressResponse)
             {
                 if (features.Properties.Formatted == location)
                 {
@@ -100,7 +115,7 @@ public class CreateEventController : Controller
         {
             ModelState.AddModelError("CategoryId", "Invalid Category.");
         }
-        
+
         if (!CheckDate(vm.Date))
         {
             ModelState.AddModelError("Date", "Suspicious Date");
@@ -127,14 +142,14 @@ public class CreateEventController : Controller
         {
             ModelState.AddModelError("Address", "Address not found.");
         }
-        
+
         if (ModelState.IsValid && address != null)
         {
             string id = db.Addresses.Max(a => a.Id) ?? "ADDR0000";
             Address a = new()
             {
                 Id = NextId(id, "ADDR", "D4"),
-                Premise = address.Properties.Premise ?? "",
+                Premise = address.Properties.Premise,
                 Street = address.Properties.Street,
                 City = address.Properties.City,
                 State = address.Properties.State,
@@ -175,8 +190,52 @@ public class CreateEventController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        
+
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
         return View();
+    }
+
+    //***************************************************************************************************
+    [Route("/event_created")]
+    public IActionResult EventCreated()
+    {
+        var m = db.Events
+                .Include(e => e.Address)
+                .Include(e => e.Category)
+                .Include(e => e.Detail);
+        return View(m);
+    }
+
+    [HttpPost]
+    public IActionResult Delete(string? id)
+    {
+        var e = db.Events.Find(id);
+
+        if (e != null)
+        {
+            TempData["Info"] = $"Event {e.Title} deleted.";
+            //db.Events.Remove(e);
+            //db.SaveChanges();
+        }
+
+        return RedirectToAction("EventCreated");
+    }
+
+    [Route("/event_detail/{id}")]
+    public IActionResult EventDetail(string? id)
+    {
+        //var m = db.Events.Find(id);
+        var m = db.Events
+                .Include(e => e.Address)
+                .Include(e => e.Category)
+                .Include(e => e.Detail)
+                .FirstOrDefault(e => e.Id == id);
+
+        if (m != null)
+        {
+            return View(m);
+
+        }
+        return RedirectToAction("EventCreated");
     }
 }

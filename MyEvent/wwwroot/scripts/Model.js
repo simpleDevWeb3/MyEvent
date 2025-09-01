@@ -60,6 +60,7 @@ export const setAddress = async function () {
 }
 
 const eventObj = function (data) {
+    console.log(data);
     return data.map(e => ({
         EventId: e.eventId,
         Title: e.title,
@@ -114,6 +115,19 @@ export const getEvents = async function () {
         throw (error);
     }
 
+}
+
+export const getRecommended = async function(tags){
+    try {
+        const res = await fetch(`/api/Event/Recommended/${tags}`);
+        if (!res.ok) throw new Error(`${await res.text()}`)
+        const data = await res.json();
+
+        const Events = eventObj(data);
+        state.Events = Events;
+    } catch (error) {
+        console.log(error);
+    }
 }
 export const getByTags = async function (tags) {
     try {
