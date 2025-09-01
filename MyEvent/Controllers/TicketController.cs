@@ -66,7 +66,7 @@ public class TicketController : Controller
             _db.SaveChanges();
         }
 
-        return RedirectToAction("Payment", "Payment", new { eventId = ev.Id });
+        return View("Payment");
     }
 
 

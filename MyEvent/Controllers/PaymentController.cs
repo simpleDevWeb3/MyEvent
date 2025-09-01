@@ -25,9 +25,6 @@ public class PaymentController : Controller
                     .Include(e => e.Address)
                     .FirstOrDefault(e => e.Id == eventId);
 
-        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            return PartialView("_PaymentPartial", ev);
-
         return View("Payment", ev);
     }
 
