@@ -31,11 +31,34 @@ public class PaymentController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
-            return PartialView("_PaymentInfoPartial", ev); // ✅ Model guaranteed not null
+        // Get logged-in user
+        var userEmail = User.FindFirst(ClaimTypes.Email)?.Value
+                        ?? User.FindFirst("email")?.Value;
 
-        return View("PaymentInfo", ev); // ✅ Model guaranteed not null
+        var user = _db.Users.FirstOrDefault(u => u.Email == userEmail);
+        if (user == null)
+        {
+            TempData["Error"] = "User not found!";
+            return RedirectToAction("Index", "Home");
+        }
+
+        // Check if ticket already exists for this event + user
+        var existingTicket = _db.Tickets
+            .FirstOrDefault(t => t.EventId == eventId && t.BuyerId == user.Id);
+
+        if (existingTicket != null)
+        {
+            TempData["Error"] = "You already purchased a ticket for this event.";
+            return RedirectToAction("MyTickets", "Ticket");
+        }
+
+        // Render PaymentInfo if everything ok
+        if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            return PartialView("_PaymentInfoPartial", ev);
+
+        return View("PaymentInfo", ev);
     }
+
 
 
 
@@ -54,32 +77,38 @@ public class PaymentController : Controller
 
         if (string.IsNullOrEmpty(userEmail))
         {
-            ModelState.AddModelError("", "User email not found in claims.");
-            return View("PaymentInfo"); // reload the form instead of going home
+            ViewBag.ErrorMessage = "User email not found in claims.";
+            return View("PaymentInfo");
         }
 
         var buyer = _db.Users.FirstOrDefault(u => u.Email == userEmail);
         if (buyer == null)
         {
-            ModelState.AddModelError("", "User not found!");
+            ViewBag.ErrorMessage = "User not found!";
             return View("PaymentInfo");
         }
 
         var ev = _db.Events.FirstOrDefault(e => e.Id == eventId);
         if (ev == null)
         {
-            ModelState.AddModelError("", "Event not found!");
+            ViewBag.ErrorMessage = "Event not found!";
             return View("PaymentInfo");
         }
 
-        // (Optional) Simulate payment validation
+        // ✅ Check duplicate ticket
+        var existingTicket = _db.Tickets.FirstOrDefault(t => t.EventId == ev.Id && t.BuyerId == buyer.Id);
+        if (existingTicket != null)
+        {
+            ViewBag.ErrorMessage = "You already purchased a ticket for this event!";
+            return View("PaymentInfo", ev);
+        }
+
         if (string.IsNullOrWhiteSpace(CardNumber) || CardNumber.Length < 4)
         {
-            ModelState.AddModelError("", "Invalid card number.");
-            return View("PaymentInfo");
+            ViewBag.ErrorMessage = "Invalid card number.";
+            return View("PaymentInfo", ev);
         }
 
-        // Create ticket
         var ticket = new Ticket
         {
             EventId = ev.Id,
@@ -93,17 +122,20 @@ public class PaymentController : Controller
             _db.Tickets.Add(ticket);
             _db.SaveChanges();
 
+            TempData.Clear(); // ✅ reset old
             TempData["Success"] = "Payment successful!";
+
             return RedirectToAction("MyTickets", "Ticket");
         }
         catch (Exception ex)
         {
-            ModelState.AddModelError("", $"Error saving ticket: {ex.Message}");
-            return View("PaymentInfo");
+            TempData.Clear();
+            TempData["Error"] = $"Error saving ticket: {ex.Message}";
+
+            return RedirectToAction("MyTickets", "Ticket");
         }
+
     }
-
-
 
 
 }

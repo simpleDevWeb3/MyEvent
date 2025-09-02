@@ -40,6 +40,10 @@
             background-color: #222;
         }
 
+        .ticket-table tr:hover {
+            background-color: #555;
+        }
+
     .action-button {
         background-color: red;
         color: white;
@@ -47,6 +51,37 @@
         padding: 5px 10px;
         cursor: pointer;
         border-radius: 4px;
+    }
+
+    .action-button:hover {
+        background-color: #ff6666;
+    }
+
+    /* Slide-in messages */
+    .delete-message, .payment-message {
+        position: fixed;
+        top: 100px;
+        right: -400px;
+        padding: 15px 25px;
+        border-radius: 6px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        transition: right 0.6s ease-in-out;
+        z-index: 1000;
+        color: white;
+    }
+
+    .delete-message {
+        background-color: darkorange;
+    }
+
+    .payment-message {
+        background-color: #28a745;
+    }
+
+        .delete-message.show, .payment-message.show {
+            right: 20px;
+        }
 </style>
 
 <div class="ticket-container">
@@ -79,11 +114,9 @@
                         <td>@ticket.HolderEmail</td>
                         <td>@ticket.PurchaseDate.ToString("yyyy-MM-dd")</td>
                         <td>
-                            <form asp-controller="Ticket" asp-action="DeleteTicket" method="post" style="margin: 0" ;>
+                            <form asp-controller="Ticket" asp-action="DeleteTicket" method="post" style="margin:0;">
                                 <input type="hidden" name="ticketId" value="@ticket.TicketId" />
-                                <button type="submit" class="action-button">
-                                    Delete
-                                </button>
+                                <button type="submit" class="action-button">Delete</button>
                             </form>
                         </td>
                     </tr>
@@ -96,3 +129,43 @@
         <p style="text-align:center;">You have no tickets yet.</p>
     }
 </div>
+
+<!-- TempData Messages -->
+@if (TempData.ContainsKey("Delete"))
+{
+    <div id="flash-delete" class="delete-message">
+        @TempData["Delete"]
+    </div>
+}
+
+@if (TempData.ContainsKey("Success"))
+{
+    <div id="flash-success" class="payment-message">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData.ContainsKey("Error"))
+{
+    <div id="flash-error" class="payment-message" style="background-color:#dc3545">
+        @TempData["Error"]
+    </div>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all messages (payment + delete)
+        const messages = document.querySelectorAll(".payment-message, .delete-message");
+
+        messages.forEach((msg) => {
+            // Start hidden
+            msg.classList.remove("show");
+
+            // Slide in after short delay
+            setTimeout(() => msg.classList.add("show"), 100);
+
+            // Slide out after 3 seconds
+            setTimeout(() => msg.classList.remove("show"), 3000);
+        });
+    });
+</script>

@@ -188,20 +188,22 @@
                     <p style="margin:0;"> @Model.Detail.Date.ToString("MMMM dd, yyyy")</p>
                     <p class="title-detail" style="font-size:20px; margin:0;">@Model.Title</p>
                 </div>
-                
-                <div style="display:flex; gap:20px;">
-                    <p>Only RM70</p>
-                    <button class="home-button" style="font-size:15px; padding: 10px 30px; background:white; color:black;">
-                       Join
-                    </button>
-                        <form asp-controller="Favourite" asp-action="Follow" method="post">
+
+                    <div style="display:flex; gap:20px;">
+                        <p>Only RM70</p>
+                        <form asp-controller="Payment" asp-action="PaymentInfo" method="post">
+                            <input type="hidden" name="eventId" value="@Model?.Id" />
+                            <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:white; color:black;">Join</button>
+                        </form>
+                        <form asp-controller="Favourite" asp-action="Follow" method="post" style="margin:0;">
                             <input type="hidden" name="eventId" value="@Model.Id" />
                             <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:red; color:white;">
                                 Follow
                             </button>
                         </form>
 
-                </div>
+                    </div>
+
             </div>
             
         </div>

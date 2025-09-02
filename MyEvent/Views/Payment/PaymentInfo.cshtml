@@ -42,12 +42,33 @@
         cursor: pointer;
         font-size: 18px;
     }
+
+    .payment-message {
+        position: fixed;
+        top: -60px; /* Start hidden above the viewport */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #28a745;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 6px;
+        font-size: 18px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        opacity: 0;
+        transition: all 0.6s ease; /* Smooth slide + fade */
+        z-index: 9999;
+    }
+
+        .payment-message.show {
+            top: 20px; /* Slide into view */
+            opacity: 1;
+        }
 </style>
 
 <div class="payment-container">
     <h2 class="payment-heading">Payment Information</h2>
 
-    <form asp-controller="Payment" asp-action="ProcessPayment" method="post" class="payment-form">
+    <form asp-controller="Payment" asp-action="ProcessPayment" method="post" class="payment-form" id="paymentForm">
         <input type="hidden" name="eventId" value="@Model.Id" />
 
         <label for="holderName">Cardholder Name</label>
@@ -67,4 +88,36 @@
 
         <button type="submit" class="pay-button">Pay Now</button>
     </form>
+
+    @if (TempData["Success"] != null)
+    {
+        <div id="payment-success" class="payment-message" style="background-color: #28a745;">
+            ✅ @TempData["Success"]
+        </div>
+    }
+    
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div id="payment-error" class="payment-message" style="background-color: #dc3545;">
+            ❌ @ViewBag.ErrorMessage
+        </div>
+    }
+
 </div>
+
+<script>
+    window.onload = function () {
+        const successMsg = document.getElementById("payment-success");
+        const errorMsg = document.getElementById("payment-error");
+
+        [successMsg, errorMsg].forEach(msg => {
+            if (msg && msg.textContent.trim() !== "") {
+                msg.classList.add("show");
+                setTimeout(() => {
+                    msg.classList.remove("show");
+                }, 3000);
+            }
+        });
+    };
+</script>
+

@@ -77,14 +77,28 @@ public class TicketController : Controller
     [HttpPost]
     public IActionResult DeleteTicket(int ticketId)
     {
-        var ticket = _db.Tickets.FirstOrDefault(t => t.TicketId == ticketId);
+        // Reset TempData for this action
+        TempData.Remove("Delete");
+        TempData.Remove("Error");
+        TempData.Remove("Success");
 
+        var ticket = _db.Tickets.Find(ticketId);
         if (ticket != null)
         {
             _db.Tickets.Remove(ticket);
             _db.SaveChanges();
+            TempData["Delete"] = $"Ticket {ticketId} deleted successfully.";
+        }
+        else
+        {
+            TempData["Error"] = "Ticket not found.";
         }
 
         return RedirectToAction("MyTickets");
     }
+
+
+
+
+
 }

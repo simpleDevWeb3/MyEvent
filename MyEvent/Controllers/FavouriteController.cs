@@ -18,18 +18,14 @@ namespace MyEvent.Controllers
             _db = db;
         }
 
-
-
-
         [Authorize]
         [HttpPost]
         public IActionResult Follow(string eventId)
         {
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
             if (string.IsNullOrEmpty(email))
-                return Unauthorized(); // User not logged in
+                return Unauthorized();
 
-            // Lookup user in DB
             var user = _db.Users.FirstOrDefault(u => u.Email == email);
             if (user == null)
                 return Unauthorized();
@@ -37,9 +33,6 @@ namespace MyEvent.Controllers
             if (string.IsNullOrWhiteSpace(eventId))
                 return BadRequest("Invalid event ID.");
 
-            eventId = eventId.Trim();
-
-            // Fetch event with details
             var ev = _db.Events
                         .Include(e => e.Detail)
                         .Include(e => e.Address)
@@ -49,7 +42,6 @@ namespace MyEvent.Controllers
             if (ev == null)
                 return View("Error", "Event not found.");
 
-            // Check if already followed
             var existing = _db.FollowedEvents
                               .FirstOrDefault(f => f.EventId == ev.Id && f.UserId == user.Id);
 
@@ -61,8 +53,17 @@ namespace MyEvent.Controllers
                     UserId = user.Id,
                     FollowedDate = DateTime.Now
                 });
-
                 _db.SaveChanges();
+
+                // Set the message here
+                TempData["Followed"] = "Event Followed!";
+            }
+
+            if (existing != null)
+            {
+                TempData["FollowedError"] = "You already follow this event.";
+
+                return RedirectToAction("FollowedEvents", "Favourite");
             }
 
             return RedirectToAction("FollowedEvents", "Favourite");
@@ -100,14 +101,19 @@ namespace MyEvent.Controllers
         public IActionResult DeleteFollowed(int id)
         {
             var followed = _db.FollowedEvents.FirstOrDefault(f => f.Id == id);
+
+            TempData.Clear(); // clears any old messages
             if (followed != null)
             {
                 _db.FollowedEvents.Remove(followed);
                 _db.SaveChanges();
+
+                TempData["Delete"] = "Event deleted."; // only set when deleting
             }
 
             return RedirectToAction("FollowedEvents");
         }
+
 
     }
 }

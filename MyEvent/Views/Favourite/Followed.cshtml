@@ -2,13 +2,15 @@
 
 <style>
     .event-container {
-        width: 800px;
+        width: 90%;
+        max-width: 800px;
         margin: 20px auto;
         background-color: #222;
         color: white;
         padding: 20px;
         border-radius: 8px;
     }
+
 
     .event-heading {
         text-align: center;
@@ -40,6 +42,11 @@
             background-color: #222;
         }
 
+        .event-table tr:hover {
+            background-color: #555;
+        }
+
+
     .action-button {
         background-color: red;
         color: white;
@@ -47,6 +54,10 @@
         padding: 5px 10px;
         cursor: pointer;
         border-radius: 4px;
+    }
+
+    .action-button:hover {
+        background-color: #ff6666;
     }
 
     .pay-button {
@@ -57,6 +68,47 @@
         cursor: pointer;
         border-radius: 4px;
     }
+
+    .pay-button:hover {
+        background-color: #66ff66;
+    }
+
+    /* Slide-in delete message */
+    .delete-message {
+        position: fixed;
+        top: 100px;
+        right: -400px;
+        padding: 15px 25px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        background-color: darkorange;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        transition: right 0.6s ease-in-out;
+        z-index: 1000;
+    }
+
+        .delete-message.show {
+            right: 20px;
+        }
+
+    .flash-message {
+        position: fixed;
+        top: 100px;
+        right: -400px;
+        padding: 15px 25px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        transition: right 0.6s ease-in-out;
+        z-index: 1000;
+    }
+
+        .flash-message.show {
+            right: 20px;
+        }
+
 </style>
 
 <div class="event-container">
@@ -98,7 +150,6 @@
                         </td>
                     </tr>
                 }
-
             </tbody>
         </table>
     }
@@ -107,3 +158,40 @@
         <p style="text-align:center;">You have no favourite events yet.</p>
     }
 </div>
+
+@if (TempData.ContainsKey("Followed"))
+{
+    <div id="flash-followed" class="flash-message" style="background-color:#28a745; top:100px;">
+        @TempData["Followed"]
+    </div>
+
+}
+
+@if (TempData.ContainsKey("FollowedError"))
+{
+    <div id="flash-followedError" class="flash-message" style="background-color:red; top:100px;">
+        @TempData["FollowedError"]
+    </div>
+
+}
+
+<!-- Delete message -->
+@if (TempData.ContainsKey("Delete"))
+{
+    <div id="flash-delete" class="delete-message">
+        @TempData["Delete"]
+    </div>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        ['flash-delete', 'flash-followed', 'flash-followedError'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.classList.remove('show');
+                setTimeout(() => el.classList.add('show'), 100);
+                setTimeout(() => el.classList.remove('show'), 3000);
+            }
+        });
+    });
+</script>
