@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Security.Cryptography.Xml;
 using static MyEvent.Models.DB;
 
@@ -172,15 +173,62 @@ namespace MyEvent.Controllers
             return Ok(data);
         }
 
-        [HttpGet("Recommended/{query}")]
-        public IActionResult Recommended(string? query)
+        [HttpGet("Recommended/{query}/{eventId}")]
+        public IActionResult Recommended(string? query ,string?eventId)
         {
             // handle find participant joined also event 
-            if (query == "Other Participant Also Interest")
+            if (query == "Participant Also Joined")
             {
-                return Ok(new { events = new List<EventDTO>() }); // return empty array
+                //step 1 : finds participant data
+                var participantIds = db.Tickets
+                                   .Where(t => t.EventId == eventId)
+                                   .Select(t => t.BuyerId)
+                                   .Distinct()
+                                   .ToList();
+
+                // Step 2: Find other events that these participants also joined
+                var events = db.Tickets
+                            .Where(t => participantIds.Contains(t.BuyerId) && t.EventId != eventId)
+                             .Select(t => new EventDTO
+                             {
+                                 EventId = t.Event.Id,
+                                 Title = t.Event.Title,
+                                 ImageUrl = t.Event.ImageUrl,
+
+                                 Category = new CategoryDTO
+                                 {
+                                     Id = t.Event.Category.Id,
+                                     Name = t.Event.Category.Name
+                                 },
+
+                                 Address = new AddressDTO
+                                 {
+                                     Street = t.Event.Address.Street,
+                                     City = t.Event.Address.City,
+                                     State = t.Event.Address.State,
+                                     Longitude = t.Event.Address.Longitude,
+                                     Latitude = t.Event.Address.Latitude
+                                 },
+
+                                 Detail = new EventDetailDTO
+                                 {
+                                     Date = t.Event.Detail.Date,
+                                     Organizer = t.Event.Detail.Organizer,
+                                     ContactEmail = t.Event.Detail.ContactEmail,
+                                     StartTime = t.Event.Detail.StartTime,
+                                     EndTime = t.Event.Detail.EndTime,
+                                     Description = t.Event.Detail.Description
+                                 }
+                             })
+                            .ToList();
+                            
+
+                //2. return result
+                return Ok(events); 
             }
 
+
+            // handle  same cateogy , and same organizer 
             var searchResult = Search(query) as OkObjectResult;
 
             if (searchResult?.Value == null)

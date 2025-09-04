@@ -117,9 +117,13 @@ export const getEvents = async function () {
 
 }
 
-export const getRecommended = async function(tags){
+export const clearEvents = function () {
+    state.Events.length = 0 //clear event data 
+}
+
+export const getRecommended = async function(tags,eventId){
     try {
-        const res = await fetch(`/api/Event/Recommended/${tags}`);
+        const res = await fetch(`/api/Event/Recommended/${tags}/${eventId}`);
         if (!res.ok) throw new Error(`${await res.text()}`)
         const data = await res.json();
 

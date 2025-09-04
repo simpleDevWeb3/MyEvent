@@ -27,10 +27,11 @@ const CountdownController = async function () {
     }
 }
 
-const RecommededController = async function (tag) {
+const RecommededController = async function (tag,eventId) {
     try {
         //set data 
-        await Model.getRecommended(tag);
+        Model.clearEvents()
+        await Model.getRecommended(tag,eventId);
         console.log(Model.state.Events);
         RecommendView.render(Model.state.Events);
     } catch (error) {

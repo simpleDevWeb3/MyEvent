@@ -91,3 +91,35 @@ public class Properties
 
     //public string FullAddress => $"{AddressLine1}, {AddressLine2}, {AddressLine3}, {State}";
 }
+
+public class UserDTO
+{
+
+    public int Id { get; set; }
+
+    public string Email { get; set; }
+
+    public string Hash { get; set; }
+
+    public string Name { get; set; }
+
+
+    public string PhotoURL { get; set; }
+
+    public string Role { get; set; }
+}
+public class TicketDTO
+{
+    public int TicketId { get; set; }
+
+    public string EventId { get; set; }
+    public EventDTO Event { get; set; }
+
+    public int BuyerId { get; set; } 
+    public UserDTO Buyer { get; set; }
+
+    public string HolderName { get; set; }
+    public string? HolderEmail { get; set; }
+
+    public DateOnly PurchaseDate { get; set; }
+}

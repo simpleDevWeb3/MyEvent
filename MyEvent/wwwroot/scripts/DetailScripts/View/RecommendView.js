@@ -17,14 +17,28 @@
         // Get the value of "id"
         const Current_id = params.get("id");
 
-        this._data.map(e => {
-            console.log(e);
-            //display relevent event without current event
-            if (e.EventId == Current_id) return;
-            $(this._parentEl).append(this._htmlMarkup(e));
-        });
-    }
+        // Remove the same event appear
+        const sanitize_data = this._data.filter(e => e.EventId !== Current_id);
 
+        if (sanitize_data.length== 0) {
+           $(this._parentEl).append(this._renderNotExist());
+
+        }
+        else {
+            sanitize_data.map(e => {
+                console.log(e);
+                $(this._parentEl).append(this._htmlMarkup(e));
+            });
+        }
+      
+    }
+    _renderNotExist() {
+        return `
+        <div class="card-events">
+            Event Not Found
+        </div>
+        `
+    }
     _htmlMarkup(e) {
         return `
         <div class="card-events" data-ajax-page="/Home/${e.Title}?id=${e.EventId}">
@@ -44,6 +58,14 @@
 
     addHandlerDisplay(handler = 0) {
         $('.nav-recommendation').on('click', (e) => {
+            // Get full query string from the current URL
+            const params = new URLSearchParams(window.location.search);
+
+            // Get the value of "id"
+            const Current_id = params.get("id");
+
+            const category = $('.category').data('tag');
+
             const button = e.target
             if (!button.classList.contains('home-button')) return;
             if ($('.home-button').hasClass('tag-active')) {
@@ -53,15 +75,22 @@
            
             button.classList.add("tag-active")
             const tag = e.target.dataset.tag;
-            handler(tag);
+            handler(tag,Current_id);
         })
     }
 
     addHandlerDefault(handler=0) {
         $(document).ready(() => {
-            const category = $('.category').data('tag');
+            // Get full query string from the current URL
+            const params = new URLSearchParams(window.location.search);
 
-            handler(category);
+            // Get the value of "id"
+            const Current_id = params.get("id");
+
+            console.log($('.home-button').first())
+            $('.home-button').eq(8).addClass('tag-active')
+
+            handler("Participant Also Joined",Current_id);
            
         })
     }
