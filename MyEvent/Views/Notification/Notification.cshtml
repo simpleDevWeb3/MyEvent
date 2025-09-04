@@ -1,0 +1,165 @@
+﻿@model List<MyEvent.Models.DB.Ticket>
+@using System
+
+<style>
+    .ticket-container {
+        width: 800px;
+        margin: 20px auto;
+        background-color: #222;
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .ticket-heading {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .ticket-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+        .ticket-table th, .ticket-table td {
+            border: 1px solid white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .ticket-table th {
+            background-color: #444;
+        }
+
+        .ticket-table tr:nth-child(even) {
+            background-color: #333;
+        }
+
+        .ticket-table tr:nth-child(odd) {
+            background-color: #222;
+        }
+
+        .ticket-table tr:hover {
+            background-color: #555;
+        }
+
+    .status-upcoming {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .status-ongoing {
+        color: darkorange;
+        font-weight: bold;
+    }
+
+    .status-past {
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .remove-btn {
+        background: #dc3545;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+        .remove-btn:hover {
+            background: #b52b3a;
+        }
+</style>
+
+<div class="ticket-container">
+    <h2 class="ticket-heading">My Event Notifications</h2>
+
+    @if (Model?.Any() == true)
+    {
+        <table class="ticket-table" id="notification-table">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model)
+                {
+                    var now = DateTime.Now;
+
+                    var eventDate = ticket.Event?.Detail?.Date ?? DateOnly.MinValue;
+                    var startTime = ticket.Event?.Detail?.StartTime ?? TimeOnly.MinValue;
+                    var endTime = ticket.Event?.Detail?.EndTime ?? TimeOnly.MinValue;
+
+                    var eventStart = eventDate.ToDateTime(startTime);
+                    var eventEnd = eventDate.ToDateTime(endTime);
+
+                    string status;
+                    string statusClass;
+
+                    if (now < eventStart)
+                    {
+                        status = "Upcoming";
+                        statusClass = "status-upcoming";
+                    }
+                    else if (now >= eventStart && now <= eventEnd)
+                    {
+                        status = "Ongoing";
+                        statusClass = "status-ongoing";
+                    }
+                    else
+                    {
+                        status = "Past";
+                        statusClass = "status-past";
+                    }
+
+                    <tr id="notif-@ticket.TicketId">
+                        <td>@ticket.Event?.Title</td>
+                        <td>@eventDate.ToString("yyyy-MM-dd")</td>
+                        <td>@startTime.ToString("HH\\:mm") - @endTime.ToString("HH\\:mm")</td>
+                        <td><span class="@statusClass">@status</span></td>
+                        <td>
+                            <form asp-action="Dismiss" asp-controller="Notification" method="post" class="dismiss-form">
+                                <input type="hidden" name="ticketId" value="@ticket.TicketId" />
+                                <button type="submit" class="remove-btn">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p style="text-align:center;">No notifications. You don’t have any tickets.</p>
+    }
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".dismiss-form").forEach(form => {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault(); // prevent full reload
+                const row = form.closest("tr");
+
+                fetch(form.action, {
+                    method: "POST",
+                    body: new FormData(form)
+                }).then(res => {
+                    if (res.ok && row) {
+                        row.remove(); // remove visually
+                    }
+                });
+            });
+        });
+    });
+</script>
+

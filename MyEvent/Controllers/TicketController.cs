@@ -17,17 +17,36 @@ public class TicketController : Controller
     [Authorize(Roles = "Member")]
     public IActionResult MyTickets()
     {
-        var name = User.FindFirst(ClaimTypes.Name)?.Value;
-        var user = _db.Users.FirstOrDefault(u => u.Name == name);
+        // get the logged-in user's email from claims
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
 
+        if (string.IsNullOrEmpty(email))
+        {
+            return Unauthorized(); // no email claim, block access
+        }
+
+        // tickets owned by this user (via email)
         var tickets = _db.Tickets
             .Include(t => t.Event)
             .ThenInclude(e => e.Detail)
-            .Where(t => t.BuyerId == user.Id)
+            .Where(t => t.HolderEmail == email)
             .ToList();
+
+        // fallback: tickets purchased by this user
+        var user = _db.Users.FirstOrDefault(u => u.Email == email);
+        if (user != null && !tickets.Any())
+        {
+            tickets = _db.Tickets
+                .Include(t => t.Event)
+                .ThenInclude(e => e.Detail)
+                .Where(t => t.BuyerId == user.Id)
+                .ToList();
+        }
 
         return View("Ticket", tickets);
     }
+
+
 
     [HttpPost]
     [Authorize]
@@ -97,6 +116,27 @@ public class TicketController : Controller
         return RedirectToAction("MyTickets");
     }
 
+
+
+
+    [Authorize(Roles = "Member")]
+    public IActionResult TicketDetail(int id)
+    {
+        var name = User.FindFirst(ClaimTypes.Name)?.Value;
+        var user = _db.Users.FirstOrDefault(u => u.Name == name);
+
+        var ticket = _db.Tickets
+            .Include(t => t.Event)
+            .ThenInclude(e => e.Detail)
+            .FirstOrDefault(t => t.TicketId == id && t.BuyerId == user.Id);
+
+        if (ticket == null)
+        {
+            return NotFound();
+        }
+
+        return View("TicketDetail", ticket);
+    }
 
 
 

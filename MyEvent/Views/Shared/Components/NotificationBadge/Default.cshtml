@@ -1,0 +1,9 @@
+﻿@model int
+
+<button class="home-button" data-ajax-page="/Notification/Notification">
+    <i class="ri-notification-line"></i>
+    @if (Model > 0)
+    {
+        <span class="notification-badge">@Model</span>
+    }
+</button>
