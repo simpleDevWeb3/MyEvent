@@ -22,7 +22,9 @@ namespace MyEvent.Controllers
         [HttpGet("All")]
         public IActionResult All()
         {
+            //var today = DateOnly.FromDateTime(DateTime.Today);
             var all = db.Events
+                        /*.Where(e=> e.Detail.Date > today)*/
                         .Include(e => e.Address)
                         .Select(e => new EventDTO
                         {
@@ -216,40 +218,42 @@ namespace MyEvent.Controllers
 
                 // Step 2: Find other events that these participants also joined
                 var events = db.Tickets
-                            .Where(t => participantIds.Contains(t.BuyerId) && t.EventId != eventId)
-                             .Select(t => new EventDTO
-                             {
-                                 EventId = t.Event.Id,
-                                 Title = t.Event.Title,
-                                 ImageUrl = t.Event.ImageUrl,
+                .Where(t => participantIds.Contains(t.BuyerId) && t.EventId != eventId)
+                .Select(t => t.Event)
+                .Distinct()
+                .Select(e => new EventDTO
+                {
+                    EventId = e.Id,
+                    Title = e.Title,
+                    ImageUrl = e.ImageUrl,
 
-                                 Category = new CategoryDTO
-                                 {
-                                     Id = t.Event.Category.Id,
-                                     Name = t.Event.Category.Name
-                                 },
+                    Category = new CategoryDTO
+                    {
+                        Id = e.Category.Id,
+                        Name = e.Category.Name
+                    },
 
-                                 Address = new AddressDTO
-                                 {
-                                     Street = t.Event.Address.Street,
-                                     City = t.Event.Address.City,
-                                     State = t.Event.Address.State,
-                                     Longitude = t.Event.Address.Longitude,
-                                     Latitude = t.Event.Address.Latitude
-                                 },
+                    Address = new AddressDTO
+                    {
+                        Street = e.Address.Street,
+                        City = e.Address.City,
+                        State = e.Address.State,
+                        Longitude = e.Address.Longitude,
+                        Latitude = e.Address.Latitude
+                    },
 
-                                 Detail = new EventDetailDTO
-                                 {
-                                     Date = t.Event.Detail.Date,
-                                     Organizer = t.Event.Detail.Organizer,
-                                     ContactEmail = t.Event.Detail.ContactEmail,
-                                     StartTime = t.Event.Detail.StartTime,
-                                     EndTime = t.Event.Detail.EndTime,
-                                     Description = t.Event.Detail.Description
-                                 }
-                             })
-                            .ToList();
-                            
+                    Detail = new EventDetailDTO
+                    {
+                        Date = e.Detail.Date,
+                        Organizer = e.Detail.Organizer,
+                        ContactEmail = e.Detail.ContactEmail,
+                        StartTime = e.Detail.StartTime,
+                        EndTime = e.Detail.EndTime,
+                        Description = e.Detail.Description
+                    }
+                })
+                .ToList();
+
 
                 //2. return result
                 return Ok(events); 
