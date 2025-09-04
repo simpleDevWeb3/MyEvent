@@ -2,6 +2,7 @@
 import CountdownView from './View/CountdownView.js';
 import MapView from './View/MapView.js';
 import RecommendView from './View/RecommendView.js';
+import AttandeView from './View/AttandeView.js';
 import * as Model from '../Model.js'
 
 
@@ -39,6 +40,19 @@ const RecommededController = async function (tag,eventId) {
     }
 }
 
+const AttandeController = async function (eventId) {
+    try {
+        await Model.getAttande(eventId);
+        console.log(Model.state.currentEvent.Attande);
+        AttandeView.render(Model.state.currentEvent.Attande);
+
+
+    } catch (error) {
+
+    }
+
+}
+
 
 
 
@@ -47,5 +61,5 @@ export const init = function () {
     MapView.Addhandler(CountdownController);
     RecommendView.addHandlerDefault(RecommededController);
     RecommendView.addHandlerDisplay(RecommededController);
-    
+    AttandeView.addHandler(AttandeController);
 }

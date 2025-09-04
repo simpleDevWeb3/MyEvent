@@ -10,7 +10,10 @@ export const state = {
         Price: null,
         Organizer: null,
     },
-    currentEvent: {},
+    currentEvent: {
+        Attande:[],
+    },
+    
     coords: {},
     address: {},
     Events: [], //Events data
@@ -82,6 +85,18 @@ const eventObj = function (data) {
     }));
 
 }
+
+const attandeObj = function (data) {
+    console.log(data);
+    return data.map(u => ({
+        UserId: u.id,
+        Email: u.email,
+        Name: u.name,
+        PhotoURL: u.photoURL,
+        Role: u.role
+
+    }))
+}
 export const fetchEvent = async function (id) {
     try {
         const res = await fetch(`/api/Event/Id/${encodeURIComponent(id)}`) 
@@ -132,6 +147,23 @@ export const getRecommended = async function(tags,eventId){
     } catch (error) {
         console.log(error);
     }
+}
+
+export const getAttande = async function (eventId) {
+    try {
+
+        const res = await fetch(`/api/Event/getParticipant/${eventId}`)
+
+        if (!res.ok) throw new Error(`${await res.text()}`)
+
+        const data = await res.json();
+        const attande = attandeObj(data);
+        state.currentEvent.Attande = attande;
+
+    } catch (error) {
+        throw (error);
+    }
+    
 }
 export const getByTags = async function (tags) {
     try {

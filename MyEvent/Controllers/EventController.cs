@@ -173,6 +173,34 @@ namespace MyEvent.Controllers
             return Ok(data);
         }
 
+        [HttpGet("getParticipant/{eventId}")]
+        public IActionResult getParticipant(string? eventId)
+        {
+
+            //step 1 : finds participant data
+            var participantIds = db.Tickets
+                               .Where(t => t.EventId == eventId)
+                               .Select(t => t.BuyerId)
+                               .Distinct()
+                               .ToList();
+
+            //step2: get user data
+            var user = db.Users
+                       .Where(u=> participantIds.Contains(u. Id))
+                        .Select(u => new UserDTO
+                        {
+                            Id = u.Id,
+                            Email = u.Email,
+                            Name = u.Name,
+                            PhotoURL = u.PhotoURL,
+                            Role = u.Role
+                        })
+                       .ToList();
+
+            return Ok(user);
+        }
+
+
         [HttpGet("Recommended/{query}/{eventId}")]
         public IActionResult Recommended(string? query ,string?eventId)
         {

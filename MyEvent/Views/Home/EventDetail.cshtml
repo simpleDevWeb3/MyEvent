@@ -151,17 +151,29 @@
                             @Model.Detail?.Description
                         </p>
                     </div>
-                    <div style="background:#343434; margin-top:20px; padding:20px; border-radius:8px;">
+                    <div class="Attande-Sect" style="background:#343434; margin-top:20px; padding:20px; border-radius:8px;">
                         <h2 style="margin:0">Attendee</h2>
-                        <div class="Attande-card" style="  margin-top:10px; width:100px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;">
-                            <div class="profile-container" style="height:80px; width:80px">
-                                <img class="event-detail__img" style="border-radius:50%;" src="@Model.ImageUrl" />
+                        <div class="Attande-Container" style="display:flex;">
+                            <div class="Attande-card" style="  margin-top:10px; width:100px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;">
+                                <div class="profile-container" style="height:80px; width:80px">
+                                    <img class="event-detail__img" style="border-radius:50%;" src="@Model.ImageUrl" />
+                                </div>
+                                <div style="text-align:center;">
+                                    <div>@Model.Detail.Organizer</div>
+                                    <div style="opacity:0.8;">Organizer</div>
+                                </div>
+
+
                             </div>
-                            <div style="text-align:center;">
-                                <div>Joe Mama</div>
-                                <div style="opacity:0.8;">Organizer</div>
-                            </div>
+
+                       
+
                         </div>
+                        
+
+
+
+
                     </div>
                 </div>
            
