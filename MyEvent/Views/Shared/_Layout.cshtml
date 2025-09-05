@@ -144,9 +144,12 @@
                         <span>@User.Identity.Name</span>
                         <span>| @(User.IsInRole("Admin") ? "Admin" : "Member")</span>
                     </div>
-                    <div class="modal-user hide" ></div>
+                    <div class="modal-user hide" >
+                        <a href="/Account/UpdatePassword">Update Password</a>
+                        <a href="/Account/UpdateProfile">Update Profile</a>
+                        <button class="Log-in-btn" data-ajax-page="/logout">Log Out</button>
+                    </div>
 
-                    <button class="Log-in-btn" data-ajax-page="/logout">Log Out</button>
                 }
                 else
                 {

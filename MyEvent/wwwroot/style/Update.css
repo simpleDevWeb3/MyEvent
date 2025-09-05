@@ -1,0 +1,157 @@
+﻿/* General Body & Container */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #121212;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 500px; /* wider for profile forms */
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #1db954;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #2a2a2a;
+    color: #fff;
+    font-size: 1rem;
+}
+
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="email"]:focus,
+    input[type="file"]:focus {
+        outline: none;
+        border: 1px solid #1db954;
+    }
+
+/* Validation Messages */
+.validation-summary,
+span[data-valmsg-for] {
+    color: #f44336;
+    font-size: 0.875rem;
+}
+
+/* Profile Upload */
+.upload {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    border: 1px dashed #1db954;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+}
+
+    .upload:hover {
+        background-color: #2a2a2a;
+    }
+
+    .upload img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.login-btn,
+.reset-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.login-btn {
+    background-color: #1db954;
+    color: #000;
+}
+
+.reset-btn {
+    background-color: #333;
+    color: #fff;
+}
+
+.login-btn:hover {
+    background-color: #1ed760;
+}
+
+.reset-btn:hover {
+    background-color: #444;
+}
+
+/* Links */
+.links {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+}
+
+    .links a {
+        color: #1db954;
+        text-decoration: none;
+    }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+/* Optional: Specific Adjustments for Profile Form */
+.profile-photo-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+    .profile-photo-preview img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #1db954;
+    }

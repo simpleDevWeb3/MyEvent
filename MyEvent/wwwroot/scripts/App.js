@@ -154,5 +154,5 @@ $(".create_event-backBtn").on("click", function () {
 
 ///////////////////////////////////////////////////Ken Code/////
 $('.profile-picture').on('click', () => {
-    console.log("opened");
+    $('.modal-user').toggleClass('hide');
 })

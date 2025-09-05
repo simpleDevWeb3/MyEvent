@@ -184,11 +184,11 @@ public class AccountController : Controller
 
         return View();
     }
-
+    [Route("Account/UpdateProfile")]
     [Authorize]
     public IActionResult UpdateProfile()
     {
-        var m = db.Members.Find(User.Identity!.Name);
+        var m = db.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
         if (m == null) return Redirect("~/");
 
         var vm = new UpdateProfileVM
@@ -201,11 +201,12 @@ public class AccountController : Controller
         return View(vm);
     }
 
+    [Route("Account/UpdateProfile")]
     [Authorize]
     [HttpPost]
     public IActionResult UpdateProfile(UpdateProfileVM vm)
     {
-        var m = db.Members.Find(User.Identity!.Name);
+        var m = db.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
         if (m == null) return Redirect("~/");
 
         if (vm.Photo != null)
@@ -248,7 +249,7 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult ResetPassword(ResetPasswordVM vm)
     {
-        var u = db.Users.Find(vm.Email);
+        var u = db.Users.FirstOrDefault(x => x.Email == vm.Email);
 
         if (u == null)
         {
