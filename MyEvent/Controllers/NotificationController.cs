@@ -24,6 +24,17 @@ public class NotificationController : Controller
             .Where(t => t.BuyerId == user.Id)
             .ToList();
 
+        if (user != null && !tickets.Any())
+        {
+            tickets = _db.Tickets
+            .Include(t => t.Event)
+            .ThenInclude(e => e.Detail)
+            .Where(t => t.BuyerId == user.Id)
+            .ToList();
+
+            return View("Notification", tickets);
+        }
+
         // Filter out dismissed IDs from Session
         var dismissed = HttpContext.Session.GetString("DismissedTickets");
         var dismissedSet = string.IsNullOrEmpty(dismissed)
@@ -39,7 +50,6 @@ public class NotificationController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult Dismiss(int ticketId)
     {
-        // store dismissed in Session (persist across navigation)
         var dismissed = HttpContext.Session.GetString("DismissedTickets");
         var set = string.IsNullOrEmpty(dismissed)
             ? new HashSet<int>()
@@ -48,6 +58,15 @@ public class NotificationController : Controller
         set.Add(ticketId);
         HttpContext.Session.SetString("DismissedTickets", string.Join(",", set));
 
-        return Json(new { success = true });
+        return Json(new { success = true, message = "Notification dismissed successfully!" });
     }
+
+    [HttpGet]
+    public IActionResult RefreshBadge()
+    {
+        return ViewComponent("NotificationBadge");
+    }
+
+
+
 }

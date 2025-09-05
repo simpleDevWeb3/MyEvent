@@ -73,10 +73,30 @@
         .remove-btn:hover {
             background: #b52b3a;
         }
+
+    .delete-message {
+        position: fixed;
+        top: 100px;
+        right: -400px; /* start hidden off-screen */
+        background-color: #dc3545; /* red for delete */
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-weight: bold;
+        z-index: 1000;
+        transition: right 0.5s ease;
+    }
+
+        .delete-message.show {
+            right: 20px; /* slide into view */
+        }
+
 </style>
 
 <div class="ticket-container">
     <h2 class="ticket-heading">My Event Notifications</h2>
+
+    <div id="flash-delete" class="delete-message"></div>
 
     @if (Model?.Any() == true)
     {
@@ -147,19 +167,63 @@
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".dismiss-form").forEach(form => {
             form.addEventListener("submit", function (e) {
-                e.preventDefault(); // prevent full reload
+                e.preventDefault();
                 const row = form.closest("tr");
 
                 fetch(form.action, {
                     method: "POST",
                     body: new FormData(form)
-                }).then(res => {
-                    if (res.ok && row) {
-                        row.remove(); // remove visually
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        if (row) {
+                            row.remove();
+
+                            // check if table is empty
+                            const tableBody = document.querySelector("#notification-table tbody");
+                            if (tableBody && tableBody.rows.length === 0) {
+                                // remove the whole table
+                                const table = document.getElementById("notification-table");
+                                if (table) {
+                                    table.remove();
+                                }
+
+                                // show the "no notifications" message
+                                const container = document.querySelector(".ticket-container");
+                                const msg = document.createElement("p");
+                                msg.style.textAlign = "center";
+                                msg.textContent = "No notifications. You don’t have any tickets.";
+                                container.appendChild(msg);
+                            }
+                        }
+
+                        // flash message
+                        const flash = document.getElementById("flash-delete");
+                        if (flash) {
+                            flash.textContent = data.message;
+
+                            flash.classList.remove("show");
+                            void flash.offsetWidth; // restart animation
+                            flash.classList.add("show");
+
+                            setTimeout(() => flash.classList.remove("show"), 3000);
+                        }
+
+                        // refresh the badge dynamically
+                        fetch('/Notification/RefreshBadge')
+                            .then(res => res.text())
+                            .then(html => {
+                                const oldButton = document.querySelector('[data-ajax-page="/Notification/Notification"]');
+                                if (oldButton) {
+                                    oldButton.outerHTML = html.trim();
+                                }
+                            });
                     }
                 });
             });
         });
     });
 </script>
+
 
