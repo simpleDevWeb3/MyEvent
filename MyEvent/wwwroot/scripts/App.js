@@ -105,7 +105,7 @@ let timeout;
 
 /////////////////////////////////////////////////Cheng's Code
 let auto_submit = null;
-$('#create_event_location_search').on('input', e => {
+$('#name, #create_event_location_search').on('input', e => {
     clearTimeout(auto_submit);
     auto_submit = setTimeout(() => $(e.target.form).submit(), 200);
 });
@@ -143,6 +143,10 @@ $("input[type='time']").on("blur", e => {
     $(".validation_msg").css("display", "none");
     $("." + a).css("display", "inline");
 
+});
+
+$(".create_event-backBtn").on("click", function () {
+    window.history.back();
 });
 
 // Enable hidden file validation

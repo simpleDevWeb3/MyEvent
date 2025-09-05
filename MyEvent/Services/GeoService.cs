@@ -27,7 +27,11 @@ public class GeoService
             if (data?.Features != null && data.Features.Any())
             {
                 var filtered = data.Features
-                                .Where(f => !string.IsNullOrEmpty(f.Properties.Premise) && !string.IsNullOrEmpty(f.Properties.Street))
+                                .Where(f => !string.IsNullOrEmpty(f.Properties.Premise) && 
+                                            !string.IsNullOrEmpty(f.Properties.Street) &&
+                                            !string.IsNullOrEmpty(f.Properties.City) &&
+                                            !string.IsNullOrEmpty(f.Properties.Postcode) &&
+                                            !string.IsNullOrEmpty(f.Properties.State))
                                 .ToList();
                 return filtered;
             }

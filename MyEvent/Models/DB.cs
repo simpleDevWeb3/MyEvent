@@ -93,7 +93,10 @@ public class DB : DbContext
 
         public string ImageUrl { get; set; }
 
-     
+        // 🔹 Foreign key for Admin
+        public int AdminId { get; set; }
+        public Admin Admin { get; set; }
+
         public string AddressId { get; set; }
         public Address Address { get; set; }
 

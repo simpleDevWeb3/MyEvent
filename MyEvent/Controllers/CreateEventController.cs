@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyEvent.Models;
+using System.Security.Claims;
 using static MyEvent.Models.DB;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using X.PagedList.Extensions;
 
 namespace MyEvent.Controllers;
 
@@ -102,6 +105,11 @@ public class CreateEventController : Controller
             return PartialView("_SearchResult");
         }
 
+        foreach (var claim in User.Claims)
+        {
+            Console.WriteLine($"{claim.Type}: {claim.Value}");
+        }
+
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
 
         return View();
@@ -159,12 +167,15 @@ public class CreateEventController : Controller
             };
             db.Addresses.Add(a);
 
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var admin = db.Admins.FirstOrDefault(a => a.Email == email);
             id = db.Events.Max(e => e.Id) ?? "EVT00000";
             Event e = new()
             {
                 Id = NextId(id, "EVT", "D5"),
                 Title = vm.Title.Trim().ToUpper(),
                 ImageUrl = hp.SavePhoto(vm.ImageUrl, "images/Events"),
+                AdminId = admin.Id,
                 CategoryId = vm.CategoryId,
                 AddressId = a.Id,
                 Price = vm.Price,
@@ -197,12 +208,56 @@ public class CreateEventController : Controller
 
     //***************************************************************************************************
     [Route("/event_created")]
-    public IActionResult EventCreated()
+    public IActionResult EventCreated(string? name, string? sort, string? dir, int page = 1)
     {
-        var m = db.Events
-                .Include(e => e.Address)
-                .Include(e => e.Category)
-                .Include(e => e.Detail);
+        // (1) Searching ------------------------
+        ViewBag.Name = name = name?.Trim() ?? "";
+
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        var searched = db.Events
+                        .Include(e => e.Address)
+                        .Include(e => e.Category)
+                        .Include(e => e.Detail)
+                        .Where(e => e.Admin.Email == email &&
+                                    e.Detail.Date >= DateOnly.FromDateTime(DateTime.Now) &&
+                                    e.Title.Contains(name));
+
+        // (2) Sorting --------------------------
+        ViewBag.Sort = sort;
+        ViewBag.Dir = dir;
+
+        Func<Event, object> fn = sort switch
+        {
+            "Id" => e => e.Id,
+            "Name" => e => e.Title,
+            "Category" => e => e.Category.Name,
+            "Date" => e => e.Detail.Date,
+            "Price" => e => e.Price,
+            _ => e => e.Detail.Date,
+        };
+
+        var sorted = dir == "des" ?
+             searched.OrderByDescending(fn) :
+             searched.OrderBy(fn);
+
+        // (3) Paging ---------------------------
+        if (page < 1)
+        {
+            return RedirectToAction(null, new { name, sort, dir, page = 1 });
+        }
+
+        var m = sorted.ToPagedList(page, 10);
+
+        if (page > m.PageCount && m.PageCount > 0)
+        {
+            return RedirectToAction(null, new { name, sort, dir, page = m.PageCount });
+        }
+
+        if (Request.IsAjax())
+        {
+            return PartialView("_event_listing", m);
+        }
+
         return View(m);
     }
 
@@ -237,5 +292,59 @@ public class CreateEventController : Controller
 
         }
         return RedirectToAction("EventCreated");
+    }
+
+    [Route("/event_history")]
+    public IActionResult EventHistory(string? name, string? sort, string? dir, int page = 1)
+    {
+        // (1) Searching ------------------------
+        ViewBag.Name = name = name?.Trim() ?? "";
+
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        var searched = db.Events
+                        .Include(e => e.Address)
+                        .Include(e => e.Category)
+                        .Include(e => e.Detail)
+                        .Where(e => e.Admin.Email == email &&
+                                    e.Detail.Date < DateOnly.FromDateTime(DateTime.Now) &&
+                                    e.Title.Contains(name));
+
+        // (2) Sorting --------------------------
+        ViewBag.Sort = sort;
+        ViewBag.Dir = dir;
+
+        Func<Event, object> fn = sort switch
+        {
+            "Id" => e => e.Id,
+            "Name" => e => e.Title,
+            "Category" => e => e.Category.Name,
+            "Date" => e => e.Detail.Date,
+            "Price" => e => e.Price,
+            _ => e => e.Detail.Date,
+        };
+
+        var sorted = dir == "des" ?
+             searched.OrderByDescending(fn) :
+             searched.OrderBy(fn);
+
+        // (3) Paging ---------------------------
+        if (page < 1)
+        {
+            return RedirectToAction(null, new { name, sort, dir, page = 1 });
+        }
+
+        var m = sorted.ToPagedList(page, 10);
+
+        if (page > m.PageCount && m.PageCount > 0)
+        {
+            return RedirectToAction(null, new { name, sort, dir, page = m.PageCount });
+        }
+
+        if (Request.IsAjax())
+        {
+            return PartialView("_event_listing", m);
+        }
+
+        return View(m);
     }
 }
