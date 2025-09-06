@@ -155,6 +155,7 @@ public class AccountController : Controller
 
     // GET: Account/UpdatePassword
     [Authorize]
+    [HttpGet]
     public IActionResult UpdatePassword()
     {
         return View();
@@ -165,7 +166,7 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult UpdatePassword(UpdatePasswordVM vm)
     {
-        var u = db.Users.Find(User.Identity!.Name);
+        var u = db.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
         if (u == null) return Redirect("~/");
 
         if (!hp.VerifyPassword(u.Hash, vm.Current))
@@ -182,9 +183,9 @@ public class AccountController : Controller
             return Redirect("~/");
         }
 
-        return View();
+        return View(vm);
     }
-    [Route("Account/UpdateProfile")]
+    [HttpGet]
     [Authorize]
     public IActionResult UpdateProfile()
     {
@@ -201,7 +202,6 @@ public class AccountController : Controller
         return View(vm);
     }
 
-    [Route("Account/UpdateProfile")]
     [Authorize]
     [HttpPost]
     public IActionResult UpdateProfile(UpdateProfileVM vm)

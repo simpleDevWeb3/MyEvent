@@ -1,7 +1,7 @@
-﻿@model UpdatePasswordVM
+﻿@model UpdateProfileVM
 
 @{
-    ViewBag.Title = "Account | Update Password";
+    ViewBag.Title = "Account | Update Profile";
     Layout = "";
 }
 
@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Password - My Event</title>
+    <title>Update Profile - My Event</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/style/Update.css" />
 </head>
@@ -18,29 +18,32 @@
     <main class="login-wrapper">
         <div class="login-container">
 
-            <!-- Heading and Logo -->
+            <!-- Heading goes OUTSIDE the form -->
             <img style="border-radius:30%; object-fit:cover; width:30%; height:30%;" src="~/images/Logo/MyEvently.png" />
-            <h2 class="title">Update Password</h2>
+            <h2 class="title">Update Profile</h2>
 
-            <form method="post" class="form">
+            <form class="form" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
 
                 <div class="form-group">
-                    <label asp-for="Current">Current Password</label>
-                    <input asp-for="Current" type="password" autofocus />
-                    <span asp-validation-for="Current"></span>
+                    <label asp-for="Email"></label>
+                    <b>@Model.Email</b>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="New">New Password</label>
-                    <input asp-for="New" type="password" />
-                    <span asp-validation-for="New"></span>
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" autofocus />
+                    <span asp-validation-for="Name"></span>
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Confirm">Confirm Password</label>
-                    <input asp-for="Confirm" type="password" />
-                    <span asp-validation-for="Confirm"></span>
+                    <label asp-for="Photo"></label>
+                    <label class="upload">
+                        <small>Select Photo...</small>
+                        <input asp-for="Photo" accept="image/jpeg,image/png" hidden />
+                        <img src="/images/Profile/@Model.PhotoURL" />
+                    </label>
+                    <span asp-validation-for="Photo"></span>
                 </div>
 
                 <div class="form-actions">
@@ -52,7 +55,6 @@
             <p class="links">
                 [ <a href="/Login">Login</a> ]
             </p>
-
         </div>
     </main>
 

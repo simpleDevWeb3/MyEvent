@@ -66,18 +66,21 @@ public class RegisterAdminVM
 }
 public class UpdatePasswordVM
 {
+    [Required]
     [StringLength(100, MinimumLength = 8)]
     [DataType(DataType.Password)]
     [Display(Name = "Current Password")]
     public string Current { get; set; }
 
+    [Required]
     [StringLength(100, MinimumLength = 8)]
     [DataType(DataType.Password)]
     [Display(Name = "New Password")]
     public string New { get; set; }
 
+    [Required]
     [StringLength(100, MinimumLength = 8)]
-    [Compare("New")]
+    [Compare("New", ErrorMessage = "Current password does not match")]
     [DataType(DataType.Password)]
     [Display(Name = "Confirm Password")]
     public string Confirm { get; set; }
