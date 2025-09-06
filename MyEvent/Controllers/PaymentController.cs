@@ -19,6 +19,12 @@ public class PaymentController : Controller
     [Authorize]
     public IActionResult PaymentInfo(string eventId)
     {
+        if (string.IsNullOrWhiteSpace(eventId))
+        {
+            TempData["Error"] = "Invalid event ID!";
+            return RedirectToAction("Index", "Home");
+        }
+
         var ev = _db.Events
                     .Include(e => e.Category)
                     .Include(e => e.Detail)
@@ -31,9 +37,14 @@ public class PaymentController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        // Get logged-in user
         var userEmail = User.FindFirst(ClaimTypes.Email)?.Value
                         ?? User.FindFirst("email")?.Value;
+
+        if (string.IsNullOrWhiteSpace(userEmail))
+        {
+            TempData["Error"] = "User email not found!";
+            return RedirectToAction("Index", "Home");
+        }
 
         var user = _db.Users.FirstOrDefault(u => u.Email == userEmail);
         if (user == null)
@@ -42,15 +53,21 @@ public class PaymentController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        // Check if ticket already exists for this event + user
-        var existingTicket = _db.Tickets
-            .FirstOrDefault(t => t.EventId == eventId && t.BuyerId == user.Id);
-
-        if (existingTicket != null)
+        // Safe check for ticket existence
+        bool isJoined = false;
+        try
         {
-            TempData["Error"] = "You already purchased a ticket for this event.";
-            return RedirectToAction("MyTickets", "Ticket");
+            isJoined = _db.Tickets
+                          .Where(t => t.EventId != null && t.BuyerId != null) // filter out bad data
+                          .Any(t => t.EventId == eventId && t.BuyerId == user.Id);
         }
+        catch (Exception ex)
+        {
+            // Log the error if needed
+            TempData["Error"] = "Error checking ticket status.";
+        }
+
+        ViewBag.IsJoined = isJoined;
 
         // Render PaymentInfo if everything ok
         if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
@@ -58,8 +75,6 @@ public class PaymentController : Controller
 
         return View("PaymentInfo", ev);
     }
-
-
 
 
     [Authorize]

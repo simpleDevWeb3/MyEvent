@@ -18,8 +18,8 @@ public class DB : DbContext
         {
             throw new NotImplementedException();
         }
-    
 
+        public DbSet<JoinedEvent> JoinedEvents { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Event> Events { get; set; }
@@ -80,8 +80,23 @@ public class DB : DbContext
         public List<Event> Events { get; set; } = [];
     }
 
- 
- 
+
+
+    public class JoinedEvent
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public int UserId { get; set; }
+        public string EventId { get; set; }
+
+        [ForeignKey("EventId")]
+        public Event Event { get; set; }
+
+        public bool IsPaid { get; set; }
+    }
+
+
 
     public class Event
     {
@@ -159,10 +174,10 @@ public class DB : DbContext
     {
         public int TicketId { get; set; }
 
-        public string EventId { get; set; }
+        public string? EventId { get; set; }
         public Event Event { get; set; }
 
-        public int BuyerId { get; set; } // who paid
+        public int? BuyerId { get; set; } // who paid
         public User Buyer { get; set; }
 
         [Required]

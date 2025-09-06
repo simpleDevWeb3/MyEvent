@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MyEvent.Models;
+using System.Security.Claims;
 using static MyEvent.Models.DB;
 
 namespace MyEvent.Controllers;
@@ -39,22 +41,36 @@ public class HomeController : Controller
     }
 
     [HttpGet("/Home/{eventName}")]
-    public IActionResult EventDetail(string id,string eventName)
+    public IActionResult EventDetail(string id)
     {
-        if (string.IsNullOrEmpty(id))
-            return NotFound(); // or RedirectToAction("Index");
+        var ev = db.Events
+                    .Include(e => e.Category)
+                    .Include(e => e.Detail)
+                    .Include(e => e.Address)
+                    .FirstOrDefault(e => e.Id == id);
 
-        var e = db.Events
-                  .Include(e => e.Category)
-                  .Include(e => e.Detail)
-                  .Include(e => e.Address)
-                  .FirstOrDefault(e => e.Id == id);
+        if (ev == null)
+            return RedirectToAction("Index");
 
-        if (e == null)
-            return NotFound(); // or show a custom error page
+        var userEmail = User.FindFirst(ClaimTypes.Email)?.Value
+                        ?? User.FindFirst("email")?.Value;
 
-        return View(e);
+        bool isJoined = false;
+
+        if (!string.IsNullOrEmpty(userEmail))
+        {
+            var user = db.Users.FirstOrDefault(u => u.Email == userEmail);
+            if (user != null)
+            {
+                isJoined = db.Tickets.Any(t => t.EventId == id && t.BuyerId == user.Id);
+            }
+        }
+
+        ViewBag.IsJoined = isJoined;
+
+        return View(ev);
     }
+
 
 
 

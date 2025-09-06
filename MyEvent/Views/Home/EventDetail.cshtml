@@ -1,5 +1,6 @@
 ﻿@using MyEvent.Models
 @model MyEvent.Models.DB.Event;
+@inject DB _db
 
 <style>
     .event-detail__img-container {
@@ -78,6 +79,25 @@
     .section-3{
         
     }
+
+    .joined-button {
+        background-color: #28a745; /* Green */
+        border-radius: 45px;
+        padding: 10px;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: not-allowed;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
+        line-height: 1;
+        opacity: 0.7; /* Slightly faded to indicate disabled */
+    }
+
+
 
 </style>
 <main class="home-container">
@@ -203,10 +223,30 @@
 
                     <div style="display:flex; gap:20px;">
                         <p>Only RM70</p>
-                        <form asp-controller="Payment" asp-action="PaymentInfo" method="post">
-                            <input type="hidden" name="eventId" value="@Model?.Id" />
-                            <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:white; color:black;">Join</button>
-                        </form>
+
+                        @{
+                            bool isJoined = ViewBag.IsJoined != null ? (bool)ViewBag.IsJoined : false;
+                        }
+
+                        @if (isJoined)
+                        {
+                            <button class="joined-button" style="font-size:15px; padding:20px 30px; background:green; color:white;" disabled>
+                                Joined
+                            </button>
+                        }
+                        else
+                        {
+                            <form asp-controller="Payment" asp-action="PaymentInfo" method="post">
+                                <input type="hidden" name="eventId" value="@Model?.Id" />
+                                <button type="submit" class="home-button" style="font-size:15px; padding:20px 30px; background:white; color:black;">
+                                    Join
+                                </button>
+                            </form>
+                        }
+
+
+
+
                         <form asp-controller="Favourite" asp-action="Follow" method="post" style="margin:0;">
                             <input type="hidden" name="eventId" value="@Model.Id" />
                             <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:red; color:white;">

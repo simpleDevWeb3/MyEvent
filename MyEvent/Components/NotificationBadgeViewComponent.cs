@@ -30,7 +30,7 @@ public class NotificationBadgeViewComponent : ViewComponent
                     .Where(t => t.BuyerId == user.Id)
                     .ToList();
 
-                // 🔹 Get dismissed IDs from Session
+                // Get dismissed IDs from Session
                 var dismissed = HttpContext.Session.GetString("DismissedTickets");
                 var dismissedSet = string.IsNullOrEmpty(dismissed)
                     ? new HashSet<int>()
