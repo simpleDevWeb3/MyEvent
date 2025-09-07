@@ -279,11 +279,12 @@ public class CreateEventController : Controller
     [Route("/event_detail/{id}")]
     public IActionResult EventDetail(string? id)
     {
-        //var m = db.Events.Find(id);
         var m = db.Events
                 .Include(e => e.Address)
                 .Include(e => e.Category)
                 .Include(e => e.Detail)
+                .Include(e => e.Tickets)
+                .ThenInclude(e => e.Buyer)
                 .FirstOrDefault(e => e.Id == id);
 
         if (m != null)

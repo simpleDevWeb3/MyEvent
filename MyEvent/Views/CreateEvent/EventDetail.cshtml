@@ -1,6 +1,7 @@
 ﻿@model MyEvent.Models.DB.Event
 
 @{
+    int i = 1;
 }
 
 <style>
@@ -50,6 +51,14 @@
     .create_event_event_detail {
         margin-left: 50px;
     }
+
+    .create_event-participants {
+        margin-bottom: 10px;
+        
+    }
+
+
+
     /* Form ----------------------------------------------------------------------- */
 
     label > * {
@@ -91,6 +100,9 @@
 </style>
 
 <div class="create_event_event_detail" style="display: block; flex:none; width:100%">
+    <div class="create_event_picture_container">
+        <img src=@Model.ImageUrl />
+    </div>
     <h1>@Model.Title</h1>
     <form class="form">
         <label>Id</label>
@@ -124,11 +136,23 @@
         <label>Email</label>
         <span>@Model.Detail.ContactEmail</span>
         <br>
+
+        <label style="margin-bottom: 10px;">Participants</label>
+        <span class="create_event-participants">
+            @{
+                foreach (var t in Model.Tickets)
+                {
+                    <span>@i. @t.Buyer.Name (@t.Buyer.Email)</span>
+                    <br />
+                    i++;
+                }
+            }        
+
+        </span>
+        <br>
     </form>
 
-    <div class="create_event_picture_container">
-        <img src=@Model.ImageUrl />
-    </div>
+
 
     <button class="create_event-backBtn">Back</button>
     <button class="btn-Delete">Delete</button>
