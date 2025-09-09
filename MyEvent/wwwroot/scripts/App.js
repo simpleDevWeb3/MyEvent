@@ -144,7 +144,15 @@ $("input[type='time']").on("blur", e => {
 });
 
 $(".create_event-backBtn").on("click", function () {
-    window.history.back();
+    //window.history.back();
+    var prevUrl = document.referrer; // previous page URL
+
+    if (prevUrl) {
+        window.location.href = prevUrl; // go to it
+    } else {
+        // fallback if no referrer available
+        window.location.href = "/";
+    }
 });
 
 
