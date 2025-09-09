@@ -295,7 +295,7 @@ public class CreateEventController : Controller
             e.Price = vm.Price;
             if (vm.Image != null)
             {
-                hp.DeletePhoto(e.ImageUrl, "Events");
+                hp.DeletePhoto(e.ImageUrl, "images/Events");
                 e.ImageUrl = hp.SavePhoto(vm.Image, "Events");
             }
 
