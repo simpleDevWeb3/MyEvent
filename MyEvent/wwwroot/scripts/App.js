@@ -110,7 +110,6 @@ $('#name, #create_event_location_search').on('input', e => {
     auto_submit = setTimeout(() => $(e.target.form).submit(), 200);
 });
 
-
 // Show overlay when readonly input is focused (clicked)
 $(".create_event_location_input").on("focus click", e => {
     $("#overlay").fadeIn();
@@ -131,7 +130,6 @@ $("#overlay").on("click", function (e) {
     }
 });
 
-
 $(document).on('click', '.create_event_location_result', function () {
     let formatted = $(this).text().trim();
     $('.create_event_location_input').val(formatted);
@@ -149,8 +147,7 @@ $(".create_event-backBtn").on("click", function () {
     window.history.back();
 });
 
-// Enable hidden file validation
-//$.validator.setDefaults({ ignore: '' });
+
 
 ///////////////////////////////////////////////////Ken Code/////
 $('.profile-picture').on('click', () => {

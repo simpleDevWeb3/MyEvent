@@ -177,6 +177,7 @@
       cursor: not-allowed;
       background-color: #ffffff;
     }
+
 </style>
 
     @Html.Hidden("sort", "", new { form = "f" })
@@ -214,7 +215,7 @@
                 <td>@e.Title</td>
                 <td>@e.Category.Name</td>
                 <td>@e.Detail.Date</td>
-                <td>@(e.Price == 0.00m ? "Free" : e.Price)</td>
+                <td>@(e.Price == 0.00m ? "Free" : $"RM {@e.Price}")</td>
 
                 <td>
                     <button data-get="/event_detail/@e.Id">Detail</button>

@@ -187,9 +187,8 @@ public class CreateEventController : Controller
             db.SaveChanges();
 
             TempData["Info"] = "Event created successful.";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("EventCreated");
         }
-
 
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
         return View();
@@ -206,7 +205,7 @@ public class CreateEventController : Controller
 
         if (e == null)
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("EventCreated");
         }
 
         if (Request.IsAjax())
@@ -316,10 +315,10 @@ public class CreateEventController : Controller
             db.SaveChanges();
 
             TempData["Info"] = "Event edited successful.";
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("EventCreated");
         }
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("EventCreated");
     }
 
     [Route("/event_created")]
