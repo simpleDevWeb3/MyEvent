@@ -42,6 +42,10 @@ public class CreateEventController : Controller
         var min = DateOnly.FromDateTime(DateTime.Now);  //today
         var max = min.AddYears(1);  //1 year after
 
+        Console.WriteLine("debug from line 45");
+        Console.WriteLine(min);
+        Console.WriteLine(max);
+
         if (min < date && date < max)
             return true;
 
@@ -175,7 +179,7 @@ public class CreateEventController : Controller
             {
                 Id = NextId(id, "DET", "D5"),
                 Description = vm.Description,
-                Organizer = "Sample Organizer",
+                Organizer = admin.Name,
                 ContactEmail = vm.ContactEmail,
                 Date = vm.Date,
                 StartTime = vm.StartTime,
