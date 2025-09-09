@@ -163,7 +163,7 @@ public class CreateEventController : Controller
             {
                 Id = NextId(id, "EVT", "D5"),
                 Title = vm.Title.Trim().ToUpper(),
-                ImageUrl = hp.SavePhoto(vm.ImageUrl, "images/Events"),
+                ImageUrl = hp.SavePhoto(vm.ImageUrl, "Events"),
                 AdminId = admin.Id,
                 CategoryId = vm.CategoryId,
                 AddressId = a.Id,
@@ -295,8 +295,8 @@ public class CreateEventController : Controller
             e.Price = vm.Price;
             if (vm.Image != null)
             {
-                hp.DeletePhoto(e.ImageUrl, "images/Events");
-                e.ImageUrl = hp.SavePhoto(vm.Image, "images/Events");
+                hp.DeletePhoto(e.ImageUrl, "Events");
+                e.ImageUrl = hp.SavePhoto(vm.Image, "Events");
             }
 
             if (vm.Formatted_address != null && address != null)
