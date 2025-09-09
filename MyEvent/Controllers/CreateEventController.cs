@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using MyEvent.Migrations;
 using MyEvent.Models;
+using System.IO;
 using System.Security.Claims;
+using X.PagedList.Extensions;
 using static MyEvent.Models.DB;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using X.PagedList.Extensions;
 
 namespace MyEvent.Controllers;
 
@@ -50,19 +52,9 @@ public class CreateEventController : Controller
     {
         if (StartTime.HasValue && EndTime.HasValue)
         {
-            Console.WriteLine(StartTime);
-            Console.WriteLine(EndTime);
             var duration = EndTime.Value - StartTime.Value;
-            Console.WriteLine("debug from line 51");
-
-            Console.WriteLine(duration.TotalMinutes >= 30);
-            Console.WriteLine(EndTime > StartTime);
-            Console.WriteLine(duration.TotalMinutes >= 30 && EndTime > StartTime);
-
-
             return duration.TotalMinutes >= 30 && EndTime > StartTime;
         }
-        Console.WriteLine("debug from line 53");
         return true;
     }
 
@@ -85,6 +77,8 @@ public class CreateEventController : Controller
                     return features;
                 }
             }
+
+            HttpContext.Session.Remove("create_event_location_search");
             return null;
         }
         return null;
@@ -103,11 +97,6 @@ public class CreateEventController : Controller
                 return PartialView("_SearchResult", coordinates);
             }
             return PartialView("_SearchResult");
-        }
-
-        foreach (var claim in User.Claims)
-        {
-            Console.WriteLine($"{claim.Type}: {claim.Value}");
         }
 
         ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
@@ -206,7 +195,133 @@ public class CreateEventController : Controller
         return View();
     }
 
-    //***************************************************************************************************
+    public async Task<IActionResult> UpdateEvent(string? id, string create_event_location_search = "")
+    {
+
+        var e = db.Events
+                .Include(e => e.Address)
+                .Include(e => e.Category)
+                .Include(e => e.Detail)
+                .FirstOrDefault(e => e.Id == id);
+
+        if (e == null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        if (Request.IsAjax())
+        {
+            var coordinates = await _geo.GetCoordinatesAsync(create_event_location_search);
+
+            if (coordinates != null && create_event_location_search != null)
+            {
+                HttpContext.Session.SetString("create_event_location_search", create_event_location_search);
+                return PartialView("_SearchResult", coordinates);
+            }
+            return PartialView("_SearchResult");
+        }
+
+        var vm = new UpdateEventVM
+        {
+            Id = e.Id,
+            Title = e.Title,
+            Date = e.Detail.Date,
+            StartTime = e.Detail.StartTime,
+            EndTime = e.Detail.EndTime,
+            CategoryId = e.CategoryId,
+            Price = e.Price,
+            Description = e.Detail.Description,
+            ContactEmail = e.Detail.ContactEmail,
+            ImageUrl = e.ImageUrl,
+            Address = $"{e.Address.Premise}, {e.Address.Street}, {e.Address.Postcode} {e.Address.City}, {e.Address.State}",
+        };
+
+        ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
+        return View(vm);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UpdateEvent(UpdateEventVM vm)
+    {
+        var e = db.Events
+                .Include(e => e.Address)
+                .Include(e => e.Detail)
+                .Include(e => e.Category)
+                .FirstOrDefault(e => e.Id == vm.Id);
+        
+        if (e == null)
+        {
+            return RedirectToAction("Index");
+        }
+
+        if (!CheckDate(vm.Date))
+        {
+            ModelState.AddModelError("Date", "Suspicious Date");
+        }
+
+        if (!CheckTime(vm.StartTime, vm.EndTime))
+        {
+            ModelState.AddModelError("EndTime", "The minimum duration time is 30 minutes.");
+        }
+
+        if (!CheckPrice(vm.Price))
+        {
+            ModelState.AddModelError("Price", "Invalid Price.");
+        }
+
+        if (vm.Image != null)
+        {
+            var error = hp.ValidatePhoto(vm.Image);
+            if (error != "") ModelState.AddModelError("ImageUrl", error);
+        }
+
+        Feature? address = null;
+        if (HttpContext.Session.GetString("create_event_location_search") != null && vm.Formatted_address != null)
+        {
+            address = await CheckAddress(vm.Formatted_address);
+            if (address == null)
+            {
+                ModelState.AddModelError("Formatted_address", "Address not found.");
+            }
+        }
+
+        if (ModelState.IsValid)
+        {
+            e.Title = vm.Title;
+            e.CategoryId = vm.CategoryId;
+            e.Price = vm.Price;
+            if (vm.Image != null)
+            {
+                hp.DeletePhoto(e.ImageUrl, "images/Events");
+                e.ImageUrl = hp.SavePhoto(vm.Image, "images/Events");
+            }
+
+            if (vm.Formatted_address != null && address != null)
+            {
+                e.Address.Premise = address.Properties.Premise;
+                e.Address.Street = address.Properties.Street;
+                e.Address.City = address.Properties.City;
+                e.Address.State = address.Properties.State;
+                e.Address.Postcode = address.Properties.Postcode;
+                e.Address.Latitude = address.Geometry.Coordinates[1];
+                e.Address.Longitude = address.Geometry.Coordinates[0];
+            }
+
+            e.Detail.Description = vm.Description;
+            e.Detail.ContactEmail = vm.ContactEmail;
+            e.Detail.Date = vm.Date;
+            e.Detail.StartTime = vm.StartTime;
+            e.Detail.EndTime = vm.EndTime;
+           
+            db.SaveChanges();
+
+            TempData["Info"] = "Event edited successful.";
+            return RedirectToAction("Index", "Home");
+        }
+
+        return RedirectToAction("Index", "Home");
+    }
+
     [Route("/event_created")]
     public IActionResult EventCreated(string? name, string? sort, string? dir, int page = 1)
     {

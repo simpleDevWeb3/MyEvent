@@ -1,0 +1,223 @@
+﻿@model MyEvent.Models.UpdateEventVM
+
+@{
+    ViewBag.Title = "Event Update";
+    string min = DateTime.Today.AddDays(1).ToString("yyyy-MM-dd");
+    string max = DateTime.Today.AddYears(1).ToString("yyyy-MM-dd");
+}
+
+
+<style>
+    body {
+        overflow-y: scroll;
+    }
+
+    .form-container {
+        margin-top: 10px;
+        background: white;
+        min-width: 600px;
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    fieldset {
+        width: 30%;
+    }
+
+    fieldset input {
+        margin: 0;
+    }
+
+    .field-validation-error {
+        color: red;
+    }
+
+    input, select, textarea {
+        width: 30%;
+        padding: 8px;
+        margin: 10px auto;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .time-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .time-row input {
+        width: 90%;
+    }
+
+    button {
+        display: inline-block;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 15px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    .create_event_location_result:hover {
+        background: grey;
+    }
+
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    #search-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        width: 800px;
+        min-height: 300px
+    }
+
+    #create_event_location_search {
+        width: 80%;
+    }
+
+    .create_event_location_result {
+        margin: 3px auto;
+    }
+
+</style>
+
+<div class="form-container">
+
+    <h2>@ViewBag.Title</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly"></div>
+
+        <label asp-for="Id"></label>
+        <b>@Model.Id</b>
+        <br>
+
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" required />
+        <span asp-validation-for="Title"></span>
+        <br />
+
+        <label asp-for="Date"></label>
+        <input asp-for="Date" type="date" class="form-control" min="@min" max="@max" required />
+        <span asp-validation-for="Date"></span>
+        <br />
+
+        <label>Event Time</label>
+        <div class="time-row">
+            <div>
+                <label asp-for="StartTime"></label>
+                <input data-attribute="StartTime" asp-for="StartTime" type="time" asp-format="{0:HH:mm}" required />
+            </div>
+            <div>
+                <label asp-for="EndTime"></label>
+                <input data-attribute="EndTime" asp-for="EndTime" type="time" asp-format="{0:HH:mm}" required />
+            </div>
+            <span class="StartTime validation_msg" asp-validation-for="StartTime" style="display: none;"></span>
+            <span class="EndTime validation_msg" asp-validation-for="EndTime" style="display: none;"></span>
+        </div>
+        
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="ViewBag.Categories">
+            <option value="">- Select One -</option>
+        </select>
+        <span asp-validation-for="CategoryId"></span>
+        <br />
+
+        <label asp-for="Formatted_address"></label>
+        <input  asp-for="Formatted_address"
+                class="create_event_location_input" 
+                placeholder="Click to search location"
+                readonly
+                required
+                value="@Model.Address" />
+        <br />
+
+        <label asp-for="Price"></label>
+        <input asp-for="Price" type="number" min=0 max=200.00 step=0.05 class="form-control" required />
+        <span asp-validation-for="Price"></span>
+        <br />
+
+        <label asp-for="Description"></label>
+        <br />
+        <textarea asp-for="Description" rows="4" class="form-control" required></textarea>
+        <span asp-validation-for="Description"></span>
+        <br />
+
+        <label asp-for="ContactEmail"></label>
+        <input asp-for="ContactEmail" type="email" class="form-control" required />
+        <span asp-validation-for="ContactEmail"></span>
+        <br />
+
+        <label asp-for="Image"></label>
+        <label class="upload">
+            <input asp-for="Image" type="file" accept="image/jpeg,image/png" hidden>
+            <img src="@Model.ImageUrl">
+        </label>
+        <span asp-validation-for="Image"></span>
+        <br />
+
+        <section>
+            <button>Submit</button>
+            <button type="reset">Reset</button>
+            <button data-get="/event_created">Cancel</button>
+        </section>
+    </form>
+
+    <div id="overlay" style="display: none;">
+        <div id="search-form">
+            <form data-ajax="true"
+                  data-ajax-update="#target"
+                  data-ajax-loading="#loader">
+                @Html.TextBox("create_event_location_search", "",
+                              new { type = "search", autofocus = "", data_trim = "" })
+                <button>Search</button>
+                <img src="/images/Button/loader.gif" id="loader" style="display: none">
+            </form>
+            
+            <div id="target">
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    <script>
+            // Enable hidden file validation
+            //$.validator.setDefaults({ ignore: '' });
+    </script>
+}
