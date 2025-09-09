@@ -1,6 +1,7 @@
-﻿using MyEvent;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyEvent;
+using System.Security.Claims;
 
 namespace MyEvent.Controllers;
 
@@ -166,12 +167,14 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult UpdatePassword(UpdatePasswordVM vm)
     {
-        var u = db.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var u = db.Users.FirstOrDefault(x => x.Email == email);
         if (u == null) return Redirect("~/");
 
         if (!hp.VerifyPassword(u.Hash, vm.Current))
         {
             ModelState.AddModelError("Current", "Current Password not matched.");
+            Console.WriteLine("Error");
         }
 
         if (ModelState.IsValid)
@@ -180,16 +183,19 @@ public class AccountController : Controller
             db.SaveChanges();
 
             TempData["Info"] = "Password updated.";
+            Console.WriteLine("Pass");
             return Redirect("~/");
-        }
 
+        }
+        Console.WriteLine("Success");
         return View(vm);
     }
     [HttpGet]
     [Authorize]
     public IActionResult UpdateProfile()
     {
-        var m = db.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var m = db.Users.FirstOrDefault(x => x.Email == email);
         if (m == null) return Redirect("~/");
 
         var vm = new UpdateProfileVM
@@ -206,7 +212,8 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult UpdateProfile(UpdateProfileVM vm)
     {
-        var m = db.Users.FirstOrDefault(u => u.Email == User.Identity!.Name);
+        var email = User.FindFirstValue(ClaimTypes.Email);
+        var m = db.Users.FirstOrDefault(x => x.Email == email);
         if (m == null) return Redirect("~/");
 
         if (vm.Photo != null)

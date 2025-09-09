@@ -93,9 +93,10 @@
             <br />
         }
 
-        @await Component.InvokeAsync("NotificationBadge")
 
-
+        @if (User.IsInRole("Member"))
+        {
+            @await Component.InvokeAsync("NotificationBadge")
         <br />
         <button class="home-button" data-ajax-page="/Favourite/FollowedEvents">
             <i class="ri-poker-hearts-line"></i>
@@ -105,7 +106,7 @@
             <i class="ri-coupon-fill"></i>
         </button>
         <br />
-       
+        }
     </div>
         <div class="container"> 
         <!-------------------Navbar-------------------------->
@@ -133,9 +134,8 @@
                 @if (User.Identity!.IsAuthenticated)
                 {
                     <div class="user-info" style="display:flex; align-items:center; gap:0.5rem; color:white;">
-
                         <!-- Profile Photo -->
-                        <img src="@(User.FindFirst("PhotoUrl")?.Value ?? "~/images/Profile/@photoURL")"
+                        <img src="~/images/Profile/photo.jpg"
                              alt="Profile Photo"
                              class="profile-picture"
                              style="width:40px; height:40px; border-radius:50%; object-fit:cover;" />

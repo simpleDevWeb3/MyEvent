@@ -153,14 +153,32 @@
 }
 
 .modal-user {
-    position:fixed;
-    top:80px;
-    right:150px; 
-    width:200px;
-    height:200px;
-    background:gray;
-    transition:ease-in-out 0.15s all;
+    position: fixed;
+    top: 80px;
+    right: 150px;
+    width: 200px;
+    height: 200px;
+    background: white;
+    transition: ease-in-out 0.15s all;
+    display: flex; /* use flexbox */
+    flex-direction: column; /* stack buttons vertically */
+    justify-content: center; /* center buttons inside */
+    align-items: center;
 }
+    .modal-user a,
+    .modal-user button {
+        margin: 5px 0;
+        padding: 10px;
+        width: 80%;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+        background-color: #007bff; /* 🔵 blue button */
+        color: white; /* white text */
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.2s ease;
+    }
 .modal {
     height: 500px;
     width: 500px;

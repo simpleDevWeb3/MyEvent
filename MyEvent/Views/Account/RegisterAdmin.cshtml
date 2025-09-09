@@ -11,7 +11,25 @@
     <meta charset="UTF-8">
     <title>Register - My Event</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <link rel="stylesheet" href="~/style/Register.css" />
+
+    <style>
+        .LoginPageUpload {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+            .LoginPageUpload img {
+                display: block;
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 30%;
+                margin-top: 5px;
+                border: 1px solid #ccc;
+            }
+    </style>
 </head>
 <body>
 
@@ -51,9 +69,9 @@
 
                 <div class="form-group">
                     <label asp-for="Photo">Profile Photo</label>
-                    <label class="upload">
+                    <label class="LoginPageUpload">
                         <small>Select Photo...</small>
-                        <input asp-for="Photo" accept="image/jpeg,image/png" hidden />
+                        <input asp-for="Photo" type="file" accept="image/jpeg,image/png" style="display:none;" />
                         <img src="/images/Profile/photo.jpg" />
                     </label>
                     <span asp-validation-for="Photo"></span>
@@ -72,7 +90,25 @@
     </main>
 
     <script>
-        $.validator.setDefaults({ ignore: '' });
+                $(document).ready(function() {
+            $('.LoginPageUpload input[type="file"]').on('change', function() {
+                const file = this.files[0];
+                const img = $(this).siblings('img')[0];
+                if (!img) return;
+
+                // Save original src once
+                if (!img.dataset.originalSrc) img.dataset.originalSrc = img.src;
+
+                if (file && file.type.startsWith('image/')) {
+                    const objectUrl = URL.createObjectURL(file);
+                    img.src = objectUrl;
+                    img.onload = () => URL.revokeObjectURL(objectUrl);
+                } else {
+                    img.src = img.dataset.originalSrc;
+                    this.value = '';
+                }
+            });
+        });
     </script>
 </body>
 </html>
