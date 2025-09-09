@@ -155,7 +155,12 @@
 
 
     <button class="create_event-backBtn">Back</button>
-    <button class="create_event-backBtn" data-get="/CreateEvent/UpdateEvent/@Model.Id">Update</button>
+    @{
+        if (Model.Detail.Date >= DateOnly.FromDateTime(DateTime.Now))
+        {
+            <button class="create_event-backBtn" data-get="/CreateEvent/UpdateEvent/@Model.Id">Update</button>            
+        }
+    }
     <button class="btn-Delete" data-post="/CreateEvent/Delete/@Model.Id">Delete</button>
 
 

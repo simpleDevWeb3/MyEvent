@@ -196,7 +196,6 @@ public class CreateEventController : Controller
 
     public async Task<IActionResult> UpdateEvent(string? id, string create_event_location_search = "")
     {
-
         var e = db.Events
                 .Include(e => e.Address)
                 .Include(e => e.Category)
@@ -206,6 +205,11 @@ public class CreateEventController : Controller
         if (e == null)
         {
             return RedirectToAction("EventCreated");
+        }
+        else if (e.Detail.Date < DateOnly.FromDateTime(DateTime.Now))
+        {
+            TempData["info"] = "The event is PASSED and not allowed to be changed.";
+            return RedirectToAction("EventHistory");
         }
 
         if (Request.IsAjax())
