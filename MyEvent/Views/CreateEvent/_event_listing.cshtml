@@ -178,6 +178,27 @@
       background-color: #ffffff;
     }
 
+    .table th:last-child::after {
+        content: "(RM)";
+    }
+
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        min-width: 600px;
+    }
+
+    .table th:nth-child(4),
+    .table td:nth-child(4),
+    .table th:nth-child(5),
+    .table td:nth-child(5),
+    .table th:nth-child(6),
+    .table td:nth-child(6) {
+        min-width: 100px;
+    }
+
+    .table td:nth-child(6) {
+        text-align: right
+    }
 </style>
 
     @Html.Hidden("sort", "", new { form = "f" })
@@ -214,8 +235,8 @@
                 <td>@e.Id</td>
                 <td>@e.Title</td>
                 <td>@e.Category.Name</td>
-                <td>@e.Detail.Date</td>
-                <td>@(e.Price == 0.00m ? "Free" : $"RM {@e.Price}")</td>
+                <td>@e.Detail.Date.ToString("dd-MM-yyyy")</td>
+                <td>@(e.Price == 0.00m ? "Free" : @e.Price)</td>
 
                 <td>
                     <button data-get="/event_detail/@e.Id">Detail</button>

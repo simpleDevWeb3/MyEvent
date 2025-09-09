@@ -42,6 +42,10 @@
         background-color: #c90000;
     }
 
+    .create_event_picture_container {
+        text-align: center;
+    }
+
     .create_event_picture_container > img{
         height: 300px;
         object-fit: cover;
@@ -54,9 +58,13 @@
 
     .create_event-participants {
         margin-bottom: 10px;
-        
+        display: block;       /* span is inline by default, make it block */
+        max-height: 200px;    /* set the maximum height */
+        min-width: 600px;
+        overflow-y: auto;     /* add vertical scrollbar if content is too tall */
+        padding: 5px;         /* optional, for spacing */
+        border: 1px solid #ccc; /* optional, for clarity */
     }
-
 
 
     /* Form ----------------------------------------------------------------------- */
@@ -140,11 +148,18 @@
         <label style="margin-bottom: 10px;">Participants</label>
         <span class="create_event-participants">
             @{
-                foreach (var t in Model.Tickets)
+                if (@Model.Tickets.Count > 0)
                 {
-                    <span>@i. @t.Buyer.Name (@t.Buyer.Email)</span>
-                    <br />
-                    i++;
+                    foreach (var t in Model.Tickets)
+                    {
+                        <span>@i. @t.Buyer.Name (@t.Buyer.Email)</span>
+                        <br />
+                        i++;
+                    }
+                }
+                else
+                {
+                    <span>No participant joined.</span>
                 }
             }        
 
