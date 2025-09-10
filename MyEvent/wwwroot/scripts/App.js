@@ -187,6 +187,8 @@ $(document).on("click", ".btn-Delete", function (e) {
     // If user clicks Cancel → nothing happens
 });
 
+// Enable hidden file validation
+$.validator.setDefaults({ ignore: '' });
 
 
 
