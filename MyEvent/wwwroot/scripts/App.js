@@ -16,6 +16,26 @@ const Router = function () {
 
 };
 
+
+// put defore data-post function, if not, the data-post function will be trigger before it
+$(document).on("click", ".btn-Delete", function (e) {
+    e.preventDefault(); // stop default action
+    e.stopImmediatePropagation(); // ⬅️ stops other handlers on this element
+
+    var url = $(this).data("post"); // get delete URL
+
+    if (confirm("Are you sure you want to delete this event?")) {
+        // If user clicks OK → submit form
+        const url = e.target.dataset.post;
+        const f = $('<form>').appendTo(document.body)[0];
+        f.method = 'post';
+        f.action = url || location;
+        f.submit();
+    }
+    // If user clicks Cancel → nothing happens
+});
+///
+
 // Initiate GET request (AJAX-supported)
 $(document).on('click', '[data-get]', e => {
     e.preventDefault();
@@ -154,6 +174,21 @@ $(".create_event-backBtn").on("click", function () {
         window.location.href = "/";
     }
 });
+
+$(document).on("click", ".btn-Delete", function (e) {
+    e.preventDefault(); // stop default action
+
+    var url = $(this).data("post"); // get delete URL
+
+    if (/*confirm("Are you sure you want to delete this event?"*/false) {
+        // If user clicks OK → go to delete URL
+        window.location.href = url;
+    }
+    // If user clicks Cancel → nothing happens
+});
+
+
+
 
 
 
