@@ -18,6 +18,7 @@ const Router = function () {
 
 
 // put defore data-post function, if not, the data-post function will be trigger before it
+//double confirmation when delete btn is clicked
 $(document).on("click", ".btn-Delete", function (e) {
     e.preventDefault(); // stop default action
     e.stopImmediatePropagation(); // ⬅️ stops other handlers on this element
@@ -34,7 +35,6 @@ $(document).on("click", ".btn-Delete", function (e) {
     }
     // If user clicks Cancel → nothing happens
 });
-///
 
 // Initiate GET request (AJAX-supported)
 $(document).on('click', '[data-get]', e => {
@@ -124,13 +124,14 @@ let timeout;
 
 
 /////////////////////////////////////////////////Cheng's Code
+//real time searching
 let auto_submit = null;
 $('#name, #create_event_location_search').on('input', e => {
     clearTimeout(auto_submit);
     auto_submit = setTimeout(() => $(e.target.form).submit(), 200);
 });
 
-// Show overlay when readonly input is focused (clicked)
+// overlay when locaton input is clicked
 $(".create_event_location_input").on("focus click", e => {
     $("#overlay").fadeIn();
     $("body").css("overflow", "hidden");
@@ -150,19 +151,20 @@ $("#overlay").on("click", function (e) {
     }
 });
 
+// show the selected address when a result is clicked
 $(document).on('click', '.create_event_location_result', function () {
     let formatted = $(this).text().trim();
     $('.create_event_location_input').val(formatted);
 });
 
+//display the current time validation message
 $("input[type='time']").on("blur", e => {
-
     let a = $(e.target).data("attribute");
     $(".validation_msg").css("display", "none");
     $("." + a).css("display", "inline");
-
 });
 
+//customize back button behaviour
 $(".create_event-backBtn").on("click", function () {
     //window.history.back();
     var prevUrl = document.referrer; // previous page URL
@@ -175,21 +177,15 @@ $(".create_event-backBtn").on("click", function () {
     }
 });
 
-$(document).on("click", ".btn-Delete", function (e) {
-    e.preventDefault(); // stop default action
-
-    var url = $(this).data("post"); // get delete URL
-
-    if (/*confirm("Are you sure you want to delete this event?"*/false) {
-        // If user clicks OK → go to delete URL
-        window.location.href = url;
-    }
-    // If user clicks Cancel → nothing happens
-});
-
 // Enable hidden file validation
 $.validator.setDefaults({ ignore: '' });
 
+$.validator.methods.step = function (value, element, param) {
+    if (element.type === "time") {
+        return true; // always valid
+    }
+    return $.validator.methods.step.call(this, value, element, param);
+};
 
 
 

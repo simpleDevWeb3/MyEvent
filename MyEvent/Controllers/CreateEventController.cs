@@ -326,7 +326,8 @@ public class CreateEventController : Controller
             return RedirectToAction("EventCreated");
         }
 
-        return RedirectToAction("EventCreated");
+        vm.ImageUrl = e.ImageUrl;
+        return View(vm);
     }
 
     [Route("/event_created")]
