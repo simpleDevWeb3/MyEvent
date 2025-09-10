@@ -386,16 +386,20 @@ public class CreateEventController : Controller
     [HttpPost]
     public IActionResult Delete(string? id)
     {
-        var e = db.Events.Find(id);
+        var e = db.Events
+            .Include(e => e.Detail)
+            .FirstOrDefault(e => e.Id == id);
+        var current_page = "EventCreated";
 
         if (e != null)
         {
             TempData["Info"] = $"Event {e.Title} deleted.";
+            current_page = e.Detail.Date < DateOnly.FromDateTime(DateTime.Now) ? "EventHistory" : "EventCreated";
             //db.Events.Remove(e);
             //db.SaveChanges();
         }
 
-        return RedirectToAction("EventCreated");
+        return RedirectToAction(current_page);
     }
 
     [Route("/event_detail/{id}")]
