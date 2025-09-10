@@ -1,5 +1,10 @@
 ﻿@inject DB _db;
 @using Microsoft.EntityFrameworkCore
+@using System.Security.Claims;
+@{
+    var email = User.FindFirstValue(ClaimTypes.Email);
+    var u = _db.Users.FirstOrDefault(x => x.Email == email);
+}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -135,7 +140,7 @@
                 {
                     <div class="user-info" style="display:flex; align-items:center; gap:0.5rem; color:white;">
                         <!-- Profile Photo -->
-                        <img src="~/images/Profile/photo.jpg"
+                        <img src="@u?.PhotoURL"
                              alt="Profile Photo"
                              class="profile-picture"
                              style="width:40px; height:40px; border-radius:50%; object-fit:cover;" />

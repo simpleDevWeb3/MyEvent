@@ -68,13 +68,20 @@ public class Helper
         // Return relative web path (for <img src>)
         return $"/images/{folder}/{fileName}";
     }
-    
+
 
     public void DeletePhoto(string file, string folder)
     {
-        file = Path.GetFileName(file);
-        var path = Path.Combine(en.WebRootPath, folder, file);
-        File.Delete(path);
+        if (string.IsNullOrWhiteSpace(file)) return;
+
+        // Only take the filename (in case full path or /images/... is passed)
+        var fileName = Path.GetFileName(file);
+
+        // Match the same folder structure as SavePhoto
+        var path = Path.Combine(en.WebRootPath, "images", folder, fileName);
+
+        if (System.IO.File.Exists(path))
+            System.IO.File.Delete(path);
     }
 
 

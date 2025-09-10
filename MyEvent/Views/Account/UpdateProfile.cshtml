@@ -59,7 +59,7 @@
                     <label class="LoginPageUpload">
                         <small>Select Photo...</small>
                         <input asp-for="Photo" accept="image/jpeg,image/png" hidden />
-                        <img src="~/images/Profile/@Model.PhotoURL" />
+                        <img src="@Model.PhotoURL" />
                     </label>
                     <span asp-validation-for="Photo"></span>
                 </div>
