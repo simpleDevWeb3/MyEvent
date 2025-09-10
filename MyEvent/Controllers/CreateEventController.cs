@@ -46,7 +46,7 @@ public class CreateEventController : Controller
         Console.WriteLine(min);
         Console.WriteLine(max);
 
-        if (min < date && date < max)
+        if (min < date && date <= max)
             return true;
 
         return false;
