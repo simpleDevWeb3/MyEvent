@@ -8,52 +8,42 @@
 
 
 <style>
-    body {
-        overflow-y: scroll;
-    }
-
-    .form-container {
-        margin-top: 10px;
-        background: white;
+    .content {
+        background: #272626;
+        display: block;
         min-width: 600px;
         width: 100%;
         padding: 20px;
-        border-radius: 10px;
     }
 
-    h2 {
+    body {
+        overflow-y: scroll;
+        color: white;
+    }
+
+    h1 {
         text-align: center;
-        color: #333;
+        margin: 10px auto 0 auto;
     }
 
     label {
-        margin-top: 10px;
         font-weight: bold;
     }
+
 
     fieldset {
         width: 30%;
     }
 
-    fieldset input {
-        margin: 0;
-    }
-
-    .field-validation-error {
-        color: red;
-    }
-
     input, select, textarea {
-        width: 30%;
-        padding: 8px;
-        margin: 10px auto;
         border: 1px solid #ccc;
         border-radius: 5px;
+        min-height: 25px;
     }
 
     .time-row {
         display: flex;
-        gap: 10px;
+        gap: 5px;
         align-items: center;
     }
 
@@ -61,25 +51,22 @@
         width: 90%;
     }
 
-    button {
+    .form-container button {
         display: inline-block;
-        background-color: #28a745;
+        background-color: #707070;
         color: white;
         border: none;
         padding: 10px 15px;
-        margin-top: 15px;
         border-radius: 5px;
         cursor: pointer;
+        width: 100px;
     }
 
-    button:hover {
-        background-color: #218838;
+    .form-container button:hover {
+        background-color: #505050;
     }
 
-    .create_event_location_result:hover {
-        background: grey;
-    }
-
+    /*location search form*/
     #overlay {
         position: fixed;
         top: 0;
@@ -94,7 +81,7 @@
     }
 
     #search-form {
-        background: white;
+        background: #272626;
         padding: 2rem;
         border-radius: 12px;
         box-shadow: 0 5px 20px rgba(0,0,0,0.3);
@@ -105,9 +92,61 @@
     #create_event_location_search {
         width: 80%;
     }
-
+    
     .create_event_location_result {
         margin: 3px auto;
+    }
+    
+    .create_event_location_result:hover {
+        background: grey;
+    }
+
+
+    /*Form*/
+    .form {
+        display: grid;
+        grid: auto / auto auto auto;
+        gap: 5px;
+        place-content: start;
+        place-items: center start;
+    }
+
+    .form > label:not(:has(*)) {
+        background: #666;
+        font-weight: bold;
+        padding: 5px;
+        place-self: stretch;
+        border-radius: 1px;
+    }
+
+    .form > section,
+    .validation-summary-valid,
+    .validation-summary-errors {
+        grid-column: 1 / -1;
+    }
+
+    .validation-summary-valid ul,
+    .validation-summary-errors ul {
+        margin: 0;
+    }
+
+    .field-validation-error,
+    .validation-summary-errors {
+        color: red;
+    }
+
+    .upload {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+    }
+
+  .upload img {
+        width: 600px;
+        height: 300px;
+        object-fit: cover;
+
     }
 
 </style>

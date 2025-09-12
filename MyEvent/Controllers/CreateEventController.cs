@@ -326,6 +326,8 @@ public class CreateEventController : Controller
             return RedirectToAction("EventCreated");
         }
 
+        ViewBag.Categories = new SelectList(db.Categories, "Id", "Name");
+        vm.Address = $"{e.Address.Premise}, {e.Address.Street}, {e.Address.Postcode} {e.Address.City}, {e.Address.State}";
         vm.ImageUrl = e.ImageUrl;
         return View(vm);
     }

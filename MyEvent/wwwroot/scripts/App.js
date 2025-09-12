@@ -180,14 +180,6 @@ $(".create_event-backBtn").on("click", function () {
 // Enable hidden file validation
 $.validator.setDefaults({ ignore: '' });
 
-$.validator.methods.step = function (value, element, param) {
-    if (element.type === "time") {
-        return true; // always valid
-    }
-    return $.validator.methods.step.call(this, value, element, param);
-};
-
-
 
 
 ///////////////////////////////////////////////////Ken Code/////
