@@ -89,35 +89,139 @@
         <button type="submit" class="pay-button">Pay Now</button>
     </form>
 
+
     @if (TempData["Success"] != null)
     {
         <div id="payment-success" class="payment-message" style="background-color: #28a745;">
-            ✅ @TempData["Success"]
+            @TempData["Success"]
         </div>
     }
     
     @if (ViewBag.ErrorMessage != null)
     {
         <div id="payment-error" class="payment-message" style="background-color: #dc3545;">
-            ❌ @ViewBag.ErrorMessage
+            @ViewBag.ErrorMessage
         </div>
     }
 
 </div>
 
 <script>
-    window.onload = function () {
-        const successMsg = document.getElementById("payment-success");
-        const errorMsg = document.getElementById("payment-error");
+window.onload = function () {
+    const successMsg = document.getElementById("payment-success");
+    const errorMsg = document.getElementById("payment-error");
 
-        [successMsg, errorMsg].forEach(msg => {
-            if (msg && msg.textContent.trim() !== "") {
-                msg.classList.add("show");
-                setTimeout(() => {
-                    msg.classList.remove("show");
+    [successMsg, errorMsg].forEach(function (msg) {
+        if (msg && msg.textContent.trim() !== "") {
+            msg.classList.add("show");
+            setTimeout(function () {
+                msg.classList.remove("show");
+            }, 3000);
+        }
+    });
+
+    const form = document.getElementById("paymentForm");
+    if (form) {
+        form.addEventListener("submit", function (e) {
+            let valid = true;
+            let messages = [];
+
+            const holderName = document.getElementById("holderName");
+            const holderEmail = document.getElementById("holderEmail");
+            const cardNumber = document.getElementById("cardNumber");
+            const expiryInput = document.getElementById("expiry");
+            const cvvInput = document.getElementById("cvv");
+
+            const name = holderName.value.trim();
+            const email = holderEmail.value.trim();
+            const card = cardNumber.value.trim().replace(/[\s-]/g, ""); // strip spaces/dashes
+            const expiry = expiryInput.value.trim();
+            const cvv = cvvInput.value.trim();
+
+            // reset errors
+            [holderName, holderEmail, cardNumber, expiryInput, cvvInput].forEach(function (input) {
+                input.classList.remove("error");
+            });
+
+            // Name validation
+            if (!/^[A-Za-z\s]{2,}$/.test(name)) {
+                valid = false;
+                messages.push("Invalid cardholder name.");
+                holderName.classList.add("error");
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@@]+@@(gmail\.com|yahoo\.com)$/i;
+            if (!emailRegex.test(email)) {
+                valid = false;
+                messages.push("Email must be a valid Gmail or Yahoo address.");
+                holderEmail.classList.add("error");
+            }
+
+
+            // Visa or MasterCard only (16 digits)
+            const visaRegex = /^4\d{15}$/; 
+            const masterRegex = /^(5[1-5]\d{14}|2(2[2-9]\d{12}|[3-6]\d{13}|7[01]\d{12}|720\d{12}))$/; 
+            if (!(visaRegex.test(card) || masterRegex.test(card))) {
+                valid = false;
+                messages.push("Card must be a valid Visa or MasterCard number.");
+                cardNumber.classList.add("error");
+            }
+
+            // Expiry validation
+            const expMatch = expiry.match(/^(\d{2})\/(\d{2})$/);
+            if (!expMatch) {
+                valid = false;
+                messages.push("Expiry date must be in MM/YY format.");
+                expiryInput.classList.add("error");
+            } else {
+                const month = parseInt(expMatch[1], 10);
+                const year = parseInt("20" + expMatch[2], 10);
+                const now = new Date();
+                const currentMonth = now.getMonth() + 1;
+                const currentYear = now.getFullYear();
+
+                if (month < 1 || month > 12) {
+                    valid = false;
+                    messages.push("Invalid expiry month.");
+                    expiryInput.classList.add("error");
+                } else if (year < currentYear || (year === currentYear && month <= currentMonth)) {
+                    valid = false;
+                    messages.push("Card expiry must be after the current month.");
+                    expiryInput.classList.add("error");
+                }
+            }
+
+            // CVV validation
+            if (!/^\d{3}$/.test(cvv)) {
+                valid = false;
+                messages.push("CVV must be exactly 3 digits.");
+                cvvInput.classList.add("error");
+            }
+
+            // Show errors if invalid
+            if (!valid) {
+                e.preventDefault();
+
+                const oldError = document.getElementById("client-error-box");
+                if (oldError) oldError.remove();
+
+                let errorBox = document.createElement("div");
+                errorBox.id = "client-error-box";
+                errorBox.className = "payment-message show";
+                errorBox.style.backgroundColor = "#dc3545";
+                errorBox.innerHTML = "❌ " + messages.join("<br>");
+                document.body.appendChild(errorBox);
+
+                setTimeout(function () {
+                    errorBox.classList.remove("show");
+                    setTimeout(function () {
+                        errorBox.remove();
+                    }, 600);
                 }, 3000);
             }
         });
-    };
+    }
+};
 </script>
 
