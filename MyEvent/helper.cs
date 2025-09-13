@@ -95,11 +95,15 @@ public class Helper
 
     public string HashPassword(string password)
     {
+        if (string.IsNullOrEmpty(password))
+            throw new ArgumentException("Password cannot be null or empty.", nameof(password));
         return ph.HashPassword(0, password); 
     }
 
     public bool VerifyPassword(string hash, string password)
     {
+        if (string.IsNullOrEmpty(hash) || string.IsNullOrEmpty(password))
+            return false;
         return ph.VerifyHashedPassword(0, hash, password) == PasswordVerificationResult.Success; 
     }
 
