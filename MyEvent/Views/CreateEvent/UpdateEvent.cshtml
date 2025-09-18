@@ -154,7 +154,7 @@
 <div class="form-container">
 
     <h2>@ViewBag.Title</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form class="form" method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly"></div>
 
         <label asp-for="Id"></label>
@@ -164,12 +164,10 @@
         <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" required />
         <span asp-validation-for="Title"></span>
-        <br />
 
         <label asp-for="Date"></label>
         <input asp-for="Date" type="date" class="form-control" min="@min" max="@max" required />
         <span asp-validation-for="Date"></span>
-        <br />
 
         <label>Event Time</label>
         <div class="time-row">
@@ -181,16 +179,17 @@
                 <label asp-for="EndTime"></label>
                 <input data-attribute="EndTime" asp-for="EndTime" type="time" asp-format="{0:HH:mm}" required />
             </div>
+        </div>
+        <span>
             <span class="StartTime validation_msg" asp-validation-for="StartTime" style="display: none;"></span>
             <span class="EndTime validation_msg" asp-validation-for="EndTime" style="display: none;"></span>
-        </div>
+        </span>
         
         <label asp-for="CategoryId"></label>
         <select asp-for="CategoryId" asp-items="ViewBag.Categories">
             <option value="">- Select One -</option>
         </select>
         <span asp-validation-for="CategoryId"></span>
-        <br />
 
         <label asp-for="Formatted_address"></label>
         <input  asp-for="Formatted_address"
@@ -199,23 +198,19 @@
                 readonly
                 required
                 value="@Model.Address" />
-        <br />
+        <span asp-validation-for="Formatted_address"></span>
 
         <label asp-for="Price"></label>
         <input asp-for="Price" type="number" min=0 max=200.00 step=0.05 class="form-control" required />
         <span asp-validation-for="Price"></span>
-        <br />
 
         <label asp-for="Description"></label>
-        <br />
         <textarea asp-for="Description" rows="4" class="form-control" required></textarea>
         <span asp-validation-for="Description"></span>
-        <br />
 
         <label asp-for="ContactEmail"></label>
         <input asp-for="ContactEmail" type="email" class="form-control" required />
         <span asp-validation-for="ContactEmail"></span>
-        <br />
 
         <label asp-for="Image"></label>
         <label class="upload">
@@ -223,7 +218,6 @@
             <img src="@Model.ImageUrl">
         </label>
         <span asp-validation-for="Image"></span>
-        <br />
 
         <section>
             <button>Submit</button>
