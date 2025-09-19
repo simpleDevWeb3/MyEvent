@@ -114,6 +114,33 @@ namespace MyEvent.Controllers
             return RedirectToAction("FollowedEvents");
         }
 
+        [Authorize]
+        [HttpPost]
+        public IActionResult BatchDelete(int[] ids)
+        {
+            TempData.Clear();
+
+            if (ids == null || ids.Length == 0)
+            {
+                TempData["Delete"] = "No events selected.";
+                return RedirectToAction("FollowedEvents");
+            }
+
+            var eventsToDelete = _db.FollowedEvents.Where(f => ids.Contains(f.Id)).ToList();
+
+            if (eventsToDelete.Any())
+            {
+                _db.FollowedEvents.RemoveRange(eventsToDelete);
+                _db.SaveChanges();
+                TempData["Delete"] = $"{eventsToDelete.Count} event(s) deleted.";
+            }
+            else
+            {
+                TempData["Delete"] = "No matching events found.";
+            }
+
+            return RedirectToAction("FollowedEvents");
+        }
 
     }
 }

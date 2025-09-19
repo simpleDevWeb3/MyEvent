@@ -244,15 +244,26 @@
                             </form>
                         }
 
+                        @{
+                            bool isFollowed = ViewBag.IsFollowed != null ? (bool)ViewBag.IsFollowed : false;
+                        }
 
-
-
-                        <form asp-controller="Favourite" asp-action="Follow" method="post" style="margin:0;">
-                            <input type="hidden" name="eventId" value="@Model.Id" />
-                            <button type="submit" class="home-button" style="font-size:15px; padding: 20px 30px; background:red; color:white;">
-                                Follow
+                        @if (isFollowed)
+                        {
+                            <button class="joined-button" style="font-size:15px; padding:20px 30px; background:green; color:white;" disabled>
+                                Followed
                             </button>
-                        </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Favourite" asp-action="Follow" method="post" style="margin:0;">
+                                <input type="hidden" name="eventId" value="@Model.Id" />
+                                <button type="submit" class="home-button" style="font-size:15px; padding:20px 30px; background:red; color:white;">
+                                    Follow
+                                </button>
+                            </form>
+                        }
+
 
                     </div>
 

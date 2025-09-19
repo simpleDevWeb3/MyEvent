@@ -2,7 +2,8 @@
 
 <style>
     .ticket-container {
-        width: 800px;
+        width: 90%;
+        max-width: 800px;
         margin: 20px auto;
         background-color: #222;
         color: white;
@@ -53,11 +54,28 @@
         border-radius: 4px;
     }
 
-    .action-button:hover {
-        background-color: #ff6666;
+        .action-button:hover {
+            background-color: #ff6666;
+        }
+
+        .action-button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+    .pay-button {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 4px;
     }
 
-    /* Slide-in messages */
+        .pay-button:hover {
+            background-color: #66ff66;
+        }
+
     .delete-message, .payment-message {
         position: fixed;
         top: 100px;
@@ -89,40 +107,59 @@
 
     @if (Model?.Any() == true)
     {
-        <table class="ticket-table">
-            <thead>
-                <tr>
-                    <th>Ticket ID</th>
-                    <th>Event</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Holder Name</th>
-                    <th>Email</th>
-                    <th>Purchase Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var ticket in Model)
-                {
+        <!-- Batch Delete form ONLY -->
+        <form asp-controller="Ticket" asp-action="BatchDeleteTickets" method="post" id="batch-delete-form">
+            <table class="ticket-table">
+                <thead>
                     <tr>
-                        <td>@ticket.TicketId</td>
-                        <td>@ticket.Event?.Title</td>
-                        <td>@ticket.Event?.Detail?.Date.ToString("yyyy-MM-dd")</td>
-                        <td>@(ticket.Event?.Detail != null ? $"{ticket.Event.Detail.StartTime} - {ticket.Event.Detail.EndTime}" : "")</td>
-                        <td>@ticket.HolderName</td>
-                        <td>@ticket.HolderEmail</td>
-                        <td>@ticket.PurchaseDate.ToString("yyyy-MM-dd")</td>
-                        <td>
-                            <form asp-controller="Ticket" asp-action="DeleteTicket" method="post" style="margin:0;">
-                                <input type="hidden" name="ticketId" value="@ticket.TicketId" />
-                                <button type="submit" class="action-button">Delete</button>
-                            </form>
-                        </td>
+                        <th><input type="checkbox" id="select-all" /></th>
+                        <th>Ticket ID</th>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Holder Name</th>
+                        <th>Email</th>
+                        <th>Purchase Date</th>
+                        <th>Action</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="ids" value="@ticket.TicketId" class="row-checkbox" />
+                            </td>
+                            <td>@ticket.TicketId</td>
+                            <td>@ticket.Event?.Title</td>
+                            <td>@ticket.Event?.Detail?.Date.ToString("yyyy-MM-dd")</td>
+                            <td>@(ticket.Event?.Detail != null ? $"{ticket.Event.Detail.StartTime} - {ticket.Event.Detail.EndTime}" : "")</td>
+                            <td>@ticket.HolderName</td>
+                            <td>@ticket.HolderEmail</td>
+                            <td>@ticket.PurchaseDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <div style="display:flex; gap:8px;">
+                                    <!-- Buttons that target hidden forms outside -->
+                                    <button type="submit" class="action-button" form="deleteForm_@ticket.TicketId">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div style="text-align:right; margin-top:10px;">
+                <button type="submit" class="action-button" id="batch-delete-btn" disabled>Delete Selected</button>
+            </div>
+        </form>
+
+        <!-- Hidden external forms -->
+        @foreach (var ticket in Model)
+        {
+            <form id="deleteForm_@ticket.TicketId" asp-controller="Ticket" asp-action="DeleteTicket" method="post" style="display:none;">
+                <input type="hidden" name="ticketId" value="@ticket.TicketId" />
+            </form>
+        }
     }
     else
     {
@@ -133,39 +170,44 @@
 <!-- TempData Messages -->
 @if (TempData.ContainsKey("Delete"))
 {
-    <div id="flash-delete" class="delete-message">
-        @TempData["Delete"]
-    </div>
+    <div id="flash-delete" class="delete-message">@TempData["Delete"]</div>
 }
-
 @if (TempData.ContainsKey("Success"))
 {
-    <div id="flash-success" class="payment-message">
-        @TempData["Success"]
-    </div>
+    <div id="flash-success" class="payment-message">@TempData["Success"]</div>
 }
-
 @if (TempData.ContainsKey("Error"))
 {
-    <div id="flash-error" class="payment-message" style="background-color:#dc3545">
-        @TempData["Error"]
-    </div>
+    <div id="flash-error" class="payment-message" style="background-color:#dc3545">@TempData["Error"]</div>
 }
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Select all messages (payment + delete)
-        const messages = document.querySelectorAll(".payment-message, .delete-message");
-
-        messages.forEach((msg) => {
-            // Start hidden
+        // Flash messages
+        document.querySelectorAll(".payment-message, .delete-message").forEach((msg) => {
             msg.classList.remove("show");
-
-            // Slide in after short delay
             setTimeout(() => msg.classList.add("show"), 100);
-
-            // Slide out after 3 seconds
             setTimeout(() => msg.classList.remove("show"), 3000);
         });
+
+        // Select/Deselect all checkboxes
+        const selectAll = document.getElementById("select-all");
+        const checkboxes = document.querySelectorAll(".row-checkbox");
+        const batchDeleteBtn = document.getElementById("batch-delete-btn");
+
+        function toggleBatchDelete() {
+            const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+            batchDeleteBtn.disabled = !anyChecked;
+        }
+
+        selectAll?.addEventListener("change", function () {
+            const checked = this.checked;
+            checkboxes.forEach(cb => cb.checked = checked);
+            toggleBatchDelete();
+        });
+
+        checkboxes.forEach(cb => cb.addEventListener("change", toggleBatchDelete));
+
+        toggleBatchDelete();
     });
 </script>

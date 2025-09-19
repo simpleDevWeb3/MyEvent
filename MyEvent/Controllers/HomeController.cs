@@ -56,6 +56,7 @@ public class HomeController : Controller
                         ?? User.FindFirst("email")?.Value;
 
         bool isJoined = false;
+        bool isFollowed = false;
 
         if (!string.IsNullOrEmpty(userEmail))
         {
@@ -63,16 +64,14 @@ public class HomeController : Controller
             if (user != null)
             {
                 isJoined = db.Tickets.Any(t => t.EventId == id && t.BuyerId == user.Id);
+
+                isFollowed = db.FollowedEvents.Any(f => f.EventId == id && f.UserId == user.Id);
             }
         }
 
         ViewBag.IsJoined = isJoined;
+        ViewBag.IsFollowed = isFollowed;
 
         return View(ev);
     }
-
-
-
-
-
 }
